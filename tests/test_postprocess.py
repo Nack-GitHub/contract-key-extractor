@@ -1,8 +1,15 @@
 import pytest
 
 from contract_ner.postprocess import (
-    assemble, group_parties, normalize_date, normalize_jurisdiction, normalize_money,
-    normalize_payment_due, normalize_rate, pick_parties, validate_span,
+    assemble,
+    group_parties,
+    normalize_date,
+    normalize_jurisdiction,
+    normalize_money,
+    normalize_payment_due,
+    normalize_rate,
+    pick_parties,
+    validate_span,
 )
 from contract_ner.schema import Span
 
@@ -156,3 +163,22 @@ def test_party_grouping_merges_repeated_mentions():
     assert len(groups[0].mentions) == 2 and groups[0].confidence == 0.9
     a, b, rest = pick_parties(groups)
     assert (a.surface, b.surface, rest) == ("บริษัท ก จำกัด", "นาย ข", [])
+
+
+def test_thai_person_party_is_not_an_alias():
+    text = "ข้าพเจ้า นางสาวพรทิพย์ ศรีวิไล ผู้ให้เช่า ตกลงให้ บริษัท คาเฟ่ดีไซน์ จำกัด ผู้เช่า"
+    spans = [_sp("นางสาวพรทิพย์ ศรีวิไล", text.index("นางสาว"), "PARTY"),
+             _sp("บริษัท คาเฟ่ดีไซน์ จำกัด", text.index("บริษัท"), "PARTY")]
+    rec = assemble(text, spans, lang="th")
+    assert rec["Party_A"]["text"] == "นางสาวพรทิพย์ ศรีวิไล"
+    assert rec["Party_B"]["text"] == "บริษัท คาเฟ่ดีไซน์ จำกัด"
+    assert rec["Other_Parties"] == []
+
+
+def test_unquoted_short_latin_alias_is_demoted():
+    text = "between Skype Communications S.A. (Skype) and Big Company Limited"
+    spans = [_sp("Skype Communications S.A.", 8, "PARTY"), _sp("Skype", text.index("(Skype") + 1, "PARTY"),
+             _sp("Big Company Limited", text.index("Big"), "PARTY")]
+    rec = assemble(text, spans, lang="en")
+    assert (rec["Party_A"]["text"], rec["Party_B"]["text"]) == ("Skype Communications S.A.", "Big Company Limited")
+    assert rec["Other_Parties"] == ["Skype"]

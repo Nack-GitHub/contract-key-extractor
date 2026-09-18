@@ -1,7 +1,13 @@
 import pytest
 
 from contract_ner.schema import (
-    BIO_LABELS, ENTITY_TYPES, Document, Span, bio_to_spans, iter_entities, spans_to_bio,
+    BIO_LABELS,
+    ENTITY_TYPES,
+    Document,
+    Span,
+    bio_to_spans,
+    iter_entities,
+    spans_to_bio,
 )
 
 

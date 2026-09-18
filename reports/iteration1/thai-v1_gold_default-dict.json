@@ -1,0 +1,511 @@
+{
+  "n_docs": 24,
+  "strict": {
+    "precision": 0.6641509433962264,
+    "recall": 0.8186046511627907,
+    "f1": 0.7333333333333333
+  },
+  "relaxed": {
+    "PARTY": {
+      "precision": 0.6626506024096386,
+      "recall": 0.9821428571428571,
+      "f1": 0.7913669064748201,
+      "support": 56
+    },
+    "AGREEMENT_DATE": {
+      "precision": 0.9565217391304348,
+      "recall": 0.9565217391304348,
+      "f1": 0.9565217391304348,
+      "support": 23
+    },
+    "START_DATE": {
+      "precision": 1.0,
+      "recall": 0.9473684210526315,
+      "f1": 0.972972972972973,
+      "support": 19
+    },
+    "END_DATE": {
+      "precision": 0.782608695652174,
+      "recall": 0.8181818181818182,
+      "f1": 0.8,
+      "support": 22
+    },
+    "CONTRACT_VALUE": {
+      "precision": 0.7333333333333333,
+      "recall": 0.9565217391304348,
+      "f1": 0.8301886792452831,
+      "support": 23
+    },
+    "PAYMENT_DUE": {
+      "precision": 0.59375,
+      "recall": 0.8260869565217391,
+      "f1": 0.6909090909090908,
+      "support": 23
+    },
+    "PENALTY_RATE": {
+      "precision": 0.8571428571428571,
+      "recall": 1.0,
+      "f1": 0.923076923076923,
+      "support": 24
+    },
+    "JURISDICTION": {
+      "precision": 0.8928571428571429,
+      "recall": 1.0,
+      "f1": 0.9433962264150945,
+      "support": 25
+    },
+    "micro": {
+      "precision": 0.7660377358490567,
+      "recall": 0.9441860465116279,
+      "f1": 0.8458333333333334,
+      "support": 215
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.826     0.826     0.826        23\nCONTRACT_VALUE      0.700     0.913     0.792        23\n      END_DATE      0.783     0.818     0.800        22\n  JURISDICTION      0.786     0.880     0.830        25\n         PARTY      0.627     0.929     0.748        56\n   PAYMENT_DUE      0.375     0.522     0.436        23\n  PENALTY_RATE      0.536     0.625     0.577        24\n    START_DATE      0.944     0.895     0.919        19\n\n     micro avg      0.664     0.819     0.733       215\n     macro avg      0.697     0.801     0.741       215\n  weighted avg      0.681     0.819     0.739       215\n",
+  "errors": [
+    {
+      "doc": "th-gold-001",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "แพ่งกรุงเทพฯ"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "แม่ริม"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "บริษัทจังหวัดเชียงใหม่"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "๑๒๓,๖๔๔.๘๖ บาท"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันที่ ๑๓ กุมภาพันธ์ ๒๕๖๗"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "๑๐๐ บาท"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "กรุงไทย จำกัด (มหาชน) สาขาแม่ริม"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "๙๔,๕๐๐ บาท"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "๑๓ กุมภาพันธ์ ๒๕๖๗"
+    },
+    {
+      "doc": "th-gold-003",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "135,000 บาท"
+    },
+    {
+      "doc": "th-gold-004",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันที่ 9 สิงหาคม 2569"
+    },
+    {
+      "doc": "th-gold-004",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "9 สิงหาคม 2569"
+    },
+    {
+      "doc": "th-gold-006",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "บาท"
+    },
+    {
+      "doc": "th-gold-006",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "ต่อการฝ่าฝืนแต่ละครั้ง"
+    },
+    {
+      "doc": "th-gold-007",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "SR-450T"
+    },
+    {
+      "doc": "th-gold-007",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ร้อยละ 30"
+    },
+    {
+      "doc": "th-gold-007",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "นิคมอุตสาหกรรมอมตะซิตี้ จังหวัดชลบุรี"
+    },
+    {
+      "doc": "th-gold-007",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "วันที่ 30 พฤศจิกายน 2568"
+    },
+    {
+      "doc": "th-gold-007",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "30 พฤศจิกายน 2568"
+    },
+    {
+      "doc": "th-gold-008",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "วันที่"
+    },
+    {
+      "doc": "th-gold-009",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ชานมไข่มุก “ฉ่ำ"
+    },
+    {
+      "doc": "th-gold-009",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "“ฉ่ำ”"
+    },
+    {
+      "doc": "th-gold-009",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ศูนย์การค้าเซ็นทรัล นครราชสีมา"
+    },
+    {
+      "doc": "th-gold-010",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "2025"
+    },
+    {
+      "doc": "th-gold-010",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Client"
+    },
+    {
+      "doc": "th-gold-010",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Client"
+    },
+    {
+      "doc": "th-gold-011",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "2569"
+    },
+    {
+      "doc": "th-gold-011",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "รายเดือน"
+    },
+    {
+      "doc": "th-gold-011",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "นายธีรพงษ์ อินทจักร"
+    },
+    {
+      "doc": "th-gold-012",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "รุ่นคอมมิวเตอร์"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ริมธาร"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "บาท"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "ธันวาคม 2568"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "5,300,000"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "สำนักงานที่ดินจังหวัดนนทบุรี"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันที่ 30 กันยายน 2569"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "30 กันยายน 2569"
+    },
+    {
+      "doc": "th-gold-014",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ศูนย์การค้า"
+    },
+    {
+      "doc": "th-gold-014",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายใน 30 วันนับจากวันสิ้นไตรมาส"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "X"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "18 มีนาคม 2569"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "โรงแรมแกรนด์ ไฮแอท เอราวัณ กรุงเทพฯ"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ล่วงหน้าร้อยละ 50"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายใน 7 วันนับจากวันลงนาม"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายใน 30 วันหลังจากวันจัดงาน"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Agency"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Advertiser"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "100,000 บาท"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Advertiser"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Agency"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Agency"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ทุกวันที่ 5 ของเดือนถัดไป"
+    },
+    {
+      "doc": "th-gold-017",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "มหาวิทยาลัย"
+    },
+    {
+      "doc": "th-gold-017",
+      "kind": "FN",
+      "label": "CONTRACT_VALUE",
+      "text": "4.5 ล้านบาท"
+    },
+    {
+      "doc": "th-gold-018",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ธนาคารออมทรัพย์ชุมชน"
+    },
+    {
+      "doc": "th-gold-018",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "พนักงานเทศบาลจังหวัดระยอง จำกัด"
+    },
+    {
+      "doc": "th-gold-018",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "17.00 น."
+    },
+    {
+      "doc": "th-gold-019",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "มีนาคม 2569"
+    },
+    {
+      "doc": "th-gold-019",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "17 เมษายน 2569"
+    },
+    {
+      "doc": "th-gold-019",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "สำนักงานสถิติแห่งชาติ ศูนย์ราชการฯ แจ้งวัฒนะ"
+    },
+    {
+      "doc": "th-gold-019",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "รับมอบต่อวัน"
+    },
+    {
+      "doc": "th-gold-019",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "ภาครัฐ พ.ศ. 2560"
+    },
+    {
+      "doc": "th-gold-019",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "17 เมษายน 2569"
+    },
+    {
+      "doc": "th-gold-020",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "2,800 บาท"
+    },
+    {
+      "doc": "th-gold-020",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "1,500 บาท"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "บริษัท”)"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "30 วัน"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "บริษัท ไทยเจริญ อุตสาหกรรม จำกัด"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "นางสาวรัชนี แก้วใส"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ทุกเดือน เดือนละ 5,000 บาท"
+    },
+    {
+      "doc": "th-gold-023",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "คลองบางไผ่"
+    },
+    {
+      "doc": "th-gold-023",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "30 มิถุนายน 2568"
+    },
+    {
+      "doc": "th-gold-023",
+      "kind": "FN",
+      "label": "AGREEMENT_DATE",
+      "text": "30 มิถุนายน 2568"
+    },
+    {
+      "doc": "th-gold-023",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายใน 30 วันนับจากวันที่ผู้ว่าจ้างได้รับมอบงานถูกต้อง"
+    }
+  ]
+}

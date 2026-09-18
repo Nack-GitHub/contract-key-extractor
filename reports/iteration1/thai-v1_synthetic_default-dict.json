@@ -1,0 +1,79 @@
+{
+  "n_docs": 300,
+  "strict": {
+    "precision": 0.9839474644290405,
+    "recall": 0.9839474644290405,
+    "f1": 0.9839474644290404
+  },
+  "relaxed": {
+    "PARTY": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 1069
+    },
+    "AGREEMENT_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 282
+    },
+    "START_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 254
+    },
+    "END_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 206
+    },
+    "CONTRACT_VALUE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 227
+    },
+    "PAYMENT_DUE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 199
+    },
+    "PENALTY_RATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 234
+    },
+    "JURISDICTION": {
+      "precision": 0.9962962962962963,
+      "recall": 0.9962962962962963,
+      "f1": 0.9962962962962963,
+      "support": 270
+    },
+    "micro": {
+      "precision": 0.9996351696461145,
+      "recall": 0.9996351696461145,
+      "f1": 0.9996351696461145,
+      "support": 2741
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      1.000     1.000     1.000       282\nCONTRACT_VALUE      1.000     1.000     1.000       227\n      END_DATE      1.000     1.000     1.000       206\n  JURISDICTION      0.837     0.837     0.837       270\n         PARTY      1.000     1.000     1.000      1069\n   PAYMENT_DUE      1.000     1.000     1.000       199\n  PENALTY_RATE      1.000     1.000     1.000       234\n    START_DATE      1.000     1.000     1.000       254\n\n     micro avg      0.984     0.984     0.984      2741\n     macro avg      0.980     0.980     0.980      2741\n  weighted avg      0.984     0.984     0.984      2741\n",
+  "errors": [
+    {
+      "doc": "th-test-00036",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "จังหวัดราชบุรี"
+    },
+    {
+      "doc": "th-test-00213",
+      "kind": "FN",
+      "label": "JURISDICTION",
+      "text": "กฎหมายไทย"
+    }
+  ]
+}

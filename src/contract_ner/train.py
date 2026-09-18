@@ -43,6 +43,7 @@ class TrainConfig:
     output_dir: str
     test: list[str] = field(default_factory=list)
     lowercase: bool = False
+    pretokenized: bool = False  # tokenize word-by-word (RoBERTa/BPE); see tokenization.Encoder
     max_length: int = 256
     stride: int = 64
     epochs: float = 3
@@ -57,10 +58,16 @@ class TrainConfig:
     grad_accum: int = 1
 
     @classmethod
-    def load(cls, path: str | Path) -> "TrainConfig":
+    def load(cls, path: str | Path) -> TrainConfig:
         with open(path, encoding="utf-8") as f:
             raw = yaml.safe_load(f)
         return cls(**raw)
+
+
+def load_tokenizer(name_or_path: str, pretokenized: bool):
+    """Byte-level BPE tokenizers need ``add_prefix_space`` to accept word lists."""
+    kwargs = {"add_prefix_space": True} if pretokenized else {}
+    return AutoTokenizer.from_pretrained(name_or_path, **kwargs)
 
 
 # ------------------------------------------------------------------ features
@@ -117,8 +124,9 @@ def train(cfg: TrainConfig) -> dict:
     out = Path(cfg.output_dir)
     out.mkdir(parents=True, exist_ok=True)
 
-    tokenizer = AutoTokenizer.from_pretrained(cfg.model_name)
-    encoder = Encoder(tokenizer, max_length=cfg.max_length, stride=cfg.stride, lowercase=cfg.lowercase)
+    tokenizer = load_tokenizer(cfg.model_name, cfg.pretokenized)
+    encoder = Encoder(tokenizer, max_length=cfg.max_length, stride=cfg.stride, lowercase=cfg.lowercase,
+                      pretokenized=cfg.pretokenized)
 
     train_docs = read_jsonl(cfg.train)
     if cfg.max_train_docs:
@@ -174,8 +182,9 @@ def train(cfg: TrainConfig) -> dict:
     trainer.save_model(str(out))
     tokenizer.save_pretrained(str(out))
     with open(out / "pipeline_config.json", "w", encoding="utf-8") as f:
-        json.dump({"lang": cfg.lang, "lowercase": cfg.lowercase, "max_length": cfg.max_length,
-                   "stride": cfg.stride, "base_model": cfg.model_name, "name": cfg.name}, f, indent=2)
+        json.dump({"lang": cfg.lang, "lowercase": cfg.lowercase, "pretokenized": cfg.pretokenized,
+                   "max_length": cfg.max_length, "stride": cfg.stride, "base_model": cfg.model_name,
+                   "name": cfg.name}, f, indent=2)
     history = [h for h in trainer.state.log_history]
     with open(out / "train_log.json", "w", encoding="utf-8") as f:
         json.dump({"config": cfg.__dict__, "final_eval": final_eval, "log_history": history}, f, indent=2)

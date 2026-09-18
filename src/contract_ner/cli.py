@@ -9,8 +9,9 @@ from pathlib import Path
 
 
 def _cmd_download(args: argparse.Namespace) -> None:
-    import kagglehub
     import shutil
+
+    import kagglehub
 
     src = Path(kagglehub.dataset_download("changethan/legal-contract-dataset"))
     dst = Path(args.out)
@@ -108,8 +109,7 @@ def _cmd_export_conll(args: argparse.Namespace) -> None:
             offsets = segment_words(d.text, d.lang)
             tags = spans_to_bio(offsets, d.entities)
             f.write(f"# id = {d.id}\n")
-            for (s, e), t in zip(offsets, tags):
-                f.write(f"{d.text[s:e]}\t{t}\n")
+            f.writelines(f"{d.text[s:e]}\t{t}\n" for (s, e), t in zip(offsets, tags))
             f.write("\n")
     print(f"wrote {len(docs)} docs → {args.out}")
 

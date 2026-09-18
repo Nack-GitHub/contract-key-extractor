@@ -306,6 +306,10 @@ def party_block(rng: random.Random, p: Party, side: str, detail: bool) -> list[S
             bits = []
             if rng.random() < 0.75:
                 bits.append(f"ทะเบียนนิติบุคคลเลขที่ {p.regno}")
+            if rng.random() < 0.25:
+                bits.append(rng.choice([f"ซึ่งจดทะเบียนเป็นนิติบุคคล ณ สำนักงานทะเบียนหุ้นส่วนบริษัทจังหวัด{rng.choice(L.PROVINCES[1:])}",
+                                        "จดทะเบียนเป็นนิติบุคคลตามกฎหมายไทย ณ สำนักงานทะเบียนหุ้นส่วนบริษัทกรุงเทพมหานคร",
+                                        "ซึ่งจดทะเบียนเป็นนิติบุคคลตามประมวลกฎหมายแพ่งและพาณิชย์"]))
             if rng.random() < 0.85:
                 bits.append(rng.choice(["สำนักงานตั้งอยู่", "สำนักงานใหญ่ตั้งอยู่", "มีภูมิลำเนาอยู่"]) + p.address)
             if rng.random() < 0.85:
@@ -320,6 +324,8 @@ def party_block(rng: random.Random, p: Party, side: str, detail: bool) -> list[S
             segs.append((" " + " ".join(bits), None))
         else:
             bits = []
+            if rng.random() < 0.2:
+                bits.append(f"พนักงานรหัส {rng.choice(['EMP', 'E', 'ID'])}-{rng.randint(1000, 99999):05d} ตำแหน่ง{rng.choice(['เจ้าหน้าที่บัญชี', 'วิศวกร', 'พนักงานขาย', 'ผู้จัดการแผนก', 'ช่างเทคนิค'])}")
             if rng.random() < 0.6:
                 bits.append(f"อายุ {rng.randint(22, 70)} ปี")
             if rng.random() < 0.5:
@@ -355,7 +361,13 @@ def preamble(ctx: Ctx) -> list[Segment]:
         "{TITLE}นี้ทำขึ้นเมื่อวันที่ {AD} โดยมีคู่สัญญาคือ {A} และ {B}",
         "ทำที่ {BARE_PLACE}\nวันที่ {AD}\n\n{TITLE}ฉบับนี้ทำขึ้นระหว่าง {A} กับ {B}",
         "สัญญาฉบับนี้ทำขึ้นระหว่าง {A} กับ {B} เมื่อวันที่ {AD}",
+        "ข้าพเจ้า {A} ตกลงทำสัญญากับ {B} เมื่อวันที่ {AD} {PLACE}",
+        "ระหว่าง {A} กับ {B} ได้ทำ{TITLE}ตามสัญญาเลขที่ {NO} ลงวันที่ {AD}",
+        "{TITLE} เลขที่ {NO} ลงวันที่ {AD}\nระหว่าง {A} กับ {B}",
+        "{TITLE}\nคู่สัญญาฝ่ายที่หนึ่ง: {A}\nคู่สัญญาฝ่ายที่สอง: {B}\nวันที่ลงนาม: {AD}",
+        "{TITLE}\n\n{A} และ {B} ตกลงทำสัญญานี้เมื่อวันที่ {AD} โดยมีข้อความดังต่อไปนี้",
     ])
+    fills["NO"] = (f"{rng.choice(['', 'สจ.', 'กสพ.', 'จ.', 'ซ.'])}{rng.randint(1, 400)}/{_be(ctx.agreement)}", None)
     segs = render(t, fills)
     # fix double spaces produced by an empty PLACE
     return [(s.replace("  ", " "), l) for s, l in segs]
@@ -431,9 +443,18 @@ def clause_term(ctx: Ctx) -> list[Segment]:
             "อายุสัญญา {DUR} เริ่มวันที่ {SD} สิ้นสุดวันที่ {ED}",
             "{B}ตกลงเริ่มปฏิบัติงานตั้งแต่วันที่ {SD} และต้องดำเนินการให้แล้วเสร็จภายในวันที่ {ED}",
             "กำหนดเวลา{X}ตั้งแต่วันที่ {SD} ถึงวันที่ {ED} เป็นระยะเวลา {DUR}",
+            "{B}ต้องเริ่มทำงานที่รับจ้างภายในวันที่ {SD} และจะต้องทำงานให้แล้วเสร็จบริบูรณ์ภายในวันที่ {ED} รวมเป็นระยะเวลา {DAYS} วัน",
+            "ระยะเวลาสัญญา: {SD} – {ED} ({DUR})",
+            "{B}ต้องส่งมอบ{DELIV} ณ {PLACE} ภายในวันที่ {ED} โดยเริ่มดำเนินการตั้งแต่วันที่ {SD}",
+            "กำหนดส่งมอบ: ภายใน {DAYS} วันนับถัดจากวันลงนามในสัญญา คือภายในวันที่ {ED} ณ {PLACE}",
+            "เริ่มงานวันที่ {SD} และกำหนดแล้วเสร็จวันที่ {ED}",
         ])
         fills = {"SD": sd, "ED": ed, "DUR": dur, "B": (ctx.B.role, None),
-                 "X": (rng.choice(["เช่า", "จ้าง", "ให้สิทธิ", "จ้างงาน", "ของสัญญา"]), None)}
+                 "X": (rng.choice(["เช่า", "จ้าง", "ให้สิทธิ", "จ้างงาน", "ของสัญญา"]), None),
+                 "DAYS": (str((ctx.end - ctx.start).days + 1), None),
+                 "DELIV": (rng.choice(["และติดตั้งเครื่องจักร", "สินค้าทั้งหมด", "งานงวดสุดท้าย", "เอกสารและระบบทั้งหมด"]), None),
+                 "PLACE": (rng.choice([f"โรงงานของ{ctx.A.role} นิคมอุตสาหกรรม{rng.choice(['อมตะซิตี้', 'มาบตาพุด', 'บางปู', 'ลาดกระบัง', 'นวนคร'])} จังหวัด{rng.choice(L.PROVINCES[1:])}",
+                                       f"คลังพัสดุ {rng.choice(L.ORG_NAMES)}", f"สำนักงานของ{ctx.A.role}", f"ศูนย์กระจายสินค้าจังหวัด{rng.choice(L.PROVINCES[1:])}"]), None)}
     else:
         t = rng.choice([
             "สัญญานี้มีกำหนดระยะเวลา {DUR} นับตั้งแต่วันที่ {SD} เป็นต้นไป",
@@ -495,6 +516,13 @@ def clause_value(ctx: Ctx) -> list[Segment]:
         "ค่าตอบแทนตามสัญญานี้มีจำนวน {V}{T} ซึ่ง{A}จะชำระให้แก่{B}ตามงวดงานที่กำหนดในข้อถัดไป",
         "ราคา{X}รวมภาษีมูลค่าเพิ่มเป็นเงินทั้งสิ้น {V}{T}",
         "{B}ตกลงรับค่าจ้างในวงเงิน {V}{T} เป็นราคาเหมารวม",
+        "วงเงินตามสัญญา: {V}{T}",
+        "งบประมาณรวมทั้งสิ้น {V}{T}",
+        "{A}ตกลงสนับสนุนทุนแก่{B}เป็นจำนวนเงิน {V}{T} ตลอดโครงการ",
+        "ค่าบริการรายปีเป็นเงิน {V}{T}",
+        "ประมาณการค่า{X}ตลอดอายุสัญญาไม่เกิน {V}{T}",
+        "{A}ตกลงจ่ายและ{B}ตกลงรับเงินค่าจ้างจำนวนเงิน {V}{T} ซึ่งได้รวมภาษีมูลค่าเพิ่มจำนวน {VAT} บาท ตลอดจนภาษีอากรอื่น ๆ และค่าใช้จ่ายทั้งปวงด้วยแล้ว",
+        "ค่า{X}ทั้งสิ้น {V}{T} ชำระเงินมัดจำร้อยละ {DEP} ของราคา คิดเป็นเงิน {DEPAMT} บาท ในวันลงนามสัญญา และเงินส่วนที่เหลือจำนวน {REST} บาท ชำระเมื่อส่งมอบ",
     ])
     if k == "sale":
         t = rng.choice([
@@ -503,14 +531,23 @@ def clause_value(ctx: Ctx) -> list[Segment]:
             "มูลค่าการซื้อขายตามสัญญานี้เท่ากับ {V}{T}",
             "ราคาซื้อขายรวม {V}{T}",
         ])
+    dep = rng.choice([10, 20, 30, 50])
     segs = render(t, {"A": A, "B": B, "V": V, "T": T,
-                      "X": (rng.choice(["จ้าง", "สินค้า", "ก่อสร้าง", "บริการ", "สิทธิ", "จ้างเหมา"]), None)})
-    if rng.random() < 0.25:
+                      "X": (rng.choice(["จ้าง", "สินค้า", "ก่อสร้าง", "บริการ", "สิทธิ", "จ้างเหมา", "ขนส่ง"]), None),
+                      "VAT": (f"{ctx.value * 7 / 107:,.2f}", None), "DEP": (str(dep), None),
+                      "DEPAMT": (f"{ctx.value * dep // 100:,}", None), "REST": (f"{ctx.value - ctx.value * dep // 100:,}", None)})
+    if rng.random() < 0.35:
+        bank = rng.choice(L.BANKS)
         segs.append((" " + rng.choice([
-            f"ทั้งนี้ ราคาดังกล่าวเป็นราคาคงที่ตลอดอายุสัญญา",
+            "ทั้งนี้ ราคาดังกล่าวเป็นราคาคงที่ตลอดอายุสัญญา",
             f"โดย{ctx.A.role}จะหักเงินประกันผลงานไว้ร้อยละ 5 ของค่าจ้างแต่ละงวด",
             f"ราคาต่อหน่วย {rng.randint(1, 900) * 100:,} บาท จำนวน {rng.randint(2, 900)} หน่วย",
             f"{ctx.B.role}ต้องวางหลักประกันสัญญาเป็นจำนวนร้อยละ 5 ของมูลค่าสัญญา",
+            f"{ctx.B.role}ได้นำหนังสือค้ำประกันของ{bank} จำกัด (มหาชน) สาขา{rng.choice(L.BANGKOK_DISTRICTS)} เลขที่ {rng.randint(1, 9999):04d}/{_be(ctx.agreement)} เป็นจำนวนเงิน {ctx.value // 20:,} บาท (ร้อยละ 5 ของราคาค่าจ้าง) มามอบให้แก่{ctx.A.role}เพื่อเป็นหลักประกันการปฏิบัติตามสัญญา",
+            f"ราคา{rng.choice(['เครื่องละ', 'เล่มละ', 'ชุดละ', 'ตารางเมตรละ'])} {rng.randint(1, 900) * 100:,} บาท",
+            f"อัตราค่าขนส่งเที่ยวละ {rng.randint(5, 90) * 100:,} บาท",
+            f"ไม่รวมงบโฆษณาซึ่ง{ctx.A.role}จะชำระตรงให้แก่แพลตฟอร์มเอง โดยกำหนดงบขั้นต่ำเดือนละ {rng.randint(1, 50) * 10000:,} บาท",
+            f"(เดือนละ {ctx.value // 12:,} บาท)",
         ]), None))
     return segs
 
@@ -526,10 +563,14 @@ def payment_due_phrase(rng: random.Random, ctx: Ctx) -> tuple[Segment, str]:
     if r < 0.50:
         n = rng.choice([7, 7, 15, 15, 30, 30, 30, 45, 60, 90])
         ev = rng.choice(["ได้รับใบแจ้งหนี้", "ได้รับใบแจ้งหนี้ถูกต้องครบถ้วน", "ส่งมอบงานแต่ละงวด", "ตรวจรับงานเรียบร้อย",
-                         "ได้รับสินค้า", "ลงนามในสัญญา", "ได้รับใบวางบิล", "ตรวจรับมอบงานถูกต้องครบถ้วน"])
+                         "ได้รับสินค้า", "ลงนามในสัญญา", "ได้รับใบวางบิล", "ตรวจรับมอบงานถูกต้องครบถ้วน",
+                         f"{ctx.A.role}ได้รับมอบงานถูกต้อง", "คณะกรรมการตรวจรับงานได้ตรวจรับงานงวดนั้นเรียบร้อยแล้ว",
+                         "สิ้นไตรมาส", "จัดงาน", "ส่งมอบสินค้า", "ได้รับใบแจ้งหนี้และรายงานการปฏิบัติงานประจำเดือน",
+                         "สิ้นเดือน", "ออกใบแจ้งหนี้", "ตรวจรับ"])
         unit = rng.choice(["วัน", "วัน", "วันทำการ"])
         s = rng.choice([f"ภายใน {n} {unit}นับจากวันที่{ev}", f"ภายใน {n} {unit}นับแต่วันที่{ev}",
-                        f"ภายใน {n} {unit}หลังจาก{ev}", f"ภายใน {n} ({_thai_num_word(n) if n in _NUM_WORDS else n}) {unit}นับถัดจากวันที่{ev}"])
+                        f"ภายใน {n} {unit}หลังจาก{ev}", f"ภายใน {n} ({_thai_num_word(n) if n in _NUM_WORDS else n}) {unit}นับถัดจากวันที่{ev}",
+                        f"ภายใน {n} {unit}นับจากวัน{ev}", f"ภายใน {n} {unit} นับจากวันที่{ev}", f"ภายใน {n} {unit}หลังจากวัน{ev}"])
         return (s, "PAYMENT_DUE"), f"within {n} {'business days' if unit == 'วันทำการ' else 'days'} of {ev}"
     if r < 0.62:
         s = rng.choice(["ทุกสิ้นเดือน", "ภายในสิ้นเดือน", "ทุกวันสิ้นเดือน", "ภายในวันทำการสุดท้ายของเดือน",
@@ -542,7 +583,10 @@ def payment_due_phrase(rng: random.Random, ctx: Ctx) -> tuple[Segment, str]:
         return (s, "PAYMENT_DUE"), due.isoformat()
     n = rng.choice([2, 3, 4, 6, 12])
     s = rng.choice([f"ทุก {12 // n if n <= 12 else 1} เดือน", f"เป็นราย{rng.choice(['ไตรมาส', 'เดือน', 'ปี'])}",
-                    "ล่วงหน้าทุกต้นเดือน", "ทุกวันศุกร์สุดท้ายของเดือน"])
+                    "ล่วงหน้าทุกต้นเดือน", "ทุกวันศุกร์สุดท้ายของเดือน",
+                    f"ทุกเดือน เดือนละ {rng.randint(1, 50) * 1000:,} บาท",
+                    f"ภายในเดือน{rng.choice(L.THAI_MONTHS)}ของแต่ละปี",
+                    f"ล่วงหน้าภายในวันที่ {rng.randint(1, 28)} {rng.choice(L.THAI_MONTHS)}ของทุกปี"])
     return (s, "PAYMENT_DUE"), s
 
 
@@ -559,6 +603,11 @@ def clause_payment(ctx: Ctx) -> list[Segment]:
         "{B}ต้องออกใบแจ้งหนี้ให้{A} และ{A}ต้องชำระเงิน{PD}",
         "กำหนดชำระค่า{X}{PD} หากวันครบกำหนดตรงกับวันหยุด ให้เลื่อนไปชำระในวันทำการถัดไป",
         "{A}ตกลงชำระเงินตามสัญญา{PD}",
+        "{A}ตกลงชำระเงินล่วงหน้าร้อยละ {ADV} ในวันลงนามสัญญา และส่วนที่เหลือ{PD}",
+        "{A}ตกลงชำระเงินมัดจำร้อยละ {ADV} ของราคาสินค้าในวันลงนามสัญญา และชำระส่วนที่เหลือ{PD}",
+        "กำหนดจ่ายเงิน: ราย{PER} {PD}",
+        "{A}จะจ่ายค่า{X}{PD} หลังจากได้รับใบแจ้งหนี้และใบลงเวลาปฏิบัติงาน",
+        "{B}ยินยอมให้{A}หักจากเงินเดือน{PD} จนกว่าจะครบถ้วน",
     ])
     if k in ("service", "construction", "sale") and rng.random() < 0.45 and ctx.value:
         n = rng.choice([2, 3, 4])
@@ -570,7 +619,8 @@ def clause_payment(ctx: Ctx) -> list[Segment]:
         ])
         return render(t, {"A": A, "B": B, "PD": PD, "N": (str(n), None), "S": (f"{share:,}", None)})
     return render(t, {"A": A, "B": B, "PD": PD, "X": (rng.choice(["จ้าง", "สินค้า", "เช่า", "บริการ", "ตอบแทน", "ธรรมเนียม"]), None),
-                      "BANK": (rng.choice(L.BANKS), None),
+                      "BANK": (rng.choice(L.BANKS), None), "ADV": (str(rng.choice([10, 20, 30, 40, 50])), None),
+                      "PER": (rng.choice(["เดือน", "ไตรมาส", "งวด"]), None),
                       "ACC": ("-".join(str(rng.randint(100, 999)) for _ in range(3)) + f"-{rng.randint(0, 9)}", None)})
 
 
@@ -580,25 +630,31 @@ def penalty_phrase(rng: random.Random) -> tuple[Segment, str]:
     if r < 0.30:
         rate = rng.choice(["0.1", "0.2", "0.25", "0.5", "1", "1.5", "2", "3", "5", "7.5", "10", "15"])
         per = rng.choice(["วัน", "วัน", "เดือน", "ปี"])
+        basis = rng.choice(["มูลค่าสัญญา", "ค่าจ้าง", "ค่าจ้างตามสัญญา", "ราคาสินค้า", "ราคาพัสดุที่ยังไม่ได้รับมอบ", "ค่าจ้างรายเดือน",
+                            "มูลค่างานที่ยังไม่ส่งมอบ", "ยอดที่ค้างชำระ"])
         s = rng.choice([f"ร้อยละ {rate} ต่อ{per}", f"ร้อยละ {rate} ต่อ{per}", f"อัตราร้อยละ {rate} ต่อ{per}",
-                        f"ร้อยละ {rate} ของมูลค่าสัญญาต่อ{per}", f"ร้อยละ {rate} ของค่าจ้างต่อ{per}"])
+                        f"ร้อยละ {rate} ของ{basis}ต่อ{per}", f"ร้อยละ {rate} ของ{basis}ต่อ{per}"])
         return (s, "PENALTY_RATE"), f"{rate}% per {per_map[per]}"
     if r < 0.55:
         rate = rng.choice(["0.1", "0.2", "0.5", "1", "1.5", "2", "5", "7.5", "10", "15", "18"])
         per = rng.choice(["วัน", "เดือน", "เดือน", "ปี"])
-        s = rng.choice([f"{rate}% ต่อ{per}", f"{rate} % ต่อ{per}", f"{rate}% ของมูลค่าสัญญาต่อ{per}", f"{rate}% ต่อ{per}"])
+        s = rng.choice([f"{rate}% ต่อ{per}", f"{rate} % ต่อ{per}", f"{rate}% ของมูลค่าสัญญาต่อ{per}", f"{rate}% ต่อ{per}",
+                        f"{rate}% per {per_map[per]}", f"{per}ละ {rate}% ของ{rng.choice(['ค่าจ้างตามสัญญา', 'มูลค่าสัญญา'])}"])
         return (s, "PENALTY_RATE"), f"{rate}% per {per_map[per]}"
     if r < 0.72:
         amt = rng.choice([500, 1000, 1500, 2000, 3000, 5000, 10000, 20000, 50000])
-        per = rng.choice(["วัน", "วัน", "เดือน"])
-        s = rng.choice([f"{per}ละ {amt:,} บาท", f"{amt:,} บาท ต่อ{per}", f"{amt:,} บาทต่อ{per}"])
-        return (s, "PENALTY_RATE"), f"{amt} THB per {per_map[per]}"
+        per = rng.choice(["วัน", "วัน", "เดือน", "ครั้ง", "เที่ยว", "ชั่วโมง"])
+        per_en = {**per_map, "ครั้ง": "occurrence", "เที่ยว": "trip", "ชั่วโมง": "hour"}[per]
+        s = rng.choice([f"{per}ละ {amt:,} บาท", f"{amt:,} บาท ต่อ{per}", f"{amt:,} บาทต่อ{per}", f"อัตรา{per}ละ {amt:,} บาท",
+                        f"คนละ {amt:,} บาทต่อ{per}", f"{amt:,} บาทต่อคนต่อ{per}"])
+        return (s, "PENALTY_RATE"), f"{amt} THB per {per_en}"
     if r < 0.88:
         rate = rng.choice(["0.1", "0.2", "0.5", "1"])
         s = rng.choice([f"วันละ {rate}%", f"วันละร้อยละ {rate}", f"วันละ {rate} %"])
         return (s, "PENALTY_RATE"), f"{rate}% per day"
-    amt = rng.choice([10000, 50000, 100000, 500000, 1000000])
-    s = rng.choice([f"{amt:,} บาท ต่อครั้ง", f"{amt:,} บาทต่อการผิดสัญญาแต่ละครั้ง", f"{amt:,} บาท"])
+    amt = rng.choice([10000, 50000, 100000, 500000, 1000000, 2000000])
+    s = rng.choice([f"{amt:,} บาท ต่อครั้ง", f"{amt:,} บาทต่อการผิดสัญญาแต่ละครั้ง", f"{amt:,} บาท", f"{amt:,} บาท ต่อการฝ่าฝืนแต่ละครั้ง",
+                    f"ร้อยละ {rng.choice([10, 20, 25])} ของมูลค่าสัญญา"])
     return (s, "PENALTY_RATE"), f"{amt} THB fixed"
 
 
@@ -619,8 +675,17 @@ def clause_penalty(ctx: Ctx) -> list[Segment]:
         "ผู้ผิดนัดชำระเงินต้องเสียดอกเบี้ยระหว่างผิดนัดในอัตรา{P} ตามประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 224",
         "หาก{B}ส่งมอบ{X}ล่าช้า {A}มีสิทธิปรับ{B}{P} จนกว่าจะส่งมอบครบถ้วน",
         "กรณีส่งมอบล่าช้า {B}ต้องชำระค่าปรับในอัตรา{P} ของมูลค่างานที่ยังไม่ส่งมอบ",
+        "หากผิดนัด {B}จะต้องชำระค่าปรับให้แก่{A}เป็นรายวันในอัตรา{P} แต่ต้องไม่ต่ำกว่าวันละ {FLOOR} บาท นับถัดจากวันที่กำหนดแล้วเสร็จตามสัญญาจนถึงวันที่ทำงานแล้วเสร็จจริง",
+        "หาก{B}ฝ่าฝืนข้อตกลงนี้ {B}ตกลงชำระค่าเสียหายที่กำหนดไว้ล่วงหน้าเป็นจำนวน {P} ทั้งนี้ ไม่ตัดสิทธิ{A}ที่จะเรียกร้องค่าเสียหายที่แท้จริงเพิ่มเติม",
+        "อัตราค่าปรับ: {P} กรณี{X}ล่าช้า และปรับ {SECOND} กรณีจัดพนักงานไม่ครบ",
+        "หาก{B}ไม่สามารถให้บริการได้ในวันใด {B}ต้องจัดหาสิ่งทดแทน มิฉะนั้นยินยอมให้{A}หักค่าบริการและปรับ{P}",
+        "ค่าปรับ: ในอัตรา{P}",
+        "หากส่งล่าช้ากว่ากำหนดเวลาในแต่ละเที่ยวเกิน {HRS} ชั่วโมง ยินยอมให้ปรับ{P}",
     ])
-    return render(t, {"A": A, "B": B, "P": P, "X": (rng.choice(["งาน", "สินค้า", "ของ", "งวดงาน"]), None)})
+    second, _ = penalty_phrase(rng)
+    return render(t, {"A": A, "B": B, "P": P, "X": (rng.choice(["งาน", "สินค้า", "ของ", "งวดงาน", "ส่งมอบ"]), None),
+                      "FLOOR": (str(rng.choice([100, 200, 500, 1000])), None), "SECOND": second,
+                      "HRS": (str(rng.choice([1, 2, 3, 4])), None)})
 
 
 def clause_jurisdiction(ctx: Ctx) -> list[Segment]:
@@ -656,8 +721,11 @@ def clause_jurisdiction(ctx: Ctx) -> list[Segment]:
         "สัญญานี้อยู่ภายใต้บังคับและการตีความตาม{LAW}",
         "ให้ใช้{LAW}บังคับแก่สัญญานี้",
         "สัญญาฉบับนี้ให้เป็นไปตาม{LAW}ทุกประการ",
+        "การระงับข้อพิพาท: ตามพระราชบัญญัติ{ACT} พ.ศ. {ACTYEAR} และให้เป็นไปตาม{LAW}",
+        "กฎหมายที่ใช้บังคับ: {LAW}",
     ])
-    return render(t, {"LAW": law})
+    return render(t, {"LAW": law, "ACT": (rng.choice(["การจัดซื้อจัดจ้างและการบริหารพัสดุภาครัฐ", "ว่าด้วยข้อสัญญาที่ไม่เป็นธรรม", "คุ้มครองข้อมูลส่วนบุคคล", "อนุญาโตตุลาการ"]), None),
+                      "ACTYEAR": (str(rng.choice([2540, 2545, 2560, 2562])), None)})
 
 
 # ------------------------------------------------------------------ distractor clauses (no entities)
@@ -704,6 +772,15 @@ def clause_filler(ctx: Ctx) -> list[Segment]:
         ({"nda"}, f"เมื่อสิ้นสุดสัญญา {B}ต้องส่งคืนหรือทำลายเอกสารและข้อมูลทั้งหมดที่ได้รับจาก{A}ภายใน {n1} วัน"),
         ({"license", "distribution"}, f"{B}ต้องรายงานยอดขายให้{A}ทราบทุกไตรมาส และยินยอมให้{A}ตรวจสอบบัญชีที่เกี่ยวข้องได้"),
         ({"license", "distribution"}, f"{B}ตกลงชำระค่าสิทธิ (Royalty) ในอัตราร้อยละ {rng.choice([3, 5, 8, 10])} ของยอดขายสุทธิ"),
+        (ANY, f"ผู้ประสานงานฝ่าย{A}: {_person_name(rng)} โทร. 0{rng.randint(2, 9)}{rng.randint(1000, 9999)}-{rng.randint(1000, 9999)} ต่อ {rng.randint(100, 9999)}"),
+        (ANY, f"ให้จัดงาน ณ ห้อง{rng.choice(['บอลรูม', 'ประชุมใหญ่', 'แกรนด์ฮอลล์'])} โรงแรม{rng.choice(['แกรนด์ ไฮแอท เอราวัณ', 'เซ็นทาราแกรนด์', 'แชงกรี-ลา', 'ดุสิตธานี', 'แมริออท'])} {rng.choice(L.PROVINCES)} ในวันที่ {fmt_thai_date(rng, ctx.start + timedelta(days=rng.randint(30, 200)))}"),
+        (WORK, f"สถานที่ส่งมอบ: {rng.choice(['ศูนย์การค้าเซ็นทรัล', 'นิคมอุตสาหกรรมอมตะซิตี้', 'คลังสินค้าบางนา', 'ศูนย์ราชการฯ แจ้งวัฒนะ', 'ท่าเรือแหลมฉบัง'])} จังหวัด{rng.choice(L.PROVINCES)}"),
+        ({"sale", "distribution", "license"}, f"สินค้าภายใต้ตราสินค้า “{rng.choice(['GreenLife', 'ฉ่ำ', 'Nova X', 'สยามเฟรช', 'ProMax', 'บ้านสวน'])}” รุ่น {rng.choice(['SR', 'TX', 'BM', 'KX'])}-{rng.randint(100, 999)}{rng.choice(['T', 'X', 'S', ''])} จำนวน {rng.randint(1, 500)} ชุด"),
+        ({"sale", "lease", "loan"}, f"ให้ดำเนินการจดทะเบียน ณ สำนักงานที่ดินจังหวัด{rng.choice(L.PROVINCES[1:])} สาขา{rng.choice(L.BANGKOK_DISTRICTS)}"),
+        ({"service", "employment", "construction"}, f"เวลาปฏิบัติงาน วัน{rng.choice(['จันทร์', 'อังคาร'])}ถึงวัน{rng.choice(['ศุกร์', 'เสาร์'])} เวลา {rng.choice(['08.00', '08.30', '09.00'])} – {rng.choice(['17.00', '17.30', '18.00'])} น. พักกลางวัน 1 ชั่วโมง"),
+        (WORK, f"งานตามสัญญานี้เป็นส่วนหนึ่งของโครงการ{rng.choice(['ก่อสร้างประตูระบายน้ำคลองบางไผ่', 'พัฒนาระบบทะเบียนออนไลน์', 'ปรับปรุงภูมิทัศน์ริมธาร', 'บ้านสวนริมธาร', 'ถนนสายบ้านขอนตาล'])} ประจำปีงบประมาณ {_be(ctx.start)}"),
+        (ANY, f"เริ่มงวดแรกในเดือน{rng.choice(L.THAI_MONTHS)} {_be(ctx.start)} และงวดสุดท้ายในเดือน{rng.choice(L.THAI_MONTHS)} {_be(ctx.start) + rng.choice([1, 2])}"),
+        (ANY, f"หนังสือฉบับนี้อ้างถึงหนังสือของ{rng.choice(L.ORG_NAMES)} ที่ {rng.choice(['ศธ', 'กค', 'มท', 'สธ'])} {rng.randint(100, 999)}/{rng.randint(100, 9999)} ลงวันที่ {fmt_thai_date(rng, ctx.agreement - timedelta(days=rng.randint(5, 60)))}"),
     ]
     ok = [t for types, t in pool if types is None or k in types]
     return [(rng.choice(ok), None)]
@@ -749,14 +826,37 @@ def body_mention(ctx: Ctx) -> list[Segment]:
 _NUM_STYLES = ["ข้อ {n}. ", "ข้อ {n} ", "{n}. ", "ข้อที่ {n} ", "{n}) "]
 
 
+_EN_ROLES = {
+    "service": [("Client", "Contractor"), ("Client", "Service Provider"), ("Customer", "Supplier")],
+    "construction": [("Employer", "Contractor"), ("Owner", "Contractor")],
+    "sale": [("Buyer", "Seller"), ("Purchaser", "Vendor")],
+    "lease": [("Lessor", "Lessee"), ("Landlord", "Tenant")],
+    "loan": [("Lender", "Borrower")],
+    "license": [("Licensor", "Licensee"), ("Franchisor", "Franchisee")],
+    "nda": [("Discloser", "Recipient"), ("Disclosing Party", "Receiving Party")],
+    "distribution": [("Principal", "Distributor"), ("Advertiser", "Agency"), ("Manufacturer", "Distributor")],
+    "employment": [("Company", "Employee"), ("Employer", "Employee")],
+}
+_GENERIC_ALIAS = {"company": ["บริษัท", "ผู้ให้บริการ", "ลูกค้า"], "org": ["มหาวิทยาลัย", "กรม", "หน่วยงาน", "โรงพยาบาล", "เทศบาล", "สหกรณ์"],
+                  "person": ["พนักงาน", "ผู้ซื้อ", "ผู้ขาย"]}
+
+
 def _sample_ctx(rng: random.Random) -> Ctx:
     ctype = rng.choice(L.CONTRACT_TYPES)
     title = rng.choice(ctype["titles"])
     ra, rb = rng.choice(ctype["roles"])
+    if rng.random() < 0.10:
+        ra, rb = rng.choice(_EN_ROLES[ctype["key"]])
     ka, kb = _party_kinds(rng, ctype["key"])
     A, B = _make_party(rng, ka, ra), _make_party(rng, kb, rb)
     if A.name == B.name:
         B = _make_party(rng, kb, rb)
+    for p in (A, B):  # sometimes the defined term is a generic noun rather than the role
+        if rng.random() < 0.12:
+            if p.kind == "org":
+                p.role = next((a for a in _GENERIC_ALIAS["org"] if p.name.startswith(a)), "หน่วยงาน")
+            else:
+                p.role = rng.choice(_GENERIC_ALIAS[p.kind])
     agreement, start, end, months = _sample_dates(rng)
     value = _sample_amount(rng, ctype["key"])
     if ctype["key"] == "nda" and rng.random() < 0.7:
@@ -775,9 +875,12 @@ def generate_document(rng: random.Random, doc_id: str) -> Document:
     ctx = _sample_ctx(rng)
     d = _Doc()
     style = rng.random()
-    if style < 0.28:
+    if style < 0.25:
         _excerpt(ctx, d)
         source = "synthetic-excerpt"
+    elif style < 0.35:
+        _summary_sheet(ctx, d)
+        source = "synthetic-summary"
     else:
         _full_contract(ctx, d)
         source = "synthetic-full"
@@ -806,7 +909,6 @@ def _full_contract(ctx: Ctx, d: _Doc) -> None:
             "คู่สัญญาได้ตกลงกันดังมีข้อความต่อไปนี้",
         ]))
     d.add("\n\n")
-    k = ctx.ctype["key"]
     clauses: list = [clause_scope, clause_term]
     if ctx.value is not None:
         clauses.append(clause_value)
@@ -827,7 +929,6 @@ def _full_contract(ctx: Ctx, d: _Doc) -> None:
     if rng.random() < 0.3:
         ordered.append(clause_filler)
     style = rng.choice(_NUM_STYLES)
-    thai_ord = rng.random() < 0.15
     for i, fn in enumerate(ordered, 1):
         num = style.format(n=i)
         d.add(num)
@@ -853,6 +954,61 @@ _HEADINGS = {
 
 def _clause_heading(rng: random.Random, fn) -> str:
     return rng.choice(_HEADINGS.get(fn.__name__, ["ข้อตกลง "]))
+
+
+def _summary_sheet(ctx: Ctx, d: _Doc) -> None:
+    """Key/value metadata sheet as found in contract registers and cover memos."""
+    rng = ctx.rng
+    sep = rng.choice([": ", " : ", ":\t"])
+    d.add(rng.choice(["สรุปสาระสำคัญของสัญญา", "ข้อมูลสัญญา", "ใบสรุปสัญญา", ctx.title]) + "\n")
+    if rng.random() < 0.7:
+        d.add(f"ชื่อสัญญา{sep}{ctx.title}" + (f" ประจำปีงบประมาณ {_be(ctx.start)}" if rng.random() < 0.3 else "") + "\n")
+    if rng.random() < 0.5:
+        d.add(f"เลขที่สัญญา{sep}{rng.randint(1, 400)}/{_be(ctx.agreement)}\n")
+    d.add(f"{rng.choice(['คู่สัญญาฝ่าย' + ctx.A.role, ctx.A.role, 'ฝ่ายที่หนึ่ง'])}{sep}")
+    d.add(ctx.A.name, "PARTY")
+    d.add("\n")
+    d.add(f"{rng.choice(['คู่สัญญาฝ่าย' + ctx.B.role, ctx.B.role, 'ฝ่ายที่สอง'])}{sep}")
+    d.add(ctx.B.name, "PARTY")
+    d.add("\n")
+    d.add(f"{rng.choice(['วันที่ลงนาม', 'วันที่ทำสัญญา', 'ลงวันที่', 'วันที่'])}{sep}")
+    d.add(fmt_thai_date(rng, ctx.agreement), "AGREEMENT_DATE")
+    d.add("\n")
+    d.add(f"{rng.choice(['ระยะเวลาสัญญา', 'ระยะเวลา', 'อายุสัญญา'])}{sep}")
+    d.add(fmt_thai_date(rng, ctx.start), "START_DATE")
+    if ctx.end is not None:
+        d.add(rng.choice([" – ", " ถึง ", " - ", " ถึงวันที่ "]))
+        d.add(fmt_thai_date(rng, ctx.end), "END_DATE")
+        if rng.random() < 0.5:
+            d.add(f" ({_duration_text(rng, ctx.months)})")
+    else:
+        d.add(f" เป็นเวลา {_duration_text(rng, ctx.months)}")
+    d.add("\n")
+    if ctx.value is not None:
+        span, trail = fmt_money(rng, ctx.value, ctx.currency)
+        d.add(f"{rng.choice(['วงเงินตามสัญญา', 'มูลค่าสัญญา', 'วงเงิน', 'ราคา'])}{sep}")
+        d.add(span, "CONTRACT_VALUE")
+        d.add(trail)
+        if rng.random() < 0.3:
+            d.add(f" (เดือนละ {ctx.value // ctx.months:,} บาท)")
+        d.add("\n")
+        pd, _desc = payment_due_phrase(rng, ctx)
+        d.add(f"{rng.choice(['กำหนดจ่ายเงิน', 'การชำระเงิน', 'กำหนดชำระ'])}{sep}" + rng.choice(["", "รายเดือน ", "งวดเดียว "]))
+        d.add(*pd)
+        d.add("\n")
+    if rng.random() < 0.85:
+        pen, _ = penalty_phrase(rng)
+        d.add(f"{rng.choice(['อัตราค่าปรับ', 'ค่าปรับ', 'เบี้ยปรับ'])}{sep}")
+        d.add(*pen)
+        d.add(rng.choice(["", " กรณีส่งมอบล่าช้า", " กรณีผิดนัดชำระ"]) + "\n")
+    if rng.random() < 0.85:
+        d.add(f"{rng.choice(['เขตอำนาจศาล', 'ศาลที่มีเขตอำนาจ', 'การระงับข้อพิพาท'])}{sep}")
+        d.add(rng.choice(L.COURTS + L.ARBITRATION), "JURISDICTION")
+        d.add("\n")
+    if rng.random() < 0.6:
+        d.add(f"ผู้ประสานงาน{sep}{_person_name(rng)} โทร. 0{rng.randint(2, 9)}{rng.randint(1000, 9999)}-{rng.randint(1000, 9999)}\n")
+    if rng.random() < 0.4:
+        d.add(f"ผู้บันทึก{sep}{_person_name(rng)} ({rng.choice(['นิติกร', 'เจ้าหน้าที่พัสดุ', 'ผู้จัดการฝ่ายกฎหมาย'])})\n")
 
 
 def _excerpt(ctx: Ctx, d: _Doc) -> None:

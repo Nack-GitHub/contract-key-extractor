@@ -13,10 +13,11 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from transformers import AutoModelForTokenClassification, AutoTokenizer
+import transformers
+from transformers import AutoModelForTokenClassification
 
 from .schema import ID2LABEL, O_LABEL, Span, bio_to_spans
-from .tokenization import Encoder, EncodedDocument, segment_words
+from .tokenization import EncodedDocument, Encoder, segment_words
 
 
 @dataclass
@@ -44,12 +45,16 @@ class Extractor:
         with open(model_dir / "pipeline_config.json", encoding="utf-8") as f:
             pc = json.load(f)
         self.lang: str = pc["lang"]
-        self.tokenizer = AutoTokenizer.from_pretrained(model_dir)
+        pretokenized = pc.get("pretokenized", False)
+        from .train import load_tokenizer  # local import: keeps torch-free tooling light
+
+        transformers.logging.set_verbosity_error()  # we window long inputs ourselves
+        self.tokenizer = load_tokenizer(str(model_dir), pretokenized)
         self.model = AutoModelForTokenClassification.from_pretrained(model_dir)
         self.device = pick_device(device)
         self.model.to(self.device).eval()
         self.encoder = Encoder(self.tokenizer, max_length=pc["max_length"], stride=pc["stride"],
-                               lowercase=pc["lowercase"])
+                               lowercase=pc["lowercase"], pretokenized=pretokenized)
         self.batch_size = batch_size
         self.id2label = {int(k): v for k, v in self.model.config.id2label.items()} or ID2LABEL
 
@@ -96,11 +101,10 @@ class Extractor:
         tags: list[str] = []
         conf: list[float] = []
         used: set[int] = set()
-        sub_starts = self._subword_starts(enc, text)
-        for w, (ws, we) in enumerate(offsets):
+        for w, (ws, _we) in enumerate(offsets):
             s = enc.word_to_subword[w]
-            if s < 0:
-                s = _covering_subword(sub_starts, ws)
+            if s < 0:  # word swallowed by a neighbour's subword → inherit its prediction
+                s = _covering_subword(enc.subword_offsets, ws)
             if s < 0:
                 tags.append(O_LABEL)
                 conf.append(1.0)
@@ -113,30 +117,25 @@ class Extractor:
             conf.append(float(probs[s, pred_ids[s]]))
         return WordPrediction(offsets, tags, conf)
 
-    def _subword_starts(self, enc: EncodedDocument, text: str) -> list[tuple[int, int]]:
-        # re-derive subword char ranges from the tokenizer (cheap, keeps Encoder lean)
-        model_text = text
-        if self.encoder.lowercase:
-            from .tokenization import lowercase_ascii
-            model_text = lowercase_ascii(text)
-        e = self.tokenizer(model_text, add_special_tokens=False, return_offsets_mapping=True)
-        return e["offset_mapping"]
-
-    def predict(self, text: str) -> list[Span]:
+    def predict_with_confidence(self, text: str) -> list[tuple[Span, float]]:
+        """Entity spans with the mean confidence of their words."""
         wp = self.predict_words(text)
         spans = bio_to_spans(wp.tags, wp.offsets, text)
-        # attach mean word confidence to each span via a parallel list
-        conf_by_start = {}
-        i = 0
+        out: list[tuple[Span, float]] = []
+        wi = 0
         for sp in spans:
-            words = [k for k, (ws, we) in enumerate(wp.offsets) if ws >= sp.start and we <= sp.end]
-            conf_by_start[sp.start] = float(np.mean([wp.confidence[k] for k in words])) if words else 0.0
-        self._last_confidence = conf_by_start
-        return spans
+            while wi < len(wp.offsets) and wp.offsets[wi][1] <= sp.start:
+                wi += 1
+            confs = []
+            j = wi
+            while j < len(wp.offsets) and wp.offsets[j][0] < sp.end:
+                confs.append(wp.confidence[j])
+                j += 1
+            out.append((sp, float(np.mean(confs)) if confs else 0.0))
+        return out
 
-    def predict_with_confidence(self, text: str) -> list[tuple[Span, float]]:
-        spans = self.predict(text)
-        return [(sp, self._last_confidence.get(sp.start, 0.0)) for sp in spans]
+    def predict(self, text: str) -> list[Span]:
+        return [sp for sp, _ in self.predict_with_confidence(text)]
 
 
 def _softmax(x: np.ndarray) -> np.ndarray:

@@ -1,0 +1,19 @@
+MASTER SERVICES AGREEMENT
+
+This Master Services Agreement (the "Agreement") is entered into as of March 15, 2021 (the "Effective Date") by and between Northwind Analytics, Inc., a Delaware corporation with offices at 400 Market Street, San Francisco, CA 94105 ("Northwind"), and Contoso Manufacturing Ltd., a company organized under the laws of England and Wales ("Customer"). Northwind and Customer are each a "Party" and together the "Parties".
+
+1. SERVICES. Northwind shall provide the data analytics services described in each Statement of Work executed under this Agreement.
+
+2. TERM. This Agreement shall commence on the Effective Date and, unless earlier terminated in accordance with Section 9, shall continue in effect until March 14, 2024 (the "Initial Term"). Thereafter the Agreement shall automatically renew for successive one (1) year periods unless either Party gives written notice of non-renewal at least ninety (90) days prior to the end of the then-current term.
+
+3. FEES AND PAYMENT. Customer shall pay Northwind the fees set out in the applicable Statement of Work. All invoices are due and payable within thirty (30) days of the invoice date. Any amount not paid when due shall accrue interest at the rate of 1.5% per month or the maximum rate permitted by law, whichever is less.
+
+4. CONFIDENTIALITY. Each Party shall hold the other Party's Confidential Information in strict confidence for a period of five (5) years following the termination of this Agreement.
+
+5. GOVERNING LAW. This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles. The Parties consent to the exclusive jurisdiction of the state and federal courts located in New York County, New York.
+
+IN WITNESS WHEREOF, the Parties have executed this Agreement as of the Effective Date.
+
+NORTHWIND ANALYTICS, INC.            CONTOSO MANUFACTURING LTD.
+By: /s/ Jane Doe                     By: /s/ John Smith
+Name: Jane Doe, CEO                  Name: John Smith, Managing Director

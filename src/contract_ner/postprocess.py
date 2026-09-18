@@ -87,7 +87,7 @@ def normalize_date(text: str) -> str | None:
     # English free text ("8th day of May 2014", "the 1st of June, 2019")
     if re.search(r"\d{4}", t) and re.search(r"[A-Za-z]{3,}", t) and re.search(r"(?<!\d)\d{1,2}(?!\d)", t):
         try:
-            d = du_parser.parse(re.sub(r"\bday of\b", "", t, flags=re.I), fuzzy=True, default=datetime(1900, 1, 1))
+            d = du_parser.parse(re.sub(r"\bday of\b", "", t, flags=re.IGNORECASE), fuzzy=True, default=datetime(1900, 1, 1))
             if d.year != 1900:
                 return d.date().isoformat()
         except (ValueError, OverflowError):
@@ -275,7 +275,7 @@ _GOV_LAW_RE = re.compile(r"กฎหมาย|laws? of|governed by", re.IGNORECA
 
 def normalize_jurisdiction(text: str) -> dict:
     t = text.strip()
-    kind = "arbitration" if _ARBITRATION_RE.search(t) else "court" if ("ศาล" in t or re.search(r"court", t, re.I)) \
+    kind = "arbitration" if _ARBITRATION_RE.search(t) else "court" if ("ศาล" in t or re.search(r"court", t, re.IGNORECASE)) \
         else "governing_law" if _GOV_LAW_RE.search(t) else "other"
     english = _COURT_EN.get(t)
     if not english:
@@ -306,7 +306,7 @@ def validate_span(span: Span) -> bool:
     if span.label == "PAYMENT_DUE":
         return bool(_DIGIT_RE.search(t)) or bool(re.search(r"สิ้นเดือน|ต้นเดือน|ราย|ทุก|month|quarter|annual|invoice", t))
     if span.label == "JURISDICTION":
-        return bool(re.search(r"ศาล|กฎหมาย|อนุญาโตตุลาการ|court|law|arbitra|tribunal|jurisdiction", t, re.I))
+        return bool(re.search(r"ศาล|กฎหมาย|อนุญาโตตุลาการ|court|law|arbitra|tribunal|jurisdiction", t, re.IGNORECASE))
     if span.label == "PARTY":
         return len(t) >= 2 and not t.replace(",", "").replace(".", "").isdigit()
     return True
@@ -324,6 +324,10 @@ def _party_key(text: str) -> str:
     return re.sub(r"\s+", " ", _QUOTE_STRIP_RE.sub("", text)).strip().casefold()
 
 
+_QUOTED_RE = re.compile(r"^\s*[\"'“”‘’(\[]")
+_LATIN_RE = re.compile(r"^[A-Za-z0-9 .,&'\-]+$")
+
+
 @dataclass
 class PartyGroup:
     key: str
@@ -331,11 +335,20 @@ class PartyGroup:
     first: int
     mentions: list[Span] = field(default_factory=list)
     confidence: float = 0.0
+    quoted: bool = False  # first mention was a quoted defined term such as ("Company")
 
     @property
     def looks_like_alias(self) -> bool:
+        """A defined-term alias (``"Company"``, ``MA``) rather than a legal name.
+
+        Only quoted spans or short Latin tokens without a legal suffix qualify;
+        Thai person names (``นายสมชาย ใจดี``) are never treated as aliases.
+        """
+        if self.quoted:
+            return True
         words = self.surface.split()
-        return len(words) <= 2 and not _LEGAL_SUFFIX_RE.search(self.surface)
+        return (len(words) <= 2 and _LATIN_RE.match(self.surface) is not None
+                and not _LEGAL_SUFFIX_RE.search(self.surface))
 
 
 def group_parties(spans: list[tuple[Span, float]]) -> list[PartyGroup]:
@@ -346,7 +359,8 @@ def group_parties(spans: list[tuple[Span, float]]) -> list[PartyGroup]:
             continue
         g = groups.get(k)
         if g is None:
-            g = groups[k] = PartyGroup(k, _QUOTE_STRIP_RE.sub("", sp.text).strip(), sp.start)
+            g = groups[k] = PartyGroup(k, _QUOTE_STRIP_RE.sub("", sp.text).strip(), sp.start,
+                                       quoted=_QUOTED_RE.match(sp.text) is not None)
         g.mentions.append(sp)
         g.confidence = max(g.confidence, conf)
     return sorted(groups.values(), key=lambda g: g.first)
@@ -377,7 +391,7 @@ def _pick_primary(cands: list[tuple[Span, float]], prefer=None) -> tuple[Span, f
         if preferred:
             cands = preferred
     # a clearly more confident span wins, otherwise the first mention
-    return sorted(cands, key=lambda c: (-round(c[1], 1), c[0].start))[0]
+    return min(cands, key=lambda c: (-round(c[1], 1), c[0].start))
 
 
 def assemble(text: str, spans: list[tuple[Span, float]], lang: str = "th") -> dict:

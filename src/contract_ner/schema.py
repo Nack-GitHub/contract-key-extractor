@@ -7,8 +7,8 @@ and which the model must learn to tell apart from START_DATE.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
-from typing import Iterable, Iterator
+from collections.abc import Iterable, Iterator
+from dataclasses import asdict, dataclass, field
 
 ENTITY_TYPES: tuple[str, ...] = (
     "PARTY",
@@ -66,7 +66,7 @@ class Span:
         if self.label not in ENTITY_TYPES:
             raise ValueError(f"unknown entity type {self.label!r}")
 
-    def overlaps(self, other: "Span") -> bool:
+    def overlaps(self, other: Span) -> bool:
         return self.start < other.end and other.start < self.end
 
     def to_dict(self) -> dict:
@@ -111,7 +111,7 @@ class Document:
         }
 
     @classmethod
-    def from_dict(cls, d: dict) -> "Document":
+    def from_dict(cls, d: dict) -> Document:
         return cls(
             id=d["id"],
             text=d["text"],
@@ -138,8 +138,7 @@ def spans_to_bio(word_offsets: list[tuple[int, int]], spans: list[Span]) -> list
             wi += 1
         j = wi
         while j < len(word_offsets) and word_offsets[j][0] < sp.end:
-            ws, we = word_offsets[j]
-            if we > sp.start:  # overlap
+            if word_offsets[j][1] > sp.start:  # overlap
                 tags[j] = f"{'B' if first else 'I'}-{sp.label}"
                 first = False
             j += 1

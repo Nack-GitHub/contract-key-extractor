@@ -6,12 +6,17 @@ Two layers of tokenisation are involved:
    Thai has no spaces, so words come from PyThaiNLP's ``newmm`` dictionary
    segmenter (the approach described in the project deck). English words come
    from a small regex.
-2. **Subwords** – what the transformer consumes. We feed the *raw text* to the
-   HF tokenizer and align subwords back to words through character offsets.
-   Feeding the pre-segmented Thai words with ``is_split_into_words=True`` would
-   insert an artificial ``▁`` marker in front of every Thai word (≈1.6× longer
-   sequences that look nothing like the pre-training data), so offsets are the
-   better bridge.
+2. **Subwords** – what the transformer consumes, aligned back to words through
+   character offsets. Two encodings are supported:
+
+   * *raw text* (Thai / WangchanBERTa): the whole text goes through the
+     tokenizer. Feeding pre-segmented Thai words with ``is_split_into_words``
+     would insert an artificial ``▁`` marker in front of every Thai word (≈1.6×
+     longer sequences that look nothing like the pre-training data).
+   * *pretokenized* (English / RoBERTa): the word list goes through the
+     tokenizer so that a BPE merge such as ``"),`` can never straddle a word
+     boundary — otherwise a punctuation word next to an entity has no subword
+     of its own and inherits the entity label.
 
 Every subword is mapped to the word containing its first character; the first
 "real" subword of a word is the word's representative (it carries the label
@@ -21,12 +26,37 @@ overlapping windows of subwords so that nothing is truncated.
 from __future__ import annotations
 
 import bisect
+import functools
 import re
 from dataclasses import dataclass, field
 
-from pythainlp.tokenize import word_tokenize
+from pythainlp.corpus.common import thai_words
+from pythainlp.tokenize import Tokenizer
+from pythainlp.util import Trie
 
 from .schema import LABEL2ID, O_LABEL
+
+# Domain adaptation of the newmm dictionary. Entity boundaries can only fall on
+# word boundaries, so compounds that glue a non-entity word to an entity word
+# (``เขตอำนาจศาล`` → jurisdiction + court) are split, and contract vocabulary
+# that newmm otherwise breaks into unhelpful pieces (``เที่ยว|ละ``) is added.
+_DOMAIN_REMOVE = {"เขตอำนาจศาล"}
+_DOMAIN_ADD = {
+    "เขตอำนาจ", "เดือนละ", "วันละ", "ปีละ", "เที่ยวละ", "ครั้งละ", "คนละ", "ชั่วโมงละ", "งวดละ", "เล่มละ",
+    "เครื่องละ", "ต่อเดือน", "ต่อวัน", "ต่อปี", "ต่อครั้ง", "ต่อเที่ยว", "บาทถ้วน", "นับถัดจาก", "นับแต่",
+    "ผู้ให้เช่า", "ผู้เช่า", "ผู้กู้", "ผู้ให้กู้", "ผู้อนุญาต", "ผู้รับอนุญาต", "ผู้รับเหมา", "ผู้จัดจำหน่าย",
+    "ตัวแทนจำหน่าย", "ผู้ให้สิทธิ", "ผู้รับสิทธิ", "ผู้เปิดเผยข้อมูล", "ผู้รับข้อมูล", "คู่สัญญา", "เบี้ยปรับ",
+    "ดอกเบี้ยผิดนัด", "หนังสือค้ำประกัน", "ภาษีมูลค่าเพิ่ม", "ใบกำกับภาษี", "ใบวางบิล", "ใบสั่งซื้อ",
+    "อนุญาโตตุลาการ", "สถาบันอนุญาโตตุลาการ", "ศาลแพ่งกรุงเทพใต้", "ศาลทรัพย์สินทางปัญญาและการค้าระหว่างประเทศกลาง",
+    "ศาลแรงงานกลาง", "ศาลปกครองกลาง", "ศาลล้มละลายกลาง", "ศาลภาษีอากรกลาง", "ลงวันที่", "ลงนาม",
+}
+
+
+@functools.lru_cache(maxsize=1)
+def thai_tokenizer() -> Tokenizer:
+    """newmm tokenizer with the contract-domain dictionary (built once)."""
+    words = (set(thai_words()) - _DOMAIN_REMOVE) | _DOMAIN_ADD
+    return Tokenizer(custom_dict=Trie(words), engine="newmm", keep_whitespace=True)
 
 _EN_WORD_RE = re.compile(r"\w+(?:[-'’.]\w+)*|[^\w\s]", re.UNICODE)
 _ASCII_UPPER_RE = re.compile(r"[A-Z]+")
@@ -56,7 +86,7 @@ def segment_words(text: str, lang: str = "th") -> list[tuple[int, int]]:
 
 
 def _segment_thai(text: str) -> list[tuple[int, int]]:
-    toks = word_tokenize(text, engine="newmm", keep_whitespace=True)
+    toks = thai_tokenizer().word_tokenize(text)
     offsets: list[tuple[int, int]] = []
     pos = 0
     for tok in toks:
@@ -91,6 +121,8 @@ class EncodedDocument:
 
     word_offsets: list[tuple[int, int]]
     word_tags: list[str]
+    # per subword: character range in the original text
+    subword_offsets: list[tuple[int, int]]
     # per subword: index of the word it belongs to (-1 = none / whitespace)
     subword_to_word: list[int]
     # per word: index of its representative subword (-1 if none)
@@ -101,13 +133,15 @@ class EncodedDocument:
 class Encoder:
     """Turns (text, word offsets, word tags) into training/inference windows."""
 
-    def __init__(self, tokenizer, max_length: int = 256, stride: int = 64, lowercase: bool = False):
+    def __init__(self, tokenizer, max_length: int = 256, stride: int = 64, lowercase: bool = False,
+                 pretokenized: bool = False):
         if not tokenizer.is_fast:
             raise ValueError("a fast tokenizer (offset mapping support) is required")
         self.tok = tokenizer
         self.max_length = max_length
         self.stride = stride
         self.lowercase = lowercase
+        self.pretokenized = pretokenized
         self.prefix_ids, self.suffix_ids = _special_wrapper(tokenizer)
         self.n_special = len(self.prefix_ids) + len(self.suffix_ids)
         self.body_len = max_length - self.n_special
@@ -126,9 +160,18 @@ class Encoder:
         assert len(word_tags) == len(word_offsets)
 
         model_text = lowercase_ascii(text) if self.lowercase else text
-        enc = self.tok(model_text, add_special_tokens=False, return_offsets_mapping=True)
+        if self.pretokenized and word_offsets:
+            words = [model_text[s:e] for s, e in word_offsets]
+            enc = self.tok(words, is_split_into_words=True, add_special_tokens=False, return_offsets_mapping=True)
+            # offsets are relative to each word; lift them to text coordinates
+            offs = [
+                (word_offsets[w][0] + s, word_offsets[w][0] + e) if w is not None else (0, 0)
+                for (s, e), w in zip(enc["offset_mapping"], enc.word_ids())
+            ]
+        else:
+            enc = self.tok(model_text, add_special_tokens=False, return_offsets_mapping=True)
+            offs = enc["offset_mapping"]
         ids: list[int] = enc["input_ids"]
-        offs: list[tuple[int, int]] = enc["offset_mapping"]
 
         sub2word, word2sub = _align(offs, word_offsets)
         labels = [-100] * len(ids)
@@ -139,6 +182,7 @@ class Encoder:
         doc = EncodedDocument(
             word_offsets=word_offsets,
             word_tags=word_tags,
+            subword_offsets=offs,
             subword_to_word=sub2word,
             word_to_subword=word2sub,
         )

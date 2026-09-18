@@ -72,3 +72,30 @@ def test_encoder_alignment_and_windows(wangchan_tok):
     ids = [i for w in doc.windows for i in w.input_ids]
     toks = wangchan_tok.convert_ids_to_tokens(ids)
     assert "▁บริษัท" in toks
+
+
+@pytest.fixture(scope="module")
+def roberta_tok():
+    from transformers import AutoTokenizer
+    try:
+        return AutoTokenizer.from_pretrained("roberta-base", add_prefix_space=True)
+    except Exception as e:  # pragma: no cover - offline CI
+        pytest.skip(f"tokenizer unavailable: {e}")
+
+
+def test_pretokenized_encoder_gives_every_word_its_own_subword(roberta_tok):
+    text = 'between Aduro Biotech, Inc. ("Aduro") and IREYA B.V ("Consultant").'
+    offsets = segment_words(text, "en")
+    spans = [Span(text.index("Aduro Biotech"), text.index("Inc.") + 4, "PARTY"),
+             Span(text.index('"Aduro"'), text.index('"Aduro"') + 7, "PARTY")]
+    tags = spans_to_bio(offsets, spans)
+    enc = Encoder(roberta_tok, max_length=64, stride=8, pretokenized=True)
+    doc = enc.encode(text, offsets, tags)
+    assert all(s >= 0 for s in doc.word_to_subword), "every English word must have a representative subword"
+    # subword offsets never cross word boundaries
+    for (ss, se), w in zip(doc.subword_offsets, doc.subword_to_word):
+        if w >= 0:
+            assert offsets[w][0] <= ss < se <= offsets[w][1]
+    labelled = [l for w in doc.windows for l in w.labels if l != -100]
+    assert len(labelled) == len(offsets)
+    assert labelled.count(LABEL2ID["B-PARTY"]) == 2

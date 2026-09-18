@@ -15,8 +15,9 @@ from pathlib import Path
 
 from seqeval.metrics import classification_report, f1_score, precision_score, recall_score
 
+from .postprocess import _party_key
 from .predict import Extractor
-from .schema import ENTITY_TYPES, Document, Span, spans_to_bio
+from .schema import ENTITY_TYPES, Document, spans_to_bio
 from .tokenization import segment_words
 
 
@@ -25,12 +26,24 @@ class EvalResult:
     n_docs: int
     strict: dict  # seqeval exact-match
     relaxed: dict  # overlap-based per type
+    fields: dict  # set-of-values per document and type
     report: str
     errors: list[dict] = field(default_factory=list)
 
     def to_dict(self) -> dict:
-        return {"n_docs": self.n_docs, "strict": self.strict, "relaxed": self.relaxed, "report": self.report,
-                "errors": self.errors}
+        return {"n_docs": self.n_docs, "strict": self.strict, "relaxed": self.relaxed, "fields": self.fields,
+                "report": self.report, "errors": self.errors}
+
+
+def _value_key(text: str) -> str:
+    """Normalise a surface string so repeated mentions collapse to one value."""
+    return _party_key(text)
+
+
+def _prf(tp: int, fp: int, fn: int) -> dict:
+    p = tp / (tp + fp) if tp + fp else 0.0
+    r = tp / (tp + fn) if tp + fn else 0.0
+    return {"precision": p, "recall": r, "f1": 2 * p * r / (p + r) if p + r else 0.0, "support": tp + fn}
 
 
 def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: int = 200) -> EvalResult:
@@ -39,6 +52,9 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
     tp = {t: 0 for t in ENTITY_TYPES}
     fp = {t: 0 for t in ENTITY_TYPES}
     fn = {t: 0 for t in ENTITY_TYPES}
+    ftp = {t: 0 for t in ENTITY_TYPES}
+    ffp = {t: 0 for t in ENTITY_TYPES}
+    ffn = {t: 0 for t in ENTITY_TYPES}
     errors: list[dict] = []
 
     for d in docs:
@@ -71,6 +87,13 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
                 fn[gs.label] += 1
                 if len(errors) < max_errors:
                     errors.append({"doc": d.id, "kind": "FN", "label": gs.label, "text": gs.text[:120]})
+        # field level: the set of distinct values per type (what ends up in the metadata table)
+        for t in ENTITY_TYPES:
+            gold_vals = {_value_key(e.text) for e in d.entities if e.label == t}
+            pred_vals = {_value_key(p.text) for p in pred_spans if p.label == t}
+            ftp[t] += len(gold_vals & pred_vals)
+            ffp[t] += len(pred_vals - gold_vals)
+            ffn[t] += len(gold_vals - pred_vals)
 
     strict = {
         "precision": precision_score(y_true, y_pred),
@@ -87,9 +110,11 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
     p = TP / (TP + FP) if TP + FP else 0.0
     r = TP / (TP + FN) if TP + FN else 0.0
     relaxed["micro"] = {"precision": p, "recall": r, "f1": 2 * p * r / (p + r) if p + r else 0.0, "support": TP + FN}
+    fields = {t: _prf(ftp[t], ffp[t], ffn[t]) for t in ENTITY_TYPES}
+    fields["micro"] = _prf(sum(ftp.values()), sum(ffp.values()), sum(ffn.values()))
 
     report = classification_report(y_true, y_pred, digits=3, zero_division=0)
-    return EvalResult(len(docs), strict, relaxed, report, errors)
+    return EvalResult(len(docs), strict, relaxed, fields, report, errors)
 
 
 def save_result(res: EvalResult, path: str | Path) -> None:
@@ -107,6 +132,12 @@ def format_result(res: EvalResult, title: str = "") -> str:
     lines.append(f"strict  (exact span, seqeval)  P={s['precision']:.3f} R={s['recall']:.3f} F1={s['f1']:.3f}")
     m = res.relaxed["micro"]
     lines.append(f"relaxed (overlap, per type)    P={m['precision']:.3f} R={m['recall']:.3f} F1={m['f1']:.3f}")
+    f = res.fields["micro"]
+    lines.append(f"field   (distinct values/doc)  P={f['precision']:.3f} R={f['recall']:.3f} F1={f['f1']:.3f}")
     lines.append("")
     lines.append(res.report)
+    lines.append("field-level per type:")
+    for t in ENTITY_TYPES:
+        v = res.fields[t]
+        lines.append(f"  {t:15s} P={v['precision']:.3f} R={v['recall']:.3f} F1={v['f1']:.3f} (n={v['support']})")
     return "\n".join(lines)

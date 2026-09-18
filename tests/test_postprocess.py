@@ -86,8 +86,11 @@ def test_normalize_jurisdiction():
     assert normalize_jurisdiction("ศาลจังหวัดเชียงใหม่")["english"] == "Chiang Mai Provincial Court"
     assert normalize_jurisdiction("สถาบันอนุญาโตตุลาการ (THAC)")["kind"] == "arbitration"
     assert normalize_jurisdiction("กฎหมายไทย") == {"kind": "governing_law", "english": "Thai law"}
-    j = normalize_jurisdiction("This Agreement shall be governed by the laws of the State of New York")
-    assert j["kind"] == "governing_law"
+    j = normalize_jurisdiction("This Agreement shall be governed by the laws of the State of New York, without regard to")
+    assert j == {"kind": "governing_law", "english": "State of New York"}
+    assert normalize_jurisdiction("governed by the laws of England and Wales.")["english"] == "England and Wales"
+    assert normalize_jurisdiction("the laws of the Province of Ontario and the federal laws of Canada")["english"] == "Province of Ontario"
+    assert normalize_jurisdiction("exclusive jurisdiction of the courts located in New York County, New York")["english"] == "courts of New York County, New York"
 
 
 def test_validate_span_rejects_impossible_surface_forms():
@@ -97,6 +100,13 @@ def test_validate_span_rejects_impossible_surface_forms():
     assert validate_span(Span(0, 5, "JURISDICTION", "ศาลแพ่ง"))
     assert not validate_span(Span(0, 5, "JURISDICTION", "กรุงเทพมหานคร"))
     assert not validate_span(Span(0, 5, "PARTY", "1"))
+    for frag in ("*", ",", "and", "THE", ".", "<"):
+        assert not validate_span(Span(0, 5, "PARTY", frag)), frag
+    assert not validate_span(Span(0, 5, "AGREEMENT_DATE", "18/18"))
+    assert not validate_span(Span(0, 5, "END_DATE", "December"))
+    assert validate_span(Span(0, 5, "END_DATE", "This Agreement shall continue in force for a period of twenty (20) years"))
+    assert validate_span(Span(0, 5, "END_DATE", "The term shall commence on the Effective Date and continue until terminated"))
+    assert validate_span(Span(0, 5, "PARTY", "GA"))  # short but a real name is possible
 
 
 def _sp(text, start, label, conf=0.9):

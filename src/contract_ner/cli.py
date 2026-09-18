@@ -78,8 +78,8 @@ def _cmd_evaluate(args: argparse.Namespace) -> None:
         docs = read_jsonl(path)
         if args.limit:
             docs = docs[: args.limit]
-        res = evaluate_documents(ex, docs)
-        print(format_result(res, title=str(path)))
+        res = evaluate_documents(ex, docs, validate=not args.no_validate)
+        print(format_result(res, title=str(path) + ("" if not args.no_validate else " [raw tagger, no validation]")))
         if args.out:
             name = Path(path).stem
             save_result(res, Path(args.out) / f"{Path(args.model).name}__{name}.json")
@@ -162,6 +162,7 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--data", nargs="+", required=True)
     s.add_argument("--out", default="reports")
     s.add_argument("--limit", type=int, default=None)
+    s.add_argument("--no-validate", action="store_true", help="score raw tagger output without span validation")
     s.set_defaults(fn=_cmd_evaluate)
 
     s = sub.add_parser("extract", help="extract structured metadata from a contract text file")

@@ -1,15 +1,15 @@
 {
   "n_docs": 8,
   "strict": {
-    "precision": 0.7126436781609196,
-    "recall": 0.8493150684931506,
-    "f1": 0.7749999999999999
+    "precision": 0.7325581395348837,
+    "recall": 0.863013698630137,
+    "f1": 0.7924528301886793
   },
   "relaxed": {
     "PARTY": {
-      "precision": 0.8095238095238095,
-      "recall": 0.8947368421052632,
-      "f1": 0.8500000000000001,
+      "precision": 0.782608695652174,
+      "recall": 0.9473684210526315,
+      "f1": 0.8571428571428571,
       "support": 19
     },
     "AGREEMENT_DATE": {
@@ -25,9 +25,9 @@
       "support": 7
     },
     "END_DATE": {
-      "precision": 0.7,
+      "precision": 0.7777777777777778,
       "recall": 1.0,
-      "f1": 0.8235294117647058,
+      "f1": 0.8750000000000001,
       "support": 7
     },
     "CONTRACT_VALUE": {
@@ -37,9 +37,9 @@
       "support": 8
     },
     "PAYMENT_DUE": {
-      "precision": 0.46153846153846156,
+      "precision": 0.5454545454545454,
       "recall": 0.75,
-      "f1": 0.5714285714285714,
+      "f1": 0.631578947368421,
       "support": 8
     },
     "PENALTY_RATE": {
@@ -55,9 +55,9 @@
       "support": 8
     },
     "micro": {
-      "precision": 0.7931034482758621,
-      "recall": 0.9452054794520548,
-      "f1": 0.8624999999999999,
+      "precision": 0.813953488372093,
+      "recall": 0.958904109589041,
+      "f1": 0.880503144654088,
       "support": 73
     }
   },
@@ -81,9 +81,9 @@
       "support": 7
     },
     "END_DATE": {
-      "precision": 0.7,
+      "precision": 0.7777777777777778,
       "recall": 1.0,
-      "f1": 0.8235294117647058,
+      "f1": 0.8750000000000001,
       "support": 7
     },
     "CONTRACT_VALUE": {
@@ -93,15 +93,15 @@
       "support": 8
     },
     "PAYMENT_DUE": {
-      "precision": 0.3076923076923077,
+      "precision": 0.36363636363636365,
       "recall": 0.5,
-      "f1": 0.380952380952381,
+      "f1": 0.4210526315789474,
       "support": 8
     },
     "PENALTY_RATE": {
-      "precision": 0.4,
-      "recall": 0.5,
-      "f1": 0.4444444444444445,
+      "precision": 0.6,
+      "recall": 0.75,
+      "f1": 0.6666666666666665,
       "support": 8
     },
     "JURISDICTION": {
@@ -111,13 +111,13 @@
       "support": 8
     },
     "micro": {
-      "precision": 0.6941176470588235,
-      "recall": 0.8428571428571429,
-      "f1": 0.7612903225806451,
+      "precision": 0.7439024390243902,
+      "recall": 0.8714285714285714,
+      "f1": 0.8026315789473685,
       "support": 70
     }
   },
-  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.778     0.875     0.824         8\nCONTRACT_VALUE      0.889     1.000     0.941         8\n      END_DATE      0.700     1.000     0.824         7\n  JURISDICTION      0.875     0.875     0.875         8\n         PARTY      0.810     0.895     0.850        19\n   PAYMENT_DUE      0.308     0.500     0.381         8\n  PENALTY_RATE      0.500     0.625     0.556         8\n    START_DATE      1.000     1.000     1.000         7\n\n     micro avg      0.713     0.849     0.775        73\n     macro avg      0.732     0.846     0.781        73\n  weighted avg      0.741     0.849     0.788        73\n",
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.778     0.875     0.824         8\nCONTRACT_VALUE      0.889     1.000     0.941         8\n      END_DATE      0.778     1.000     0.875         7\n  JURISDICTION      0.875     0.875     0.875         8\n         PARTY      0.739     0.895     0.810        19\n   PAYMENT_DUE      0.364     0.500     0.421         8\n  PENALTY_RATE      0.600     0.750     0.667         8\n    START_DATE      1.000     1.000     1.000         7\n\n     micro avg      0.733     0.863     0.792        73\n     macro avg      0.753     0.862     0.801        73\n  weighted avg      0.747     0.863     0.799        73\n",
   "errors": [
     {
       "doc": "th-blind-001",
@@ -147,12 +147,6 @@
       "doc": "th-blind-002",
       "kind": "FP",
       "label": "PAYMENT_DUE",
-      "text": "๒"
-    },
-    {
-      "doc": "th-blind-002",
-      "kind": "FP",
-      "label": "PAYMENT_DUE",
       "text": "เป็นรายเดือน"
     },
     {
@@ -162,16 +156,22 @@
       "text": "30 มิถุนายน 2569"
     },
     {
+      "doc": "th-blind-003",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "สถาบันการเงิน"
+    },
+    {
+      "doc": "th-blind-003",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันที่ 30 มิถุนายน 2569"
+    },
+    {
       "doc": "th-blind-004",
       "kind": "FP",
       "label": "PENALTY_RATE",
       "text": "99.9"
-    },
-    {
-      "doc": "th-blind-005",
-      "kind": "FP",
-      "label": "END_DATE",
-      "text": "2025"
     },
     {
       "doc": "th-blind-005",
@@ -195,19 +195,25 @@
       "doc": "th-blind-006",
       "kind": "FP",
       "label": "PARTY",
-      "text": "วงศ์สวัสดิ์"
+      "text": "เดอะ ริเวอร์ไซด์"
+    },
+    {
+      "doc": "th-blind-006",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "นางปราณี วงศ์สวัสดิ์"
     },
     {
       "doc": "th-blind-006",
       "kind": "FP",
       "label": "CONTRACT_VALUE",
-      "text": "บาท"
+      "text": "70,000 บาท"
     },
     {
       "doc": "th-blind-006",
       "kind": "FP",
       "label": "PAYMENT_DUE",
-      "text": "30 วันหลังสิ้นสุด"
+      "text": "30"
     },
     {
       "doc": "th-blind-006",
@@ -216,40 +222,16 @@
       "text": "2,500 บาท"
     },
     {
-      "doc": "th-blind-006",
-      "kind": "FP",
-      "label": "PAYMENT_DUE",
-      "text": "ของเดือนถัดไป"
-    },
-    {
       "doc": "th-blind-007",
       "kind": "FP",
       "label": "PARTY",
-      "text": "2569"
-    },
-    {
-      "doc": "th-blind-007",
-      "kind": "FP",
-      "label": "PARTY",
-      "text": "ไทย"
+      "text": "พลังไทย"
     },
     {
       "doc": "th-blind-007",
       "kind": "FN",
       "label": "PAYMENT_DUE",
       "text": "ภายใน 15 วันนับจากวันลงนาม"
-    },
-    {
-      "doc": "th-blind-008",
-      "kind": "FN",
-      "label": "PARTY",
-      "text": "สำนักงานส่งเสริมการศึกษานอกระบบและการศึกษาตามอัธยาศัยจังหวัดลำปาง"
-    },
-    {
-      "doc": "th-blind-008",
-      "kind": "FN",
-      "label": "PAYMENT_DUE",
-      "text": "ภายใน ๑๕ วันทำการนับถัดจากวันตรวจรับ"
     }
   ]
 }

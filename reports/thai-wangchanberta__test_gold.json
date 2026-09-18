@@ -1,15 +1,15 @@
 {
   "n_docs": 24,
   "strict": {
-    "precision": 0.8771929824561403,
+    "precision": 0.8733624454148472,
     "recall": 0.9216589861751152,
-    "f1": 0.8988764044943819
+    "f1": 0.8968609865470852
   },
   "relaxed": {
     "PARTY": {
-      "precision": 0.9649122807017544,
+      "precision": 0.8870967741935484,
       "recall": 0.9649122807017544,
-      "f1": 0.9649122807017544,
+      "f1": 0.9243697478991597,
       "support": 57
     },
     "AGREEMENT_DATE": {
@@ -25,105 +25,111 @@
       "support": 19
     },
     "END_DATE": {
-      "precision": 0.9130434782608695,
+      "precision": 1.0,
       "recall": 0.9545454545454546,
-      "f1": 0.9333333333333332,
+      "f1": 0.9767441860465117,
       "support": 22
     },
     "CONTRACT_VALUE": {
-      "precision": 0.9130434782608695,
-      "recall": 0.9130434782608695,
-      "f1": 0.9130434782608695,
-      "support": 23
-    },
-    "PAYMENT_DUE": {
-      "precision": 0.8,
-      "recall": 1.0,
-      "f1": 0.888888888888889,
-      "support": 24
-    },
-    "PENALTY_RATE": {
-      "precision": 0.8888888888888888,
-      "recall": 1.0,
-      "f1": 0.9411764705882353,
-      "support": 24
-    },
-    "JURISDICTION": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 25
-    },
-    "micro": {
-      "precision": 0.9298245614035088,
-      "recall": 0.9769585253456221,
-      "f1": 0.9528089887640449,
-      "support": 217
-    }
-  },
-  "fields": {
-    "PARTY": {
-      "precision": 0.92,
-      "recall": 0.9387755102040817,
-      "f1": 0.9292929292929293,
-      "support": 49
-    },
-    "AGREEMENT_DATE": {
       "precision": 0.875,
       "recall": 0.9130434782608695,
       "f1": 0.8936170212765957,
       "support": 23
     },
-    "START_DATE": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 19
-    },
-    "END_DATE": {
-      "precision": 0.9130434782608695,
-      "recall": 0.9545454545454546,
-      "f1": 0.9333333333333332,
-      "support": 22
-    },
-    "CONTRACT_VALUE": {
-      "precision": 0.8695652173913043,
-      "recall": 0.8695652173913043,
-      "f1": 0.8695652173913043,
-      "support": 23
-    },
     "PAYMENT_DUE": {
-      "precision": 0.7,
-      "recall": 0.875,
-      "f1": 0.7777777777777777,
+      "precision": 0.8214285714285714,
+      "recall": 0.9583333333333334,
+      "f1": 0.8846153846153847,
       "support": 24
     },
     "PENALTY_RATE": {
-      "precision": 0.5925925925925926,
-      "recall": 0.6666666666666666,
-      "f1": 0.627450980392157,
+      "precision": 0.9230769230769231,
+      "recall": 1.0,
+      "f1": 0.9600000000000001,
       "support": 24
     },
     "JURISDICTION": {
-      "precision": 0.88,
-      "recall": 0.88,
-      "f1": 0.88,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
       "support": 25
     },
     "micro": {
-      "precision": 0.8416289592760181,
-      "recall": 0.8899521531100478,
-      "f1": 0.8651162790697674,
+      "precision": 0.9213973799126638,
+      "recall": 0.9723502304147466,
+      "f1": 0.946188340807175,
+      "support": 217
+    }
+  },
+  "fields": {
+    "PARTY": {
+      "precision": 0.8363636363636363,
+      "recall": 0.9387755102040817,
+      "f1": 0.8846153846153846,
+      "support": 49
+    },
+    "AGREEMENT_DATE": {
+      "precision": 0.9166666666666666,
+      "recall": 0.9565217391304348,
+      "f1": 0.9361702127659574,
+      "support": 23
+    },
+    "START_DATE": {
+      "precision": 0.9473684210526315,
+      "recall": 0.9473684210526315,
+      "f1": 0.9473684210526315,
+      "support": 19
+    },
+    "END_DATE": {
+      "precision": 1.0,
+      "recall": 0.9545454545454546,
+      "f1": 0.9767441860465117,
+      "support": 22
+    },
+    "CONTRACT_VALUE": {
+      "precision": 0.8333333333333334,
+      "recall": 0.8695652173913043,
+      "f1": 0.851063829787234,
+      "support": 23
+    },
+    "PAYMENT_DUE": {
+      "precision": 0.7142857142857143,
+      "recall": 0.8333333333333334,
+      "f1": 0.7692307692307692,
+      "support": 24
+    },
+    "PENALTY_RATE": {
+      "precision": 0.8461538461538461,
+      "recall": 0.9166666666666666,
+      "f1": 0.8799999999999999,
+      "support": 24
+    },
+    "JURISDICTION": {
+      "precision": 0.96,
+      "recall": 0.96,
+      "f1": 0.96,
+      "support": 25
+    },
+    "micro": {
+      "precision": 0.8693693693693694,
+      "recall": 0.9234449760765551,
+      "f1": 0.8955916473317865,
       "support": 209
     }
   },
-  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.875     0.913     0.894        23\nCONTRACT_VALUE      0.870     0.870     0.870        23\n      END_DATE      0.913     0.955     0.933        22\n  JURISDICTION      0.960     0.960     0.960        25\n         PARTY      0.930     0.930     0.930        57\n   PAYMENT_DUE      0.700     0.875     0.778        24\n  PENALTY_RATE      0.778     0.875     0.824        24\n    START_DATE      1.000     1.000     1.000        19\n\n     micro avg      0.877     0.922     0.899       217\n     macro avg      0.878     0.922     0.898       217\n  weighted avg      0.883     0.922     0.901       217\n",
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.917     0.957     0.936        23\nCONTRACT_VALUE      0.833     0.870     0.851        23\n      END_DATE      1.000     0.955     0.977        22\n  JURISDICTION      0.960     0.960     0.960        25\n         PARTY      0.855     0.930     0.891        57\n   PAYMENT_DUE      0.714     0.833     0.769        24\n  PENALTY_RATE      0.846     0.917     0.880        24\n    START_DATE      0.947     0.947     0.947        19\n\n     micro avg      0.873     0.922     0.897       217\n     macro avg      0.884     0.921     0.901       217\n  weighted avg      0.878     0.922     0.898       217\n",
   "errors": [
     {
       "doc": "th-gold-002",
       "kind": "FP",
       "label": "PARTY",
       "text": "แม่ริม"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "๙๔,๕๐๐"
     },
     {
       "doc": "th-gold-002",
@@ -141,7 +147,7 @@
       "doc": "th-gold-004",
       "kind": "FP",
       "label": "PENALTY_RATE",
-      "text": "อัตราร้อยละ 15 ต่อปี"
+      "text": "ร้อยละ 15 ต่อปี"
     },
     {
       "doc": "th-gold-004",
@@ -156,6 +162,12 @@
       "text": "9 สิงหาคม 2569"
     },
     {
+      "doc": "th-gold-007",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "450T"
+    },
+    {
       "doc": "th-gold-009",
       "kind": "FP",
       "label": "PARTY",
@@ -164,50 +176,38 @@
     {
       "doc": "th-gold-009",
       "kind": "FP",
-      "label": "PAYMENT_DUE",
-      "text": "ประจำเดือน"
+      "label": "PARTY",
+      "text": "ฉ่ำ"
     },
     {
-      "doc": "th-gold-010",
+      "doc": "th-gold-009",
       "kind": "FP",
-      "label": "END_DATE",
-      "text": "15"
-    },
-    {
-      "doc": "th-gold-010",
-      "kind": "FP",
-      "label": "END_DATE",
-      "text": "2025"
+      "label": "PARTY",
+      "text": "นครราชสีมา"
     },
     {
       "doc": "th-gold-013",
       "kind": "FP",
       "label": "CONTRACT_VALUE",
-      "text": "บาท"
+      "text": "5,300,000 บาท"
     },
     {
-      "doc": "th-gold-013",
+      "doc": "th-gold-014",
       "kind": "FP",
       "label": "PAYMENT_DUE",
-      "text": "ภายในวันที่"
+      "text": "4"
+    },
+    {
+      "doc": "th-gold-014",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "ร้อยละ 10"
     },
     {
       "doc": "th-gold-015",
       "kind": "FP",
       "label": "AGREEMENT_DATE",
       "text": "18 มีนาคม 2569"
-    },
-    {
-      "doc": "th-gold-015",
-      "kind": "FP",
-      "label": "PAYMENT_DUE",
-      "text": "วันลงนาม"
-    },
-    {
-      "doc": "th-gold-015",
-      "kind": "FP",
-      "label": "PENALTY_RATE",
-      "text": "อีก"
     },
     {
       "doc": "th-gold-016",
@@ -228,6 +228,24 @@
       "text": "4.5 ล้านบาท"
     },
     {
+      "doc": "th-gold-017",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนสิงหาคมของแต่ละปี"
+    },
+    {
+      "doc": "th-gold-018",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "เทศบาลจังหวัดระยอง จำกัด"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "24 เดือน"
+    },
+    {
       "doc": "th-gold-021",
       "kind": "FP",
       "label": "PAYMENT_DUE",
@@ -242,8 +260,8 @@
     {
       "doc": "th-gold-023",
       "kind": "FP",
-      "label": "PENALTY_RATE",
-      "text": "% ของค่าจ้าง"
+      "label": "PARTY",
+      "text": "ไผ่"
     }
   ]
 }

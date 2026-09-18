@@ -1,129 +1,213 @@
 {
   "n_docs": 300,
   "strict": {
-    "precision": 0.9992478375329071,
-    "recall": 0.9996237772761475,
-    "f1": 0.999435772051909
+    "precision": 0.996982270841192,
+    "recall": 0.992862509391435,
+    "f1": 0.9949181253529079
   },
   "relaxed": {
     "PARTY": {
-      "precision": 1.0,
+      "precision": 0.9980372914622179,
       "recall": 1.0,
-      "f1": 1.0,
-      "support": 992
+      "f1": 0.9990176817288801,
+      "support": 1017
     },
     "AGREEMENT_DATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 283
+      "support": 289
     },
     "START_DATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 246
+      "support": 247
     },
     "END_DATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 210
+      "support": 206
     },
     "CONTRACT_VALUE": {
-      "precision": 0.9957446808510638,
-      "recall": 1.0,
-      "f1": 0.9978678038379531,
-      "support": 234
-    },
-    "PAYMENT_DUE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
+      "support": 238
+    },
+    "PAYMENT_DUE": {
+      "precision": 1.0,
+      "recall": 0.9389671361502347,
+      "f1": 0.9685230024213075,
       "support": 213
     },
     "PENALTY_RATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 227
+      "support": 217
     },
     "JURISDICTION": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 253
+      "support": 235
     },
     "micro": {
-      "precision": 0.9996239187664535,
-      "recall": 1.0,
-      "f1": 0.999811924017303,
-      "support": 2658
+      "precision": 0.999245567710298,
+      "recall": 0.9951164537941397,
+      "f1": 0.9971767363071711,
+      "support": 2662
     }
   },
   "fields": {
     "PARTY": {
-      "precision": 1.0,
+      "precision": 0.9948364888123924,
       "recall": 1.0,
-      "f1": 1.0,
-      "support": 566
+      "f1": 0.997411561691113,
+      "support": 578
     },
     "AGREEMENT_DATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 283
+      "support": 289
     },
     "START_DATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 246
+      "support": 247
     },
     "END_DATE": {
       "precision": 1.0,
       "recall": 1.0,
       "f1": 1.0,
-      "support": 210
+      "support": 206
     },
     "CONTRACT_VALUE": {
-      "precision": 0.9914893617021276,
-      "recall": 0.9957264957264957,
-      "f1": 0.9936034115138592,
-      "support": 234
+      "precision": 0.9873949579831933,
+      "recall": 0.9873949579831933,
+      "f1": 0.9873949579831933,
+      "support": 238
     },
     "PAYMENT_DUE": {
       "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
+      "recall": 0.9389671361502347,
+      "f1": 0.9685230024213075,
       "support": 213
     },
     "PENALTY_RATE": {
-      "precision": 0.8854625550660793,
-      "recall": 0.8854625550660793,
-      "f1": 0.8854625550660793,
-      "support": 227
+      "precision": 0.9907834101382489,
+      "recall": 0.9907834101382489,
+      "f1": 0.9907834101382489,
+      "support": 217
     },
     "JURISDICTION": {
-      "precision": 0.8616600790513834,
-      "recall": 0.8616600790513834,
-      "f1": 0.8616600790513834,
-      "support": 253
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 235
     },
     "micro": {
-      "precision": 0.9717868338557993,
-      "recall": 0.9722222222222222,
-      "f1": 0.9720044792833146,
-      "support": 2232
+      "precision": 0.9963849977406236,
+      "recall": 0.9919028340080972,
+      "f1": 0.9941388638412986,
+      "support": 2223
     }
   },
-  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      1.000     1.000     1.000       283\nCONTRACT_VALUE      0.991     0.996     0.994       234\n      END_DATE      1.000     1.000     1.000       210\n  JURISDICTION      1.000     1.000     1.000       253\n         PARTY      1.000     1.000     1.000       992\n   PAYMENT_DUE      1.000     1.000     1.000       213\n  PENALTY_RATE      1.000     1.000     1.000       227\n    START_DATE      1.000     1.000     1.000       246\n\n     micro avg      0.999     1.000     0.999      2658\n     macro avg      0.999     0.999     0.999      2658\n  weighted avg      0.999     1.000     0.999      2658\n",
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      1.000     1.000     1.000       289\nCONTRACT_VALUE      0.987     0.987     0.987       238\n      END_DATE      1.000     1.000     1.000       206\n  JURISDICTION      1.000     1.000     1.000       235\n         PARTY      0.997     0.999     0.998      1017\n   PAYMENT_DUE      1.000     0.939     0.969       213\n  PENALTY_RATE      0.991     0.991     0.991       217\n    START_DATE      1.000     1.000     1.000       247\n\n     micro avg      0.997     0.993     0.995      2662\n     macro avg      0.997     0.990     0.993      2662\n  weighted avg      0.997     0.993     0.995      2662\n",
   "errors": [
     {
-      "doc": "th-test-00073",
+      "doc": "th-test-00037",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนกันยายนของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00039",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนพฤษภาคมของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00102",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนมกราคมของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00114",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันทำการสุดท้ายของเดือน"
+    },
+    {
+      "doc": "th-test-00150",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันทำการสุดท้ายของเดือน"
+    },
+    {
+      "doc": "th-test-00183",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนเมษายนของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00185",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนมิถุนายนของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00194",
       "kind": "FP",
-      "label": "CONTRACT_VALUE",
-      "text": "บาท"
+      "label": "PARTY",
+      "text": "บัวทอง"
+    },
+    {
+      "doc": "th-test-00206",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนกันยายนของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00212",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันทำการสุดท้ายของเดือน"
+    },
+    {
+      "doc": "th-test-00258",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันทำการสุดท้ายของเดือน"
+    },
+    {
+      "doc": "th-test-00264",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "บริษัท"
+    },
+    {
+      "doc": "th-test-00269",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันทำการสุดท้ายของเดือน"
+    },
+    {
+      "doc": "th-test-00281",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในเดือนกุมภาพันธ์ของแต่ละปี"
+    },
+    {
+      "doc": "th-test-00291",
+      "kind": "FN",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันทำการสุดท้ายของเดือน"
     }
   ]
 }

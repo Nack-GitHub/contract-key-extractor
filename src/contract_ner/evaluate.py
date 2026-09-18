@@ -15,7 +15,7 @@ from pathlib import Path
 
 from seqeval.metrics import classification_report, f1_score, precision_score, recall_score
 
-from .postprocess import _party_key
+from .postprocess import _party_key, validate_span
 from .predict import Extractor
 from .schema import ENTITY_TYPES, Document, spans_to_bio
 from .tokenization import segment_words
@@ -46,7 +46,14 @@ def _prf(tp: int, fp: int, fn: int) -> dict:
     return {"precision": p, "recall": r, "f1": 2 * p * r / (p + r) if p + r else 0.0, "support": tp + fn}
 
 
-def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: int = 200) -> EvalResult:
+def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: int = 200,
+                       validate: bool = True) -> EvalResult:
+    """Score the extractor on ``docs``.
+
+    With ``validate=True`` (the default) predictions pass through the same
+    span-validation stage the JSON output uses, so the numbers describe the
+    pipeline's output rather than the raw tagger.
+    """
     y_true: list[list[str]] = []
     y_pred: list[list[str]] = []
     tp = {t: 0 for t in ENTITY_TYPES}
@@ -60,12 +67,12 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
     for d in docs:
         offsets = segment_words(d.text, extractor.lang)
         gold_tags = spans_to_bio(offsets, d.entities)
-        wp = extractor.predict_words(d.text)
-        assert wp.offsets == offsets
-        y_true.append(gold_tags)
-        y_pred.append(wp.tags)
-
         pred_spans = extractor.predict(d.text)
+        if validate:
+            pred_spans = [sp for sp in pred_spans if validate_span(sp)]
+        y_true.append(gold_tags)
+        y_pred.append(spans_to_bio(offsets, pred_spans))
+
         matched_gold: set[int] = set()
         for ps in pred_spans:
             hit = None

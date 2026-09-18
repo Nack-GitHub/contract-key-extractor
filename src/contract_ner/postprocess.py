@@ -271,6 +271,12 @@ def _romanize(thai: str) -> str:
 _PROV_COURT_RE = re.compile(r"^ศาล(จังหวัด|แขวง|ปกครอง)(.+)$")
 _ARBITRATION_RE = re.compile(r"อนุญาโตตุลาการ|arbitrat|THAC", re.IGNORECASE)
 _GOV_LAW_RE = re.compile(r"กฎหมาย|laws? of|governed by", re.IGNORECASE)
+# "the laws of the State of New York", "laws of England and Wales", "courts located in Harris County, Texas"
+_EN_LAW_PLACE_RE = re.compile(
+    r"laws?\s+of\s+(?:the\s+)?((?:State|Commonwealth|Province|Republic|Kingdom|District|Federal Republic)\s+of\s+)?"
+    r"([A-Z][A-Za-z.]*(?:\s+(?:and|of|the|&)?\s*[A-Z][A-Za-z.]*){0,4})",
+)
+_EN_COURT_PLACE_RE = re.compile(r"courts?\s+(?:of|in|located in|sitting in)\s+(?:the\s+)?([A-Z][A-Za-z.]*(?:[\s,]+[A-Z][A-Za-z.]*){0,4})")
 
 
 def normalize_jurisdiction(text: str) -> dict:
@@ -287,20 +293,42 @@ def normalize_jurisdiction(text: str) -> dict:
             english = "Thai Arbitration Institute, Office of the Judiciary"
         elif "THAC" in t:
             english = "Thailand Arbitration Center (THAC)"
+        elif t.isascii():
+            m = _EN_LAW_PLACE_RE.search(t)
+            if m:
+                english = ((m.group(1) or "") + m.group(2)).strip().rstrip(".,")
+                english = re.sub(r"\s+(and|of|the)$", "", english)
+            else:
+                m = _EN_COURT_PLACE_RE.search(t)
+                if m:
+                    english = "courts of " + m.group(1).strip().rstrip(".,")
     return {"kind": kind, "english": english}
 
 
 # ------------------------------------------------------------------ span validation
 _DIGIT_RE = re.compile(r"[\d๐-๙]")
+_ALNUM_RE = re.compile(r"\w")
+_TERM_WORD_RE = re.compile(r"year|month|day|week|term|expir|terminat|anniversar|effective|commence|ปี|เดือน|วัน", re.I)
+_EN_STOPWORDS = {"the", "and", "or", "of", "a", "an", "to", "by", "in", "on", "for", "with", "each", "party", "parties"}
 
 
 def validate_span(span: Span) -> bool:
-    """Cheap type-consistency check on the surface form (span classification stage)."""
+    """Cheap type-consistency check on the surface form (span classification stage).
+
+    Rejects fragments that cannot be a value of the entity type: a "date"
+    without a parsable date, a "jurisdiction" naming no court/law/arbitral
+    body, a "party" that is only punctuation or a function word, and so on.
+    """
     t = span.text.strip()
-    if not t:
+    if not t or not _ALNUM_RE.search(t):
+        return False
+    if t.lower().strip("\"'“”‘’()[]., ") in _EN_STOPWORDS:
         return False
     if span.label in ("AGREEMENT_DATE", "START_DATE", "END_DATE"):
-        return bool(_DIGIT_RE.search(t)) and normalize_date(t) is not None
+        if len(t.split()) <= 4:  # a bare date expression must parse
+            return bool(_DIGIT_RE.search(t)) and normalize_date(t) is not None
+        # clause-level term spans (CUAD style) may describe the term without a literal date
+        return bool(_DIGIT_RE.search(t)) or bool(_TERM_WORD_RE.search(t))
     if span.label in ("CONTRACT_VALUE", "PENALTY_RATE"):
         return bool(_DIGIT_RE.search(t))
     if span.label == "PAYMENT_DUE":
@@ -308,7 +336,7 @@ def validate_span(span: Span) -> bool:
     if span.label == "JURISDICTION":
         return bool(re.search(r"ศาล|กฎหมาย|อนุญาโตตุลาการ|court|law|arbitra|tribunal|jurisdiction", t, re.IGNORECASE))
     if span.label == "PARTY":
-        return len(t) >= 2 and not t.replace(",", "").replace(".", "").isdigit()
+        return len(t) >= 2 and re.search(r"[^\W\d_]", t) is not None  # at least one letter
     return True
 
 

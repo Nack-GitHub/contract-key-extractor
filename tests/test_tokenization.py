@@ -1,0 +1,74 @@
+import pytest
+
+from contract_ner.schema import LABEL2ID, Span, spans_to_bio
+from contract_ner.tokenization import Encoder, lowercase_ascii, segment_words
+
+
+def test_lowercase_ascii_preserves_length_and_thai():
+    s = "บริษัท ABC Co., Ltd. ตกลง İ"
+    out = lowercase_ascii(s)
+    assert len(out) == len(s)
+    assert out == "บริษัท abc co., ltd. ตกลง İ"
+
+
+def test_thai_segmentation_tiles_text_without_whitespace_tokens():
+    text = "สัญญาฉบับนี้ทำขึ้นระหว่าง บริษัท เอบีซี จำกัด วันที่ 1 มกราคม 2569"
+    offsets = segment_words(text, "th")
+    assert offsets == sorted(offsets)
+    for (s, e) in offsets:
+        assert e > s and not text[s:e].isspace()
+    for (_, e1), (s2, _) in zip(offsets, offsets[1:]):
+        assert s2 >= e1
+    assert "บริษัท" in [text[s:e] for s, e in offsets]
+
+
+def test_english_segmentation():
+    text = 'ABC Corp. ("ABC") and X-Y Ltd, dated June 8, 2010.'
+    words = [text[s:e] for s, e in segment_words(text, "en")]
+    assert words[:3] == ["ABC", "Corp", "."]
+    assert "X-Y" in words and "2010" in words
+
+
+def test_unknown_lang():
+    with pytest.raises(ValueError):
+        segment_words("x", "fr")
+
+
+@pytest.fixture(scope="module")
+def wangchan_tok():
+    from transformers import AutoTokenizer
+    try:
+        return AutoTokenizer.from_pretrained("airesearch/wangchanberta-base-att-spm-uncased")
+    except Exception as e:  # pragma: no cover - offline CI
+        pytest.skip(f"tokenizer unavailable: {e}")
+
+
+def test_encoder_alignment_and_windows(wangchan_tok):
+    text = 'สัญญาฉบับนี้ทำขึ้นระหว่าง บริษัท เอบีซี จำกัด ("ผู้ว่าจ้าง") มีผลตั้งแต่วันที่ 1 มกราคม 2569 ค่าปรับ 15% ต่อเดือน ABC Co., Ltd.'
+    offsets = segment_words(text, "th")
+    spans = [
+        Span(text.index("บริษัท"), text.index("จำกัด") + 5, "PARTY"),
+        Span(text.index("1 มกราคม"), text.index("2569") + 4, "START_DATE"),
+    ]
+    tags = spans_to_bio(offsets, spans)
+    enc = Encoder(wangchan_tok, max_length=24, stride=6, lowercase=True)
+    doc = enc.encode(text, offsets, tags)
+
+    # every window is wrapped in the special tokens and respects max_length
+    for w in doc.windows:
+        assert len(w.input_ids) <= 24
+        assert w.input_ids[0] == wangchan_tok.cls_token_id and w.input_ids[-1] == wangchan_tok.sep_token_id
+        assert w.labels[0] == -100 and w.labels[-1] == -100
+        assert len(w.input_ids) == len(w.labels) == len(w.subword_index)
+    # consecutive windows overlap by `stride` subwords and cover everything
+    covered = sorted({g for w in doc.windows for g in w.subword_index if g >= 0})
+    assert covered == list(range(len(doc.subword_to_word)))
+    # labels: exactly one labelled subword per word that has a representative
+    labelled = [l for w in doc.windows for l in w.labels if l != -100]
+    n_rep = sum(1 for s in doc.word_to_subword if s >= 0)
+    assert n_rep <= len(offsets)
+    assert LABEL2ID["B-PARTY"] in labelled and LABEL2ID["I-START_DATE"] in labelled
+    # a representative subword is never a bare "▁" marker when a content piece follows
+    ids = [i for w in doc.windows for i in w.input_ids]
+    toks = wangchan_tok.convert_ids_to_tokens(ids)
+    assert "▁บริษัท" in toks

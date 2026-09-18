@@ -1,0 +1,22 @@
+# Thai contract NER — WangchanBERTa fine-tuned on synthetic contracts,
+# evaluated on the hand-annotated gold set.
+name: thai-wangchanberta
+model_name: airesearch/wangchanberta-base-att-spm-uncased
+lang: th
+lowercase: true            # the base model is uncased; uppercase Latin maps to <unk> otherwise
+max_length: 256            # WangchanBERTa positions max out at 510; 256 is 2x faster on MPS
+stride: 64
+train: data/processed/thai/train.jsonl
+val: data/processed/thai/val.jsonl
+test:
+  - data/processed/thai/test_gold.jsonl
+  - data/processed/thai/test_synthetic.jsonl
+output_dir: models/thai-wangchanberta
+epochs: 3
+lr: 3.0e-5
+batch_size: 16
+eval_batch_size: 32
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+negative_window_keep: 1.0

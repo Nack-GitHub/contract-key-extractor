@@ -1,0 +1,22 @@
+# English contract NER — RoBERTa fine-tuned on CUAD spans re-aligned from the
+# Kaggle "Legal Contract Dataset". Covers PARTY, AGREEMENT_DATE, START_DATE,
+# END_DATE and JURISDICTION (CUAD has no clean value / payment / penalty spans).
+name: english-cuad-roberta
+model_name: roberta-base
+lang: en
+lowercase: false
+max_length: 256
+stride: 64
+train: data/processed/cuad/train.jsonl
+val: data/processed/cuad/val.jsonl
+test:
+  - data/processed/cuad/test.jsonl
+output_dir: models/english-cuad-roberta
+epochs: 3
+lr: 3.0e-5
+batch_size: 16
+eval_batch_size: 32
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+negative_window_keep: 0.15   # ~90% of a 50k-char contract has no target entity; keep 15% of those windows

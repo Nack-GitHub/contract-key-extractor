@@ -1,0 +1,23 @@
+# environment
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# data (raw = kaggle download, processed = generated; both reproducible via CLI)
+data/raw/
+data/processed/
+
+# model weights and training artefacts (hundreds of MB each; reproducible via `contract-ner train`)
+models/
+runs/
+*.safetensors
+*.bin
+
+# misc
+.DS_Store
+*.log

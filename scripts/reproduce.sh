@@ -19,7 +19,7 @@ contract-ner train --config configs/english_cuad.yaml
 
 # 3. document-level evaluation → reports/*.json
 contract-ner evaluate --model models/thai-wangchanberta \
-    --data data/processed/thai/test_gold.jsonl data/processed/thai/test_synthetic.jsonl
+    --data data/processed/thai/test_gold.jsonl data/processed/thai/test_gold_blind.jsonl data/processed/thai/test_synthetic.jsonl
 contract-ner evaluate --model models/english-cuad-roberta --data data/processed/cuad/test.jsonl
 
 # 4. demo

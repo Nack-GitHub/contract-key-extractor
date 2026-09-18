@@ -13,10 +13,14 @@ Two layers of tokenisation are involved:
      tokenizer. Feeding pre-segmented Thai words with ``is_split_into_words``
      would insert an artificial ``▁`` marker in front of every Thai word (≈1.6×
      longer sequences that look nothing like the pre-training data).
-   * *pretokenized* (English / RoBERTa): the word list goes through the
-     tokenizer so that a BPE merge such as ``"),`` can never straddle a word
-     boundary — otherwise a punctuation word next to an entity has no subword
-     of its own and inherits the entity label.
+   * *per word* (default for both models): every word is tokenised on its
+     own, with the tokenizer's prefix marker (``▁`` / ``Ġ``) re-added only
+     where a real space preceded the word. The pieces are the same as for the
+     raw text except that none can straddle a word boundary — otherwise a
+     merge such as ``ของกฎหมาย`` or ``"),`` leaves the entity's first/last
+     word without a subword of its own, and its label is lost. Plain
+     ``is_split_into_words=True`` would instead prepend a marker to *every*
+     word (twice as many pieces for Thai, unlike pre-training).
 
 Every subword is mapped to the word containing its first character; the first
 "real" subword of a word is the word's representative (it carries the label
@@ -27,12 +31,14 @@ from __future__ import annotations
 
 import bisect
 import functools
+import json
 import re
 from dataclasses import dataclass, field
 
 from pythainlp.corpus.common import thai_words
 from pythainlp.tokenize import Tokenizer
 from pythainlp.util import Trie
+from tokenizers import Tokenizer as _BackendTokenizer
 
 from .schema import LABEL2ID, O_LABEL
 
@@ -40,7 +46,7 @@ from .schema import LABEL2ID, O_LABEL
 # word boundaries, so compounds that glue a non-entity word to an entity word
 # (``เขตอำนาจศาล`` → jurisdiction + court) are split, and contract vocabulary
 # that newmm otherwise breaks into unhelpful pieces (``เที่ยว|ละ``) is added.
-_DOMAIN_REMOVE = {"เขตอำนาจศาล"}
+_DOMAIN_REMOVE = {"เขตอำนาจศาล", "ตามกฎหมาย", "อัตราร้อยละ", "ในอัตรา"}
 _DOMAIN_ADD = {
     "เขตอำนาจ", "เดือนละ", "วันละ", "ปีละ", "เที่ยวละ", "ครั้งละ", "คนละ", "ชั่วโมงละ", "งวดละ", "เล่มละ",
     "เครื่องละ", "ต่อเดือน", "ต่อวัน", "ต่อปี", "ต่อครั้ง", "ต่อเที่ยว", "บาทถ้วน", "นับถัดจาก", "นับแต่",
@@ -134,14 +140,15 @@ class Encoder:
     """Turns (text, word offsets, word tags) into training/inference windows."""
 
     def __init__(self, tokenizer, max_length: int = 256, stride: int = 64, lowercase: bool = False,
-                 pretokenized: bool = False):
+                 per_word: bool = True):
         if not tokenizer.is_fast:
             raise ValueError("a fast tokenizer (offset mapping support) is required")
         self.tok = tokenizer
         self.max_length = max_length
         self.stride = stride
         self.lowercase = lowercase
-        self.pretokenized = pretokenized
+        self.per_word = per_word
+        self._backend = per_word_backend(tokenizer) if per_word else None
         self.prefix_ids, self.suffix_ids = _special_wrapper(tokenizer)
         self.n_special = len(self.prefix_ids) + len(self.suffix_ids)
         self.body_len = max_length - self.n_special
@@ -160,18 +167,11 @@ class Encoder:
         assert len(word_tags) == len(word_offsets)
 
         model_text = lowercase_ascii(text) if self.lowercase else text
-        if self.pretokenized and word_offsets:
-            words = [model_text[s:e] for s, e in word_offsets]
-            enc = self.tok(words, is_split_into_words=True, add_special_tokens=False, return_offsets_mapping=True)
-            # offsets are relative to each word; lift them to text coordinates
-            offs = [
-                (word_offsets[w][0] + s, word_offsets[w][0] + e) if w is not None else (0, 0)
-                for (s, e), w in zip(enc["offset_mapping"], enc.word_ids())
-            ]
+        if self.per_word:
+            ids, offs = self._encode_per_word(model_text, word_offsets)
         else:
             enc = self.tok(model_text, add_special_tokens=False, return_offsets_mapping=True)
-            offs = enc["offset_mapping"]
-        ids: list[int] = enc["input_ids"]
+            ids, offs = enc["input_ids"], enc["offset_mapping"]
 
         sub2word, word2sub = _align(offs, word_offsets)
         labels = [-100] * len(ids)
@@ -188,6 +188,29 @@ class Encoder:
         )
         doc.windows = self._window(ids, labels)
         return doc
+
+    def _encode_per_word(self, text: str, word_offsets: list[tuple[int, int]]
+                         ) -> tuple[list[int], list[tuple[int, int]]]:
+        """Tokenise word by word, keeping the raw tokenisation's space context."""
+        words: list[str] = []
+        prev_end = -1
+        for s, e in word_offsets:
+            preceded = prev_end >= 0 and s > prev_end and text[prev_end:s].isspace()
+            words.append((" " if preceded else "") + text[s:e])
+            prev_end = e
+        if not words:
+            return [], []
+        ids: list[int] = []
+        offs: list[tuple[int, int]] = []
+        for (s, _e), w, enc in zip(word_offsets, words, self._backend.encode_batch(words, add_special_tokens=False)):
+            shift = s - (1 if w.startswith(" ") else 0)
+            for i, (ls, le) in zip(enc.ids, enc.offsets):
+                ids.append(i)
+                # a piece that starts on the artificial leading space is clamped to the
+                # word; a bare marker piece becomes zero-width and is never a representative
+                gs, ge = max(shift + ls, s), shift + le
+                offs.append((gs, ge) if ge > gs else (gs, gs))
+        return ids, offs
 
     def _window(self, ids: list[int], labels: list[int]) -> list[Window]:
         n = len(ids)
@@ -213,6 +236,34 @@ class Encoder:
                 break
             start = end - self.stride
         return windows
+
+
+def per_word_backend(tokenizer) -> _BackendTokenizer:
+    """A copy of the tokenizer's Rust backend that never prepends a space marker.
+
+    SentencePiece-style backends (``Metaspace``) get ``prepend_scheme="never"``
+    and lose the ``WhitespaceSplit`` stage so that a leading space in the word
+    string (our signal for "a real space came before this word") becomes the
+    ``▁`` marker exactly as in raw text. Byte-level BPE (``ByteLevel``) and
+    WordPiece backends already behave that way.
+    """
+    cfg = json.loads(tokenizer.backend_tokenizer.to_str())
+    pt = cfg.get("pre_tokenizer")
+
+    def patch(node: dict) -> dict | None:
+        if node["type"] == "Metaspace":
+            node["prepend_scheme"] = "never"
+            return node
+        if node["type"] == "WhitespaceSplit":
+            return None
+        return node
+
+    if pt:
+        if pt["type"] == "Sequence":
+            pt["pretokenizers"] = [n for n in (patch(x) for x in pt["pretokenizers"]) if n is not None]
+        else:
+            cfg["pre_tokenizer"] = patch(pt)
+    return _BackendTokenizer.from_str(json.dumps(cfg))
 
 
 def _special_wrapper(tokenizer) -> tuple[list[int], list[int]]:

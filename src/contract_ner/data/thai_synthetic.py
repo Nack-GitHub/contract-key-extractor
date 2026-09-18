@@ -632,7 +632,7 @@ def penalty_phrase(rng: random.Random) -> tuple[Segment, str]:
         per = rng.choice(["วัน", "วัน", "เดือน", "ปี"])
         basis = rng.choice(["มูลค่าสัญญา", "ค่าจ้าง", "ค่าจ้างตามสัญญา", "ราคาสินค้า", "ราคาพัสดุที่ยังไม่ได้รับมอบ", "ค่าจ้างรายเดือน",
                             "มูลค่างานที่ยังไม่ส่งมอบ", "ยอดที่ค้างชำระ"])
-        s = rng.choice([f"ร้อยละ {rate} ต่อ{per}", f"ร้อยละ {rate} ต่อ{per}", f"อัตราร้อยละ {rate} ต่อ{per}",
+        s = rng.choice([f"ร้อยละ {rate} ต่อ{per}", f"ร้อยละ {rate} ต่อ{per}", f"ร้อยละ {rate} ต่อ{per}",
                         f"ร้อยละ {rate} ของ{basis}ต่อ{per}", f"ร้อยละ {rate} ของ{basis}ต่อ{per}"])
         return (s, "PENALTY_RATE"), f"{rate}% per {per_map[per]}"
     if r < 0.55:
@@ -645,7 +645,7 @@ def penalty_phrase(rng: random.Random) -> tuple[Segment, str]:
         amt = rng.choice([500, 1000, 1500, 2000, 3000, 5000, 10000, 20000, 50000])
         per = rng.choice(["วัน", "วัน", "เดือน", "ครั้ง", "เที่ยว", "ชั่วโมง"])
         per_en = {**per_map, "ครั้ง": "occurrence", "เที่ยว": "trip", "ชั่วโมง": "hour"}[per]
-        s = rng.choice([f"{per}ละ {amt:,} บาท", f"{amt:,} บาท ต่อ{per}", f"{amt:,} บาทต่อ{per}", f"อัตรา{per}ละ {amt:,} บาท",
+        s = rng.choice([f"{per}ละ {amt:,} บาท", f"{amt:,} บาท ต่อ{per}", f"{amt:,} บาทต่อ{per}", f"{per}ละ {amt:,} บาท",
                         f"คนละ {amt:,} บาทต่อ{per}", f"{amt:,} บาทต่อคนต่อ{per}"])
         return (s, "PENALTY_RATE"), f"{amt} THB per {per_en}"
     if r < 0.88:
@@ -680,6 +680,8 @@ def clause_penalty(ctx: Ctx) -> list[Segment]:
         "อัตราค่าปรับ: {P} กรณี{X}ล่าช้า และปรับ {SECOND} กรณีจัดพนักงานไม่ครบ",
         "หาก{B}ไม่สามารถให้บริการได้ในวันใด {B}ต้องจัดหาสิ่งทดแทน มิฉะนั้นยินยอมให้{A}หักค่าบริการและปรับ{P}",
         "ค่าปรับ: ในอัตรา{P}",
+        "ค่าปรับกรณีผิดนัดในอัตรา{P}",
+        "ค่าปรับ: อัตรา{P} นับจากวันครบกำหนด",
         "หากส่งล่าช้ากว่ากำหนดเวลาในแต่ละเที่ยวเกิน {HRS} ชั่วโมง ยินยอมให้ปรับ{P}",
     ])
     second, _ = penalty_phrase(rng)

@@ -5,7 +5,7 @@ name: english-cuad-roberta
 model_name: roberta-base
 lang: en
 lowercase: false
-pretokenized: true         # word-by-word BPE so punctuation next to an entity keeps its own subword
+per_word: true             # word-by-word BPE so punctuation next to an entity keeps its own piece
 max_length: 256
 stride: 64
 train: data/processed/cuad/train.jsonl

@@ -4,12 +4,14 @@ name: thai-wangchanberta
 model_name: airesearch/wangchanberta-base-att-spm-uncased
 lang: th
 lowercase: true            # the base model is uncased; uppercase Latin maps to <unk> otherwise
+per_word: true             # word-by-word SentencePiece so no piece straddles a newmm word boundary
 max_length: 256            # WangchanBERTa positions max out at 510; 256 is 2x faster on MPS
 stride: 64
 train: data/processed/thai/train.jsonl
 val: data/processed/thai/val.jsonl
 test:
   - data/processed/thai/test_gold.jsonl
+  - data/processed/thai/test_gold_blind.jsonl
   - data/processed/thai/test_synthetic.jsonl
 output_dir: models/thai-wangchanberta
 epochs: 3

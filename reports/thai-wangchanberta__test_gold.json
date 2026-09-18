@@ -1,0 +1,249 @@
+{
+  "n_docs": 24,
+  "strict": {
+    "precision": 0.8771929824561403,
+    "recall": 0.9216589861751152,
+    "f1": 0.8988764044943819
+  },
+  "relaxed": {
+    "PARTY": {
+      "precision": 0.9649122807017544,
+      "recall": 0.9649122807017544,
+      "f1": 0.9649122807017544,
+      "support": 57
+    },
+    "AGREEMENT_DATE": {
+      "precision": 0.9583333333333334,
+      "recall": 1.0,
+      "f1": 0.9787234042553191,
+      "support": 23
+    },
+    "START_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 19
+    },
+    "END_DATE": {
+      "precision": 0.9130434782608695,
+      "recall": 0.9545454545454546,
+      "f1": 0.9333333333333332,
+      "support": 22
+    },
+    "CONTRACT_VALUE": {
+      "precision": 0.9130434782608695,
+      "recall": 0.9130434782608695,
+      "f1": 0.9130434782608695,
+      "support": 23
+    },
+    "PAYMENT_DUE": {
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.888888888888889,
+      "support": 24
+    },
+    "PENALTY_RATE": {
+      "precision": 0.8888888888888888,
+      "recall": 1.0,
+      "f1": 0.9411764705882353,
+      "support": 24
+    },
+    "JURISDICTION": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 25
+    },
+    "micro": {
+      "precision": 0.9298245614035088,
+      "recall": 0.9769585253456221,
+      "f1": 0.9528089887640449,
+      "support": 217
+    }
+  },
+  "fields": {
+    "PARTY": {
+      "precision": 0.92,
+      "recall": 0.9387755102040817,
+      "f1": 0.9292929292929293,
+      "support": 49
+    },
+    "AGREEMENT_DATE": {
+      "precision": 0.875,
+      "recall": 0.9130434782608695,
+      "f1": 0.8936170212765957,
+      "support": 23
+    },
+    "START_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 19
+    },
+    "END_DATE": {
+      "precision": 0.9130434782608695,
+      "recall": 0.9545454545454546,
+      "f1": 0.9333333333333332,
+      "support": 22
+    },
+    "CONTRACT_VALUE": {
+      "precision": 0.8695652173913043,
+      "recall": 0.8695652173913043,
+      "f1": 0.8695652173913043,
+      "support": 23
+    },
+    "PAYMENT_DUE": {
+      "precision": 0.7,
+      "recall": 0.875,
+      "f1": 0.7777777777777777,
+      "support": 24
+    },
+    "PENALTY_RATE": {
+      "precision": 0.5925925925925926,
+      "recall": 0.6666666666666666,
+      "f1": 0.627450980392157,
+      "support": 24
+    },
+    "JURISDICTION": {
+      "precision": 0.88,
+      "recall": 0.88,
+      "f1": 0.88,
+      "support": 25
+    },
+    "micro": {
+      "precision": 0.8416289592760181,
+      "recall": 0.8899521531100478,
+      "f1": 0.8651162790697674,
+      "support": 209
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.875     0.913     0.894        23\nCONTRACT_VALUE      0.870     0.870     0.870        23\n      END_DATE      0.913     0.955     0.933        22\n  JURISDICTION      0.960     0.960     0.960        25\n         PARTY      0.930     0.930     0.930        57\n   PAYMENT_DUE      0.700     0.875     0.778        24\n  PENALTY_RATE      0.778     0.875     0.824        24\n    START_DATE      1.000     1.000     1.000        19\n\n     micro avg      0.877     0.922     0.899       217\n     macro avg      0.878     0.922     0.898       217\n  weighted avg      0.883     0.922     0.901       217\n",
+  "errors": [
+    {
+      "doc": "th-gold-002",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "แม่ริม"
+    },
+    {
+      "doc": "th-gold-002",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "เทศบาลตำบลแม่ริม"
+    },
+    {
+      "doc": "th-gold-003",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "135,000 บาท"
+    },
+    {
+      "doc": "th-gold-004",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "อัตราร้อยละ 15 ต่อปี"
+    },
+    {
+      "doc": "th-gold-004",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันที่ 9 สิงหาคม 2569"
+    },
+    {
+      "doc": "th-gold-004",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "9 สิงหาคม 2569"
+    },
+    {
+      "doc": "th-gold-009",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ไข่มุก"
+    },
+    {
+      "doc": "th-gold-009",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ประจำเดือน"
+    },
+    {
+      "doc": "th-gold-010",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "15"
+    },
+    {
+      "doc": "th-gold-010",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "2025"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "บาท"
+    },
+    {
+      "doc": "th-gold-013",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายในวันที่"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "18 มีนาคม 2569"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "วันลงนาม"
+    },
+    {
+      "doc": "th-gold-015",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "อีก"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ทุกวันที่ 5 ของเดือนถัดไป"
+    },
+    {
+      "doc": "th-gold-016",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Bangkok Bike Rental Co., Ltd."
+    },
+    {
+      "doc": "th-gold-017",
+      "kind": "FN",
+      "label": "CONTRACT_VALUE",
+      "text": "4.5 ล้านบาท"
+    },
+    {
+      "doc": "th-gold-021",
+      "kind": "FP",
+      "label": "PAYMENT_DUE",
+      "text": "ภายใน 30 วัน"
+    },
+    {
+      "doc": "th-gold-022",
+      "kind": "FN",
+      "label": "CONTRACT_VALUE",
+      "text": "3,000,000 บาท"
+    },
+    {
+      "doc": "th-gold-023",
+      "kind": "FP",
+      "label": "PENALTY_RATE",
+      "text": "% ของค่าจ้าง"
+    }
+  ]
+}

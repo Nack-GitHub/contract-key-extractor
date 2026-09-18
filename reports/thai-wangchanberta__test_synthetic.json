@@ -1,0 +1,129 @@
+{
+  "n_docs": 300,
+  "strict": {
+    "precision": 0.9992478375329071,
+    "recall": 0.9996237772761475,
+    "f1": 0.999435772051909
+  },
+  "relaxed": {
+    "PARTY": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 992
+    },
+    "AGREEMENT_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 283
+    },
+    "START_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 246
+    },
+    "END_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 210
+    },
+    "CONTRACT_VALUE": {
+      "precision": 0.9957446808510638,
+      "recall": 1.0,
+      "f1": 0.9978678038379531,
+      "support": 234
+    },
+    "PAYMENT_DUE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 213
+    },
+    "PENALTY_RATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 227
+    },
+    "JURISDICTION": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 253
+    },
+    "micro": {
+      "precision": 0.9996239187664535,
+      "recall": 1.0,
+      "f1": 0.999811924017303,
+      "support": 2658
+    }
+  },
+  "fields": {
+    "PARTY": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 566
+    },
+    "AGREEMENT_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 283
+    },
+    "START_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 246
+    },
+    "END_DATE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 210
+    },
+    "CONTRACT_VALUE": {
+      "precision": 0.9914893617021276,
+      "recall": 0.9957264957264957,
+      "f1": 0.9936034115138592,
+      "support": 234
+    },
+    "PAYMENT_DUE": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 213
+    },
+    "PENALTY_RATE": {
+      "precision": 0.8854625550660793,
+      "recall": 0.8854625550660793,
+      "f1": 0.8854625550660793,
+      "support": 227
+    },
+    "JURISDICTION": {
+      "precision": 0.8616600790513834,
+      "recall": 0.8616600790513834,
+      "f1": 0.8616600790513834,
+      "support": 253
+    },
+    "micro": {
+      "precision": 0.9717868338557993,
+      "recall": 0.9722222222222222,
+      "f1": 0.9720044792833146,
+      "support": 2232
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      1.000     1.000     1.000       283\nCONTRACT_VALUE      0.991     0.996     0.994       234\n      END_DATE      1.000     1.000     1.000       210\n  JURISDICTION      1.000     1.000     1.000       253\n         PARTY      1.000     1.000     1.000       992\n   PAYMENT_DUE      1.000     1.000     1.000       213\n  PENALTY_RATE      1.000     1.000     1.000       227\n    START_DATE      1.000     1.000     1.000       246\n\n     micro avg      0.999     1.000     0.999      2658\n     macro avg      0.999     0.999     0.999      2658\n  weighted avg      0.999     1.000     0.999      2658\n",
+  "errors": [
+    {
+      "doc": "th-test-00073",
+      "kind": "FP",
+      "label": "CONTRACT_VALUE",
+      "text": "บาท"
+    }
+  ]
+}

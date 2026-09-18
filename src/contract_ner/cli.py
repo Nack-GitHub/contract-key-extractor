@@ -36,7 +36,10 @@ def _cmd_build_thai(args: argparse.Namespace) -> None:
     write_jsonl(test_syn, out / "test_synthetic.jsonl")
     gold = load_gold_dir(args.gold_dir)
     write_jsonl(gold, out / "test_gold.jsonl")
-    print(f"thai: train={len(train)} val={len(val)} test_synthetic={len(test_syn)} test_gold={len(gold)} → {out}")
+    blind = load_gold_dir(args.blind_dir) if Path(args.blind_dir).exists() else []
+    write_jsonl(blind, out / "test_gold_blind.jsonl")
+    print(f"thai: train={len(train)} val={len(val)} test_synthetic={len(test_syn)} test_gold={len(gold)} "
+          f"test_gold_blind={len(blind)} → {out}")
 
 
 def _cmd_build_cuad(args: argparse.Namespace) -> None:
@@ -135,7 +138,8 @@ def main(argv: list[str] | None = None) -> None:
 
     s = sub.add_parser("build-thai", help="generate synthetic Thai training data + load the gold set")
     s.add_argument("--out", default="data/processed/thai")
-    s.add_argument("--gold-dir", default="data/thai_gold")
+    s.add_argument("--gold-dir", default="data/thai_gold", help="hand-annotated dev/test contracts")
+    s.add_argument("--blind-dir", default="data/thai_gold_blind", help="held-out contracts never used for iteration")
     s.add_argument("--n-train", type=int, default=3000)
     s.add_argument("--n-val", type=int, default=300)
     s.add_argument("--n-test", type=int, default=300)

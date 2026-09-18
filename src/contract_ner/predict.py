@@ -14,7 +14,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import transformers
-from transformers import AutoModelForTokenClassification
+from transformers import AutoModelForTokenClassification, AutoTokenizer
 
 from .schema import ID2LABEL, O_LABEL, Span, bio_to_spans
 from .tokenization import EncodedDocument, Encoder, segment_words
@@ -45,16 +45,14 @@ class Extractor:
         with open(model_dir / "pipeline_config.json", encoding="utf-8") as f:
             pc = json.load(f)
         self.lang: str = pc["lang"]
-        pretokenized = pc.get("pretokenized", False)
-        from .train import load_tokenizer  # local import: keeps torch-free tooling light
-
+        per_word = pc.get("per_word", False)
         transformers.logging.set_verbosity_error()  # we window long inputs ourselves
-        self.tokenizer = load_tokenizer(str(model_dir), pretokenized)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_dir)
         self.model = AutoModelForTokenClassification.from_pretrained(model_dir)
         self.device = pick_device(device)
         self.model.to(self.device).eval()
         self.encoder = Encoder(self.tokenizer, max_length=pc["max_length"], stride=pc["stride"],
-                               lowercase=pc["lowercase"], pretokenized=pretokenized)
+                               lowercase=pc["lowercase"], per_word=per_word)
         self.batch_size = batch_size
         self.id2label = {int(k): v for k, v in self.model.config.id2label.items()} or ID2LABEL
 

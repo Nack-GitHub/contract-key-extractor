@@ -140,10 +140,14 @@ class Encoder:
     """Turns (text, word offsets, word tags) into training/inference windows."""
 
     def __init__(self, tokenizer, max_length: int = 256, stride: int = 64, lowercase: bool = False,
-                 per_word: bool = True):
+                 per_word: bool = True, label2id: dict[str, int] | None = None):
         if not tokenizer.is_fast:
             raise ValueError("a fast tokenizer (offset mapping support) is required")
         self.tok = tokenizer
+        # label space of the model being trained/served; defaults to every known entity type
+        self.label2id = dict(label2id) if label2id else dict(LABEL2ID)
+        if self.label2id.get(O_LABEL) != 0:
+            raise ValueError(f"{O_LABEL!r} must be label id 0")
         self.max_length = max_length
         self.stride = stride
         self.lowercase = lowercase
@@ -177,7 +181,7 @@ class Encoder:
         labels = [-100] * len(ids)
         for w, s in enumerate(word2sub):
             if s >= 0:
-                labels[s] = LABEL2ID[word_tags[w]]
+                labels[s] = self.label2id[word_tags[w]]
 
         doc = EncodedDocument(
             word_offsets=word_offsets,

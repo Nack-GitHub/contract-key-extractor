@@ -16,7 +16,7 @@ import torch
 import transformers
 from transformers import AutoModelForTokenClassification, AutoTokenizer
 
-from .schema import ID2LABEL, O_LABEL, Span, bio_to_spans
+from .schema import ENTITY_TYPES, ID2LABEL, O_LABEL, Span, bio_to_spans
 from .tokenization import EncodedDocument, Encoder, segment_words
 
 
@@ -45,6 +45,8 @@ class Extractor:
         with open(model_dir / "pipeline_config.json", encoding="utf-8") as f:
             pc = json.load(f)
         self.lang: str = pc["lang"]
+        # models trained before ``entity_types`` was recorded carry the full label space
+        self.entity_types: tuple[str, ...] = tuple(pc.get("entity_types") or ENTITY_TYPES)
         per_word = pc.get("per_word", False)
         transformers.logging.set_verbosity_error()  # we window long inputs ourselves
         self.tokenizer = AutoTokenizer.from_pretrained(model_dir)

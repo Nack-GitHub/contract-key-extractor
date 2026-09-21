@@ -61,3 +61,17 @@ def test_bio_to_spans_tolerates_missing_B():
 def test_iter_entities():
     tags = ["B-PARTY", "I-PARTY", "O", "B-PARTY", "B-END_DATE", "I-END_DATE"]
     assert list(iter_entities(tags)) == [("PARTY", 0, 2), ("PARTY", 3, 4), ("END_DATE", 4, 6)]
+
+
+def test_train_config_entity_types(tmp_path):
+    from contract_ner.train import TrainConfig
+
+    cfg = TrainConfig.load("configs/english_cuad.yaml")
+    assert cfg.entity_types == ["PARTY", "AGREEMENT_DATE", "START_DATE", "END_DATE", "JURISDICTION"]
+    assert len(cfg.types) == 5
+    th = TrainConfig.load("configs/thai_wangchanberta.yaml")
+    assert th.entity_types is None and len(th.types) == 8
+    import pytest
+    with pytest.raises(ValueError):
+        TrainConfig(name="x", model_name="m", lang="en", train="t", val="v", output_dir="o",
+                    entity_types=["PARTY", "NOPE"])

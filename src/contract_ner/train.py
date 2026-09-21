@@ -29,7 +29,7 @@ from transformers import (
 )
 
 from .io import read_jsonl
-from .schema import BIO_LABELS, ID2LABEL, LABEL2ID, O_LABEL, Document, spans_to_bio
+from .schema import ENTITY_TYPES, O_LABEL, Document, build_bio_labels, spans_to_bio
 from .tokenization import Encoder, segment_words
 
 
@@ -42,6 +42,7 @@ class TrainConfig:
     val: str
     output_dir: str
     test: list[str] = field(default_factory=list)
+    entity_types: list[str] | None = None  # subset of schema.ENTITY_TYPES the model is trained on (None = all)
     lowercase: bool = False
     per_word: bool = True  # tokenize word by word (no piece crosses a word boundary); see tokenization.Encoder
     max_length: int = 256
@@ -57,6 +58,18 @@ class TrainConfig:
     max_train_docs: int | None = None
     grad_accum: int = 1
 
+    def __post_init__(self) -> None:
+        if self.entity_types is not None:
+            unknown = [t for t in self.entity_types if t not in ENTITY_TYPES]
+            if unknown:
+                raise ValueError(f"unknown entity types in config: {unknown}")
+            if not self.entity_types:
+                raise ValueError("entity_types must list at least one type (or be omitted)")
+
+    @property
+    def types(self) -> tuple[str, ...]:
+        return tuple(self.entity_types) if self.entity_types else ENTITY_TYPES
+
     @classmethod
     def load(cls, path: str | Path) -> TrainConfig:
         with open(path, encoding="utf-8") as f:
@@ -67,14 +80,17 @@ class TrainConfig:
 # ------------------------------------------------------------------ features
 def documents_to_windows(docs: list[Document], encoder: Encoder, lang: str,
                          negative_keep: float = 1.0, rng: random.Random | None = None) -> list[dict]:
+    """Encode documents into training windows; spans of types outside the encoder's label space are ignored."""
     rng = rng or random.Random(0)
+    o_id = encoder.label2id[O_LABEL]
     feats: list[dict] = []
     for d in docs:
         offsets = segment_words(d.text, lang)
-        tags = spans_to_bio(offsets, d.entities)
+        spans = [sp for sp in d.entities if f"B-{sp.label}" in encoder.label2id]
+        tags = spans_to_bio(offsets, spans)
         enc = encoder.encode(d.text, offsets, tags)
         for w in enc.windows:
-            has_entity = any(l not in (-100, LABEL2ID[O_LABEL]) for l in w.labels)
+            has_entity = any(l not in (-100, o_id) for l in w.labels)
             if not has_entity and rng.random() > negative_keep:
                 continue
             feats.append({"input_ids": w.input_ids, "attention_mask": w.attention_mask, "labels": w.labels})
@@ -92,24 +108,27 @@ class WindowDataset(torch.utils.data.Dataset):
         return self.feats[i]
 
 
-def _seqeval_metrics(eval_pred) -> dict:
-    logits, labels = eval_pred
-    preds = np.argmax(logits, axis=-1)
-    y_true, y_pred = [], []
-    for p_row, l_row in zip(preds, labels):
-        t, p = [], []
-        for pi, li in zip(p_row, l_row):
-            if li == -100:
-                continue
-            t.append(ID2LABEL[int(li)])
-            p.append(ID2LABEL[int(pi)])
-        y_true.append(t)
-        y_pred.append(p)
-    return {
-        "precision": precision_score(y_true, y_pred),
-        "recall": recall_score(y_true, y_pred),
-        "f1": f1_score(y_true, y_pred),
-    }
+def make_seqeval_metrics(id2label: dict[int, str]):
+    def _seqeval_metrics(eval_pred) -> dict:
+        logits, labels = eval_pred
+        preds = np.argmax(logits, axis=-1)
+        y_true, y_pred = [], []
+        for p_row, l_row in zip(preds, labels):
+            t, p = [], []
+            for pi, li in zip(p_row, l_row):
+                if li == -100:
+                    continue
+                t.append(id2label[int(li)])
+                p.append(id2label[int(pi)])
+            y_true.append(t)
+            y_pred.append(p)
+        return {
+            "precision": precision_score(y_true, y_pred),
+            "recall": recall_score(y_true, y_pred),
+            "f1": f1_score(y_true, y_pred),
+        }
+
+    return _seqeval_metrics
 
 
 # ------------------------------------------------------------------ main entry
@@ -118,9 +137,13 @@ def train(cfg: TrainConfig) -> dict:
     out = Path(cfg.output_dir)
     out.mkdir(parents=True, exist_ok=True)
 
+    labels = build_bio_labels(cfg.types)
+    label2id = {l: i for i, l in enumerate(labels)}
+    id2label = {i: l for l, i in label2id.items()}
+
     tokenizer = AutoTokenizer.from_pretrained(cfg.model_name)
     encoder = Encoder(tokenizer, max_length=cfg.max_length, stride=cfg.stride, lowercase=cfg.lowercase,
-                      per_word=cfg.per_word)
+                      per_word=cfg.per_word, label2id=label2id)
 
     train_docs = read_jsonl(cfg.train)
     if cfg.max_train_docs:
@@ -130,10 +153,10 @@ def train(cfg: TrainConfig) -> dict:
     train_feats = documents_to_windows(train_docs, encoder, cfg.lang, cfg.negative_window_keep, rng)
     val_feats = documents_to_windows(val_docs, encoder, cfg.lang, 1.0)
     print(f"[{cfg.name}] train docs={len(train_docs)} windows={len(train_feats)} | "
-          f"val docs={len(val_docs)} windows={len(val_feats)}")
+          f"val docs={len(val_docs)} windows={len(val_feats)} | labels={len(labels)} ({', '.join(cfg.types)})")
 
     model = AutoModelForTokenClassification.from_pretrained(
-        cfg.model_name, num_labels=len(BIO_LABELS), id2label=ID2LABEL, label2id=LABEL2ID,
+        cfg.model_name, num_labels=len(labels), id2label=id2label, label2id=label2id,
     )
 
     steps_per_epoch = math.ceil(len(train_feats) / (cfg.batch_size * cfg.grad_accum))
@@ -166,7 +189,7 @@ def train(cfg: TrainConfig) -> dict:
         train_dataset=WindowDataset(train_feats),
         eval_dataset=WindowDataset(val_feats),
         data_collator=DataCollatorForTokenClassification(tokenizer),
-        compute_metrics=_seqeval_metrics,
+        compute_metrics=make_seqeval_metrics(id2label),
     )
     trainer.train()
     final_eval = trainer.evaluate()
@@ -178,7 +201,7 @@ def train(cfg: TrainConfig) -> dict:
     with open(out / "pipeline_config.json", "w", encoding="utf-8") as f:
         json.dump({"lang": cfg.lang, "lowercase": cfg.lowercase, "per_word": cfg.per_word,
                    "max_length": cfg.max_length, "stride": cfg.stride, "base_model": cfg.model_name,
-                   "name": cfg.name}, f, indent=2)
+                   "name": cfg.name, "entity_types": list(cfg.types)}, f, indent=2)
     history = [h for h in trainer.state.log_history]
     with open(out / "train_log.json", "w", encoding="utf-8") as f:
         json.dump({"config": cfg.__dict__, "final_eval": final_eval, "log_history": history}, f, indent=2)

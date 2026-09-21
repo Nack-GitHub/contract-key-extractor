@@ -118,3 +118,29 @@ def test_per_word_encoder_wangchan_matches_raw_pieces_but_never_crosses_words(wa
     ids = [i for w in pw.windows for i in w.input_ids]
     toks = wangchan_tok.convert_ids_to_tokens(ids)
     assert "▁บริษัท" in toks and "กฎหมาย" in toks and "ของ" in toks
+
+
+def test_encoder_custom_label_space(roberta_tok):
+    from contract_ner.schema import Document, build_bio_labels
+    from contract_ner.train import documents_to_windows
+
+    labels = build_bio_labels(["PARTY", "JURISDICTION"])
+    assert labels == ["O", "B-PARTY", "I-PARTY", "B-JURISDICTION", "I-JURISDICTION"]
+    label2id = {l: i for i, l in enumerate(labels)}
+    text = "between Aduro Biotech, Inc. and IREYA B.V, dated June 8, 2010, under the laws of Delaware."
+    doc = Document(id="d", text=text, lang="en", entities=[
+        Span(text.index("Aduro"), text.index("Inc.") + 4, "PARTY"),
+        Span(text.index("June"), text.index("2010") + 4, "AGREEMENT_DATE"),   # outside the label space
+        Span(text.index("laws"), text.index("Delaware") + 8, "JURISDICTION"),
+    ])
+    enc = Encoder(roberta_tok, max_length=64, stride=8, per_word=True, label2id=label2id)
+    feats = documents_to_windows([doc], enc, "en")
+    used = {l for f in feats for l in f["labels"] if l != -100}
+    assert used <= set(label2id.values())
+    assert label2id["B-PARTY"] in used and label2id["B-JURISDICTION"] in used
+    assert max(used) < len(labels)  # the ignored AGREEMENT_DATE span left no label behind
+
+
+def test_encoder_rejects_label_space_without_o_first(roberta_tok):
+    with pytest.raises(ValueError):
+        Encoder(roberta_tok, label2id={"B-PARTY": 0, "O": 1})

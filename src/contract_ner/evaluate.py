@@ -29,10 +29,11 @@ class EvalResult:
     fields: dict  # set-of-values per document and type
     report: str
     errors: list[dict] = field(default_factory=list)
+    types: tuple[str, ...] = ENTITY_TYPES  # entity types the model was scored on
 
     def to_dict(self) -> dict:
-        return {"n_docs": self.n_docs, "strict": self.strict, "relaxed": self.relaxed, "fields": self.fields,
-                "report": self.report, "errors": self.errors}
+        return {"n_docs": self.n_docs, "types": list(self.types), "strict": self.strict, "relaxed": self.relaxed,
+                "fields": self.fields, "report": self.report, "errors": self.errors}
 
 
 def _value_key(text: str) -> str:
@@ -47,27 +48,31 @@ def _prf(tp: int, fp: int, fn: int) -> dict:
 
 
 def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: int = 200,
-                       validate: bool = True) -> EvalResult:
+                       validate: bool = True, types: tuple[str, ...] | None = None) -> EvalResult:
     """Score the extractor on ``docs``.
 
     With ``validate=True`` (the default) predictions pass through the same
     span-validation stage the JSON output uses, so the numbers describe the
-    pipeline's output rather than the raw tagger.
+    pipeline's output rather than the raw tagger. Scoring covers ``types``
+    (default: the types the model was trained on); gold spans of other types
+    are ignored rather than counted as misses.
     """
+    types = tuple(types) if types else tuple(extractor.entity_types)
     y_true: list[list[str]] = []
     y_pred: list[list[str]] = []
-    tp = {t: 0 for t in ENTITY_TYPES}
-    fp = {t: 0 for t in ENTITY_TYPES}
-    fn = {t: 0 for t in ENTITY_TYPES}
-    ftp = {t: 0 for t in ENTITY_TYPES}
-    ffp = {t: 0 for t in ENTITY_TYPES}
-    ffn = {t: 0 for t in ENTITY_TYPES}
+    tp = {t: 0 for t in types}
+    fp = {t: 0 for t in types}
+    fn = {t: 0 for t in types}
+    ftp = {t: 0 for t in types}
+    ffp = {t: 0 for t in types}
+    ffn = {t: 0 for t in types}
     errors: list[dict] = []
 
     for d in docs:
         offsets = segment_words(d.text, extractor.lang)
-        gold_tags = spans_to_bio(offsets, d.entities)
-        pred_spans = extractor.predict(d.text)
+        gold = [e for e in d.entities if e.label in types]
+        gold_tags = spans_to_bio(offsets, gold)
+        pred_spans = [sp for sp in extractor.predict(d.text) if sp.label in types]
         if validate:
             pred_spans = [sp for sp in pred_spans if validate_span(sp)]
         y_true.append(gold_tags)
@@ -76,7 +81,7 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
         matched_gold: set[int] = set()
         for ps in pred_spans:
             hit = None
-            for gi, gs in enumerate(d.entities):
+            for gi, gs in enumerate(gold):
                 if gi in matched_gold:
                     continue
                 if gs.label == ps.label and gs.overlaps(ps):
@@ -89,14 +94,14 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
             else:
                 matched_gold.add(hit)
                 tp[ps.label] += 1
-        for gi, gs in enumerate(d.entities):
+        for gi, gs in enumerate(gold):
             if gi not in matched_gold:
                 fn[gs.label] += 1
                 if len(errors) < max_errors:
                     errors.append({"doc": d.id, "kind": "FN", "label": gs.label, "text": gs.text[:120]})
         # field level: the set of distinct values per type (what ends up in the metadata table)
-        for t in ENTITY_TYPES:
-            gold_vals = {_value_key(e.text) for e in d.entities if e.label == t}
+        for t in types:
+            gold_vals = {_value_key(e.text) for e in gold if e.label == t}
             pred_vals = {_value_key(p.text) for p in pred_spans if p.label == t}
             ftp[t] += len(gold_vals & pred_vals)
             ffp[t] += len(pred_vals - gold_vals)
@@ -108,7 +113,7 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
         "f1": f1_score(y_true, y_pred),
     }
     relaxed = {}
-    for t in ENTITY_TYPES:
+    for t in types:
         p = tp[t] / (tp[t] + fp[t]) if tp[t] + fp[t] else 0.0
         r = tp[t] / (tp[t] + fn[t]) if tp[t] + fn[t] else 0.0
         f = 2 * p * r / (p + r) if p + r else 0.0
@@ -117,11 +122,11 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
     p = TP / (TP + FP) if TP + FP else 0.0
     r = TP / (TP + FN) if TP + FN else 0.0
     relaxed["micro"] = {"precision": p, "recall": r, "f1": 2 * p * r / (p + r) if p + r else 0.0, "support": TP + FN}
-    fields = {t: _prf(ftp[t], ffp[t], ffn[t]) for t in ENTITY_TYPES}
+    fields = {t: _prf(ftp[t], ffp[t], ffn[t]) for t in types}
     fields["micro"] = _prf(sum(ftp.values()), sum(ffp.values()), sum(ffn.values()))
 
     report = classification_report(y_true, y_pred, digits=3, zero_division=0)
-    return EvalResult(len(docs), strict, relaxed, fields, report, errors)
+    return EvalResult(len(docs), strict, relaxed, fields, report, errors, types)
 
 
 def save_result(res: EvalResult, path: str | Path) -> None:
@@ -144,7 +149,7 @@ def format_result(res: EvalResult, title: str = "") -> str:
     lines.append("")
     lines.append(res.report)
     lines.append("field-level per type:")
-    for t in ENTITY_TYPES:
+    for t in res.types:
         v = res.fields[t]
         lines.append(f"  {t:15s} P={v['precision']:.3f} R={v['recall']:.3f} F1={v['f1']:.3f} (n={v['support']})")
     return "\n".join(lines)

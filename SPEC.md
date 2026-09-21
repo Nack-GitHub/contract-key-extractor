@@ -141,7 +141,9 @@ Language-specific strings (Thai regexes, court tables) live in `lang/th.py`, nev
    retrained model has `len(config.id2label) == 11`; `pipeline_config.json` lists the same types.
 2. `contract-ner evaluate` on the retrained model writes `reports/english-cuad-roberta__test.json`
    with only the 5 types in `relaxed`/`fields` (no `support: 0` rows); strict/relaxed/field F1
-   within ±0.02 of 0.584 / 0.735 / 0.657.
+   within ±0.02 of 0.584 / 0.735 / 0.657. *Outcome (2026-09-21): 0.619 / 0.738 / 0.688 — strict and
+   field moved by ~+0.03, both recorded in the doc as the new final row with the 17-label run kept
+   as v4.*
 3. `pip install -e ".[dev]"` in a clean venv does not install pythainlp, and
    `python -m pytest -q` passes with Thai tests reported as skipped.
 4. `pip install -e ".[dev,thai]"` → all tests pass, `contract-ner evaluate --model models/thai-wangchanberta`
@@ -157,7 +159,5 @@ Language-specific strings (Thai regexes, court tables) live in `lang/th.py`, nev
 
 ## Open Questions
 
-1. Retrain now (needed for criterion 1–2, ~30 min) or ship the seam first and retrain later?
-   Default: retrain as the last task.
-2. Should `reports/` keep both the 17-label and 11-label English reports? Default: yes, old one
-   under `reports/iteration2/`.
+None outstanding. Retrain ran in the background after Phase 1; both English reports are kept
+(`reports/iteration2/` = 17-label v4, `reports/` = 11-label final).

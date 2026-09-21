@@ -59,31 +59,31 @@ riskier change (touches training) and unblocks the 30-minute retrain early.
 ## Task list
 
 ### Phase 1 — label seam (core)
-- [ ] Task 1: `entity_types` config → 11-label English training + config round-trip
-- [ ] Task 2: evaluate/format over the model's own types
+- [x] Task 1: `entity_types` config → 11-label English training + config round-trip
+- [x] Task 2: evaluate/format over the model's own types
 
 ### Checkpoint A
-- [ ] `python -m pytest -q` green (73 + new tests)
-- [ ] `contract-ner evaluate --model models/thai-wangchanberta --data data/processed/thai/test_gold_blind.jsonl`
+- [x] `python -m pytest -q` green (73 + new tests)
+- [x] `contract-ner evaluate --model models/thai-wangchanberta --data data/processed/thai/test_gold_blind.jsonl`
       still prints strict F1 0.792 (no `entity_types` key → all types)
-- [ ] Kick off Task 5 retrain in the background (needs only Task 1)
+- [x] Kick off Task 5 retrain in the background (needs only Task 1)
 
 ### Phase 2 — language seam
-- [ ] Task 3: `lang/` package; `segment_words` and span validation dispatched by lang
-- [ ] Task 4: Thai deps → `[thai]` extra; tests skip without pythainlp
+- [x] Task 3: `lang/` package; `segment_words` and span validation dispatched by lang
+- [x] Task 4: Thai deps → `[thai]` extra; tests skip without pythainlp
 
 ### Checkpoint B
-- [ ] Clean venv `pip install -e ".[dev]"` → no pythainlp; `pytest -q` passes with Thai tests skipped
-- [ ] `[dev,thai]` venv → all tests pass; Thai blind report reproduces
+- [x] Clean venv `pip install -e ".[dev]"` → no pythainlp; `pytest -q` passes with Thai tests skipped
+- [x] `[dev,thai]` venv → all tests pass; Thai blind report reproduces
 
 ### Phase 3 — retrain + docs
-- [ ] Task 5: retrain English model; new `reports/english-cuad-roberta__test.json`
-- [ ] Task 6: correct `docs/midterm_presentation_cuad.md`
-- [ ] Task 7: README → CUAD-first + "Extending to Thai"
+- [x] Task 5: retrain English model; new `reports/english-cuad-roberta__test.json`
+- [x] Task 6: correct `docs/midterm_presentation_cuad.md`
+- [x] Task 7: README → CUAD-first + "Extending to Thai"
 
 ### Checkpoint C (done)
-- [ ] All SPEC success criteria 1–6 ticked
-- [ ] Human review of doc diffs before commit
+- [x] All SPEC success criteria 1–6 ticked
+- [x] Human review of doc diffs before commit
 
 ## Risks and mitigations
 
@@ -102,7 +102,7 @@ riskier change (touches training) and unblocks the 30-minute retrain early.
   Tasks 3–4 proceed.
 - Task 6 and 7 are independent of each other but both wait for Task 5's numbers.
 
-## Open questions
+## Open questions (resolved)
 
-1. Retrain immediately after Checkpoint A (default) or hold until Checkpoint B? Default: immediately.
-2. Keep the old EN model weights? Default: no — git-ignored and reproducible; only the report is kept.
+1. Retrained immediately after Checkpoint A, in the background during Phase 2.
+2. Old EN weights discarded; the 17-label report and demo record are kept in `reports/iteration2/`.

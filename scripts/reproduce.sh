@@ -6,7 +6,7 @@ cd "$(dirname "$0")/.."
 
 python -m venv .venv 2>/dev/null || true
 source .venv/bin/activate
-pip install -q -e ".[dev]"
+pip install -q -e ".[dev,thai]"        # the English/CUAD track alone needs only ".[dev]"
 
 # 1. data
 contract-ner build-thai                # synthetic Thai train/val/test + gold set → data/processed/thai

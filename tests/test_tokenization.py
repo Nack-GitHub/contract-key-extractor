@@ -1,7 +1,12 @@
+import importlib.util
+
 import pytest
 
 from contract_ner.schema import LABEL2ID, Span, spans_to_bio
 from contract_ner.tokenization import Encoder, lowercase_ascii, segment_words
+
+# Thai cases need the ``thai`` extra (``pip install -e ".[thai]"``); they skip, not fail, without it.
+thai = pytest.mark.skipif(importlib.util.find_spec("pythainlp") is None, reason="pythainlp not installed")
 
 
 def test_lowercase_ascii_preserves_length_and_thai():
@@ -11,6 +16,7 @@ def test_lowercase_ascii_preserves_length_and_thai():
     assert out == "บริษัท abc co., ltd. ตกลง İ"
 
 
+@thai
 def test_thai_segmentation_tiles_text_without_whitespace_tokens():
     text = "สัญญาฉบับนี้ทำขึ้นระหว่าง บริษัท เอบีซี จำกัด วันที่ 1 มกราคม 2569"
     offsets = segment_words(text, "th")
@@ -36,6 +42,7 @@ def test_unknown_lang():
 
 @pytest.fixture(scope="module")
 def wangchan_tok():
+    pytest.importorskip("pythainlp")
     from transformers import AutoTokenizer
     try:
         return AutoTokenizer.from_pretrained("airesearch/wangchanberta-base-att-spm-uncased")

@@ -18,9 +18,9 @@ from dataclasses import dataclass, field
 from datetime import date, datetime
 
 from dateutil import parser as du_parser
-from pythainlp.transliterate import romanize
 
-from .data.thai_lexicon import EN_MONTHS, PLACE_EN, THAI_MONTHS, THAI_MONTHS_ABBR
+from .data.thai_lexicon import EN_MONTHS, THAI_MONTHS, THAI_MONTHS_ABBR
+from .lang import guess_lang, rules_for
 from .schema import Span
 
 # ------------------------------------------------------------------ digits / numbers
@@ -259,15 +259,6 @@ _COURT_EN = {
     "กฎหมายแห่งราชอาณาจักรไทย": "Laws of the Kingdom of Thailand",
     "กฎหมายของประเทศไทย": "Laws of Thailand",
 }
-def _romanize(thai: str) -> str:
-    if thai in PLACE_EN:
-        return PLACE_EN[thai]
-    try:
-        return romanize(thai, engine="royin").title()
-    except Exception:  # pragma: no cover - transliteration is best-effort
-        return thai
-
-
 _PROV_COURT_RE = re.compile(r"^ศาล(จังหวัด|แขวง|ปกครอง)(.+)$")
 _ARBITRATION_RE = re.compile(r"อนุญาโตตุลาการ|arbitrat|THAC", re.IGNORECASE)
 _GOV_LAW_RE = re.compile(r"กฎหมาย|laws? of|governed by", re.IGNORECASE)
@@ -288,7 +279,7 @@ def normalize_jurisdiction(text: str) -> dict:
         m = _PROV_COURT_RE.match(t)
         if m:
             level = {"จังหวัด": "Provincial Court", "แขวง": "Kwaeng (District) Court", "ปกครอง": "Administrative Court"}[m.group(1)]
-            english = f"{_romanize(m.group(2))} {level}"
+            english = f"{rules_for('th').romanize(m.group(2))} {level}"
         elif kind == "arbitration" and "สำนักงานศาลยุติธรรม" in t:
             english = "Thai Arbitration Institute, Office of the Judiciary"
         elif "THAC" in t:
@@ -306,38 +297,25 @@ def normalize_jurisdiction(text: str) -> dict:
 
 
 # ------------------------------------------------------------------ span validation
-_DIGIT_RE = re.compile(r"[\d๐-๙]")
 _ALNUM_RE = re.compile(r"\w")
-_TERM_WORD_RE = re.compile(r"year|month|day|week|term|expir|terminat|anniversar|effective|commence|ปี|เดือน|วัน", re.I)
 _EN_STOPWORDS = {"the", "and", "or", "of", "a", "an", "to", "by", "in", "on", "for", "with", "each", "party", "parties"}
 
 
-def validate_span(span: Span) -> bool:
+def validate_span(span: Span, lang: str | None = None) -> bool:
     """Cheap type-consistency check on the surface form (span classification stage).
 
     Rejects fragments that cannot be a value of the entity type: a "date"
     without a parsable date, a "jurisdiction" naming no court/law/arbitral
     body, a "party" that is only punctuation or a function word, and so on.
+    Generic checks here; keyword patterns come from the language's rules
+    (``lang`` is guessed from the script when not given).
     """
     t = span.text.strip()
     if not t or not _ALNUM_RE.search(t):
         return False
     if t.lower().strip("\"'“”‘’()[]., ") in _EN_STOPWORDS:
         return False
-    if span.label in ("AGREEMENT_DATE", "START_DATE", "END_DATE"):
-        if len(t.split()) <= 4:  # a bare date expression must parse
-            return bool(_DIGIT_RE.search(t)) and normalize_date(t) is not None
-        # clause-level term spans (CUAD style) may describe the term without a literal date
-        return bool(_DIGIT_RE.search(t)) or bool(_TERM_WORD_RE.search(t))
-    if span.label in ("CONTRACT_VALUE", "PENALTY_RATE"):
-        return bool(_DIGIT_RE.search(t))
-    if span.label == "PAYMENT_DUE":
-        return bool(_DIGIT_RE.search(t)) or bool(re.search(r"สิ้นเดือน|ต้นเดือน|ราย|ทุก|month|quarter|annual|invoice", t))
-    if span.label == "JURISDICTION":
-        return bool(re.search(r"ศาล|กฎหมาย|อนุญาโตตุลาการ|court|law|arbitra|tribunal|jurisdiction", t, re.IGNORECASE))
-    if span.label == "PARTY":
-        return len(t) >= 2 and re.search(r"[^\W\d_]", t) is not None  # at least one letter
-    return True
+    return rules_for(lang or guess_lang(t)).validate_span(span)
 
 
 # ------------------------------------------------------------------ assembly
@@ -424,8 +402,8 @@ def _pick_primary(cands: list[tuple[Span, float]], prefer=None) -> tuple[Span, f
 
 def assemble(text: str, spans: list[tuple[Span, float]], lang: str = "th") -> dict:
     """Build the structured record from ``(span, confidence)`` predictions."""
-    valid = [(sp, c) for sp, c in spans if validate_span(sp)]
-    invalid = [(sp, c) for sp, c in spans if not validate_span(sp)]
+    valid = [(sp, c) for sp, c in spans if validate_span(sp, lang)]
+    invalid = [(sp, c) for sp, c in spans if not validate_span(sp, lang)]
     by_label: dict[str, list[tuple[Span, float]]] = {}
     for sp, c in valid:
         by_label.setdefault(sp.label, []).append((sp, c))

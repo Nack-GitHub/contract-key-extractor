@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "contract-ner"
 version = "0.1.0"
-description = "Key Information Extraction (NER + span post-processing) for Thai and English contracts"
+description = "Key Information Extraction (NER + span post-processing) for English (CUAD) and Thai contracts"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -13,9 +13,6 @@ dependencies = [
     "torch>=2.2",
     "transformers>=4.45",
     "accelerate>=0.30",
-    "pythainlp>=5.0",
-    "sentencepiece>=0.2",
-    "protobuf>=4",
     "seqeval>=1.2",
     "pandas>=2.0",
     "pyyaml>=6",
@@ -25,6 +22,8 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.5"]
+# Thai track: PyThaiNLP word segmentation + SentencePiece for WangchanBERTa
+thai = ["pythainlp>=5.0", "sentencepiece>=0.2", "protobuf>=4"]
 
 [project.scripts]
 contract-ner = "contract_ner.cli:main"

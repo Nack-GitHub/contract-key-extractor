@@ -1,3 +1,5 @@
+import importlib.util
+
 import pytest
 
 from contract_ner.postprocess import (
@@ -12,6 +14,9 @@ from contract_ner.postprocess import (
     validate_span,
 )
 from contract_ner.schema import Span
+
+# Thai cases need the ``thai`` extra (``pip install -e ".[thai]"``); they skip, not fail, without it.
+thai = pytest.mark.skipif(importlib.util.find_spec("pythainlp") is None, reason="pythainlp not installed")
 
 
 @pytest.mark.parametrize("text,iso", [
@@ -81,6 +86,7 @@ def test_normalize_payment_due(text, expected):
     assert normalize_payment_due(text) == expected
 
 
+@thai
 def test_normalize_jurisdiction():
     assert normalize_jurisdiction("ศาลแพ่งกรุงเทพฯ") == {"kind": "court", "english": "Bangkok Civil Court"}
     assert normalize_jurisdiction("ศาลจังหวัดเชียงใหม่")["english"] == "Chiang Mai Provincial Court"
@@ -93,6 +99,7 @@ def test_normalize_jurisdiction():
     assert normalize_jurisdiction("exclusive jurisdiction of the courts located in New York County, New York")["english"] == "courts of New York County, New York"
 
 
+@thai
 def test_validate_span_rejects_impossible_surface_forms():
     assert validate_span(Span(0, 5, "START_DATE", "1 มกราคม 2569"))
     assert not validate_span(Span(0, 5, "START_DATE", "สัญญานี้"))
@@ -113,6 +120,7 @@ def _sp(text, start, label, conf=0.9):
     return Span(start, start + len(text), label, text), conf
 
 
+@thai
 def test_assemble_thai_deck_example():
     text = ("สัญญาฉบับนี้ทำขึ้นระหว่าง บริษัท เอบีซี จำกัด (“ผู้ว่าจ้าง”) และ บริษัท เอ็กซ์วายแซด จำกัด (“ผู้รับจ้าง”) "
             "มีผลตั้งแต่วันที่ 1 มกราคม 2569 ถึงวันที่ 31 ธันวาคม 2569 มูลค่าสัญญารวม 2,500,000 บาท กำหนดชำระทุกวันที่ 5 ของเดือน "
@@ -175,6 +183,7 @@ def test_party_grouping_merges_repeated_mentions():
     assert (a.surface, b.surface, rest) == ("บริษัท ก จำกัด", "นาย ข", [])
 
 
+@thai
 def test_thai_person_party_is_not_an_alias():
     text = "ข้าพเจ้า นางสาวพรทิพย์ ศรีวิไล ผู้ให้เช่า ตกลงให้ บริษัท คาเฟ่ดีไซน์ จำกัด ผู้เช่า"
     spans = [_sp("นางสาวพรทิพย์ ศรีวิไล", text.index("นางสาว"), "PARTY"),

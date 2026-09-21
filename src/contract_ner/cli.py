@@ -22,7 +22,15 @@ def _cmd_download(args: argparse.Namespace) -> None:
     print(f"copied {[p.name for p in dst.iterdir()]} → {dst}")
 
 
+def _require_thai() -> None:
+    import importlib.util
+
+    if importlib.util.find_spec("pythainlp") is None:
+        sys.exit('the Thai track needs the "thai" extra: pip install -e ".[thai]"')
+
+
 def _cmd_build_thai(args: argparse.Namespace) -> None:
+    _require_thai()
     from .data.thai_gold import load_gold_dir
     from .data.thai_synthetic import generate
     from .io import write_jsonl
@@ -118,6 +126,7 @@ def _cmd_export_conll(args: argparse.Namespace) -> None:
 
 
 def _cmd_sample(args: argparse.Namespace) -> None:
+    _require_thai()
     from .data.thai_synthetic import generate
 
     for d in generate(args.n, seed=args.seed):

@@ -1,4 +1,5 @@
 """Runs only when a trained Thai model is present (``contract-ner train``)."""
+import importlib.util
 from pathlib import Path
 
 import pytest
@@ -6,7 +7,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "models" / "thai-wangchanberta"
 
-pytestmark = pytest.mark.skipif(not (MODEL / "model.safetensors").exists(), reason="trained Thai model not found")
+pytestmark = pytest.mark.skipif(not (MODEL / "model.safetensors").exists() or importlib.util.find_spec("pythainlp") is None,
+                                reason="trained Thai model or pythainlp not found")
 
 
 @pytest.fixture(scope="module")

@@ -5,7 +5,7 @@ Two layers of tokenisation are involved:
 1. **Words** – the unit at which BIO tags live and at which we evaluate.
    Thai has no spaces, so words come from PyThaiNLP's ``newmm`` dictionary
    segmenter (the approach described in the project deck). English words come
-   from a small regex.
+   from a small regex. Both live in :mod:`contract_ner.lang`.
 2. **Subwords** – what the transformer consumes, aligned back to words through
    character offsets. Two encodings are supported:
 
@@ -30,41 +30,15 @@ overlapping windows of subwords so that nothing is truncated.
 from __future__ import annotations
 
 import bisect
-import functools
 import json
 import re
 from dataclasses import dataclass, field
 
-from pythainlp.corpus.common import thai_words
-from pythainlp.tokenize import Tokenizer
-from pythainlp.util import Trie
 from tokenizers import Tokenizer as _BackendTokenizer
 
+from .lang import rules_for
 from .schema import LABEL2ID, O_LABEL
 
-# Domain adaptation of the newmm dictionary. Entity boundaries can only fall on
-# word boundaries, so compounds that glue a non-entity word to an entity word
-# (``เขตอำนาจศาล`` → jurisdiction + court) are split, and contract vocabulary
-# that newmm otherwise breaks into unhelpful pieces (``เที่ยว|ละ``) is added.
-_DOMAIN_REMOVE = {"เขตอำนาจศาล", "ตามกฎหมาย", "อัตราร้อยละ", "ในอัตรา"}
-_DOMAIN_ADD = {
-    "เขตอำนาจ", "เดือนละ", "วันละ", "ปีละ", "เที่ยวละ", "ครั้งละ", "คนละ", "ชั่วโมงละ", "งวดละ", "เล่มละ",
-    "เครื่องละ", "ต่อเดือน", "ต่อวัน", "ต่อปี", "ต่อครั้ง", "ต่อเที่ยว", "บาทถ้วน", "นับถัดจาก", "นับแต่",
-    "ผู้ให้เช่า", "ผู้เช่า", "ผู้กู้", "ผู้ให้กู้", "ผู้อนุญาต", "ผู้รับอนุญาต", "ผู้รับเหมา", "ผู้จัดจำหน่าย",
-    "ตัวแทนจำหน่าย", "ผู้ให้สิทธิ", "ผู้รับสิทธิ", "ผู้เปิดเผยข้อมูล", "ผู้รับข้อมูล", "คู่สัญญา", "เบี้ยปรับ",
-    "ดอกเบี้ยผิดนัด", "หนังสือค้ำประกัน", "ภาษีมูลค่าเพิ่ม", "ใบกำกับภาษี", "ใบวางบิล", "ใบสั่งซื้อ",
-    "อนุญาโตตุลาการ", "สถาบันอนุญาโตตุลาการ", "ศาลแพ่งกรุงเทพใต้", "ศาลทรัพย์สินทางปัญญาและการค้าระหว่างประเทศกลาง",
-    "ศาลแรงงานกลาง", "ศาลปกครองกลาง", "ศาลล้มละลายกลาง", "ศาลภาษีอากรกลาง", "ลงวันที่", "ลงนาม",
-}
-
-
-@functools.lru_cache(maxsize=1)
-def thai_tokenizer() -> Tokenizer:
-    """newmm tokenizer with the contract-domain dictionary (built once)."""
-    words = (set(thai_words()) - _DOMAIN_REMOVE) | _DOMAIN_ADD
-    return Tokenizer(custom_dict=Trie(words), engine="newmm", keep_whitespace=True)
-
-_EN_WORD_RE = re.compile(r"\w+(?:[-'’.]\w+)*|[^\w\s]", re.UNICODE)
 _ASCII_UPPER_RE = re.compile(r"[A-Z]+")
 
 
@@ -81,32 +55,10 @@ def lowercase_ascii(text: str) -> str:
 def segment_words(text: str, lang: str = "th") -> list[tuple[int, int]]:
     """Return ``(start, end)`` character offsets of the words in ``text``.
 
-    Whitespace is never a word. Thai text is segmented with PyThaiNLP newmm;
-    Latin runs inside Thai text are kept as whole tokens by newmm itself.
+    Whitespace is never a word. The segmenter comes from :mod:`contract_ner.lang`
+    (PyThaiNLP newmm for Thai, a regex for English).
     """
-    if lang == "th":
-        return _segment_thai(text)
-    if lang == "en":
-        return [(m.start(), m.end()) for m in _EN_WORD_RE.finditer(text)]
-    raise ValueError(f"unsupported lang {lang!r}")
-
-
-def _segment_thai(text: str) -> list[tuple[int, int]]:
-    toks = thai_tokenizer().word_tokenize(text)
-    offsets: list[tuple[int, int]] = []
-    pos = 0
-    for tok in toks:
-        if not tok:
-            continue
-        # newmm preserves the surface string, so tokens tile the text in order.
-        idx = text.find(tok, pos)
-        if idx < 0:  # should not happen; fall back to sequential assumption
-            idx = pos
-        end = idx + len(tok)
-        if not tok.isspace():
-            offsets.append((idx, end))
-        pos = end
-    return offsets
+    return rules_for(lang).segment_words(text)
 
 
 @dataclass

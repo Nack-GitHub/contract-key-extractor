@@ -2,6 +2,10 @@ import collections
 import random
 from datetime import date
 
+import pytest
+
+pytest.importorskip("pythainlp")
+
 from contract_ner.data.thai_synthetic import fmt_money, fmt_thai_date, generate, render
 from contract_ner.postprocess import normalize_date, normalize_money
 from contract_ner.schema import ENTITY_TYPES

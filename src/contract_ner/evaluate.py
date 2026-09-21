@@ -74,7 +74,7 @@ def evaluate_documents(extractor: Extractor, docs: list[Document], max_errors: i
         gold_tags = spans_to_bio(offsets, gold)
         pred_spans = [sp for sp in extractor.predict(d.text) if sp.label in types]
         if validate:
-            pred_spans = [sp for sp in pred_spans if validate_span(sp)]
+            pred_spans = [sp for sp in pred_spans if validate_span(sp, extractor.lang)]
         y_true.append(gold_tags)
         y_pred.append(spans_to_bio(offsets, pred_spans))
 

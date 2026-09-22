@@ -28,6 +28,7 @@ from transformers import (
     set_seed,
 )
 
+from .augment import map_labels, prepare_training_documents
 from .io import read_jsonl
 from .schema import ENTITY_TYPES, O_LABEL, Document, build_bio_labels, spans_to_bio
 from .tokenization import Encoder, segment_words
@@ -55,8 +56,19 @@ class TrainConfig:
     weight_decay: float = 0.01
     seed: int = 42
     negative_window_keep: float = 1.0  # fraction of entity-free windows kept for training
+    # Entity-free windows from the opening of a contract are the hard negatives: the preamble is
+    # where addresses, registration numbers, signature dates and page headers live, and it is also
+    # where four of five gold spans of the short types sit, so a false positive there is expensive.
+    # These two settings keep that opening at a higher rate than the body of the document.
+    negative_window_keep_document_head: float | None = None  # None = same rate as the rest
+    document_head_fraction: float = 0.1  # how much of a document counts as its opening
     max_train_docs: int | None = None
     grad_accum: int = 1
+    label_map: dict[str, str] | None = None  # fold gold labels into another type, e.g. {START_DATE: AGREEMENT_DATE}
+    # labels whose training spans are dropped when they contain no normalisable date
+    dateless_labels_to_drop: list[str] | None = None
+    date_augment: float = 0.0  # fraction of dated AGREEMENT/START_DATE spans rewritten into another date format
+    party_case_augment: float = 0.0  # fraction of party spans rewritten in capitals (offsets unchanged)
 
     def __post_init__(self) -> None:
         if self.entity_types is not None:
@@ -65,6 +77,9 @@ class TrainConfig:
                 raise ValueError(f"unknown entity types in config: {unknown}")
             if not self.entity_types:
                 raise ValueError("entity_types must list at least one type (or be omitted)")
+        for src, dst in (self.label_map or {}).items():
+            if src not in ENTITY_TYPES or dst not in self.types:
+                raise ValueError(f"label_map {src!r} -> {dst!r}: target must be one of the model's types")
 
     @property
     def types(self) -> tuple[str, ...]:
@@ -79,20 +94,36 @@ class TrainConfig:
 
 # ------------------------------------------------------------------ features
 def documents_to_windows(docs: list[Document], encoder: Encoder, lang: str,
-                         negative_keep: float = 1.0, rng: random.Random | None = None) -> list[dict]:
-    """Encode documents into training windows; spans of types outside the encoder's label space are ignored."""
+                         negative_keep: float = 1.0, rng: random.Random | None = None,
+                         negative_keep_document_head: float | None = None,
+                         document_head_fraction: float = 0.1) -> list[dict]:
+    """Encode documents into training windows; spans of types outside the encoder's label space are ignored.
+
+    Over ninety percent of the windows of a contract contain no entity at all, so
+    they are sampled down to ``negative_keep``. Windows from the opening of a
+    document can be kept at their own, higher rate
+    (``negative_keep_document_head``): that is where the text most resembles an
+    entity without being one, and where most of the short entity types actually
+    occur, so those negatives are worth more than a window from the middle of an
+    indemnity clause.
+    """
     rng = rng or random.Random(0)
     o_id = encoder.label2id[O_LABEL]
+    head_keep = negative_keep if negative_keep_document_head is None else negative_keep_document_head
     feats: list[dict] = []
     for d in docs:
         offsets = segment_words(d.text, lang)
         spans = [sp for sp in d.entities if f"B-{sp.label}" in encoder.label2id]
         tags = spans_to_bio(offsets, spans)
         enc = encoder.encode(d.text, offsets, tags)
+        head_end = max(1, int(len(d.text) * document_head_fraction))
         for w in enc.windows:
             has_entity = any(l not in (-100, o_id) for l in w.labels)
-            if not has_entity and rng.random() > negative_keep:
-                continue
+            if not has_entity:
+                starts = [enc.subword_offsets[i][0] for i in w.subword_index if i >= 0]
+                in_head = bool(starts) and min(starts) < head_end
+                if rng.random() > (head_keep if in_head else negative_keep):
+                    continue
             feats.append({"input_ids": w.input_ids, "attention_mask": w.attention_mask, "labels": w.labels})
     return feats
 
@@ -148,15 +179,20 @@ def train(cfg: TrainConfig) -> dict:
     train_docs = read_jsonl(cfg.train)
     if cfg.max_train_docs:
         train_docs = train_docs[: cfg.max_train_docs]
-    val_docs = read_jsonl(cfg.val)
+    val_docs = [map_labels(d, cfg.label_map) for d in read_jsonl(cfg.val)]
     rng = random.Random(cfg.seed)
-    train_feats = documents_to_windows(train_docs, encoder, cfg.lang, cfg.negative_window_keep, rng)
+    train_docs = prepare_training_documents(train_docs, cfg.label_map, cfg.date_augment, rng,
+                                            cfg.dateless_labels_to_drop, cfg.party_case_augment)
+    train_feats = documents_to_windows(train_docs, encoder, cfg.lang, cfg.negative_window_keep, rng,
+                                       cfg.negative_window_keep_document_head, cfg.document_head_fraction)
     val_feats = documents_to_windows(val_docs, encoder, cfg.lang, 1.0)
     print(f"[{cfg.name}] train docs={len(train_docs)} windows={len(train_feats)} | "
           f"val docs={len(val_docs)} windows={len(val_feats)} | labels={len(labels)} ({', '.join(cfg.types)})")
 
+    # checkpoints stored in half precision (deberta-v3) would otherwise be fine-tuned in fp16 without
+    # loss scaling and diverge to NaN within ~100 steps on MPS
     model = AutoModelForTokenClassification.from_pretrained(
-        cfg.model_name, num_labels=len(labels), id2label=id2label, label2id=label2id,
+        cfg.model_name, num_labels=len(labels), id2label=id2label, label2id=label2id, dtype=torch.float32,
     )
 
     steps_per_epoch = math.ceil(len(train_feats) / (cfg.batch_size * cfg.grad_accum))
@@ -201,7 +237,8 @@ def train(cfg: TrainConfig) -> dict:
     with open(out / "pipeline_config.json", "w", encoding="utf-8") as f:
         json.dump({"lang": cfg.lang, "lowercase": cfg.lowercase, "per_word": cfg.per_word,
                    "max_length": cfg.max_length, "stride": cfg.stride, "base_model": cfg.model_name,
-                   "name": cfg.name, "entity_types": list(cfg.types)}, f, indent=2)
+                   "name": cfg.name, "entity_types": list(cfg.types), "label_map": cfg.label_map or {}},
+                  f, indent=2)
     history = [h for h in trainer.state.log_history]
     with open(out / "train_log.json", "w", encoding="utf-8") as f:
         json.dump({"config": cfg.__dict__, "final_eval": final_eval, "log_history": history}, f, indent=2)

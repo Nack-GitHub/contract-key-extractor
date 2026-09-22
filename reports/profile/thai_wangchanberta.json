@@ -1,0 +1,1857 @@
+{
+  "splits": [
+    {
+      "name": "train",
+      "path": "data/processed/thai/train.jsonl",
+      "lang": "th",
+      "n_documents": 3000,
+      "n_spans": 26880,
+      "chars_median": 1598,
+      "entity_char_ratio": 0.14309876326876136,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 10066,
+          "n_documents_with_label": 2851,
+          "coverage": 0.9503333333333334,
+          "spans_per_document": {
+            "0": 149,
+            "1": 0,
+            "2": 908,
+            "3+": 1943
+          },
+          "words_median": 3.0,
+          "words_p90": 5,
+          "words_max": 6,
+          "chars_median": 25.0,
+          "position": {
+            "first 5%": 0.12408106497119015,
+            "5-25%": 0.373733359825154,
+            "25-50%": 0.08484005563282336,
+            "second half": 0.4173455195708325
+          },
+          "forms": {
+            "company": 6842,
+            "person": 1447,
+            "other": 974,
+            "organization": 803
+          },
+          "form_share": {
+            "company": 0.679713888336976,
+            "person": 0.143751241804093,
+            "other": 0.09676137492549175,
+            "organization": 0.0797734949334393
+          },
+          "form_examples": {
+            "organization": "มหาวิทยาลัยราชภัฏนครปฐม",
+            "company": "บริษัท คลีน เกษตร จำกัด",
+            "other": "ว่าที่ร้อยตรีพิมพ์ใจ อินทร์แก้ว",
+            "person": "นาย สุดา สุวรรณ"
+          },
+          "forms_absent": [
+            "latin-name"
+          ],
+          "repeated_value_rate": 0.43353864494337374
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 2851,
+          "n_documents_with_label": 2851,
+          "coverage": 0.9503333333333334,
+          "spans_per_document": {
+            "0": 149,
+            "1": 2851,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.3595229743949491,
+            "5-25%": 0.3251490705015784,
+            "25-50%": 0.24517713083128725,
+            "second half": 0.07015082427218519
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 1553,
+            "buddhist-era/arabic-numerals": 696,
+            "numeric": 306,
+            "christian-era/arabic-numerals": 136,
+            "year-without-era/thai-numerals": 91,
+            "buddhist-era/thai-numerals": 57,
+            "christian-era/thai-numerals": 12
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5447211504735181,
+            "buddhist-era/arabic-numerals": 0.2441248684672045,
+            "numeric": 0.10733076113644335,
+            "christian-era/arabic-numerals": 0.047702560505085936,
+            "year-without-era/thai-numerals": 0.03191862504384427,
+            "buddhist-era/thai-numerals": 0.01999298491757278,
+            "christian-era/thai-numerals": 0.004209049456331112
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "21 ม.ค. 2566",
+            "year-without-era/thai-numerals": "๒๐ กุมภาพันธ์ ๒๕๖๗",
+            "numeric": "14/11/2565",
+            "buddhist-era/thai-numerals": "๒๓ กันยายน พ.ศ. ๒๕๗๐",
+            "christian-era/arabic-numerals": "20 กันยายน ค.ศ. 2022",
+            "buddhist-era/arabic-numerals": "30 มกราคม พ.ศ. 2568",
+            "christian-era/thai-numerals": "๒ สิงหาคม ค.ศ. ๒๐๒๒"
+          },
+          "forms_absent": [
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 2442,
+          "n_documents_with_label": 2442,
+          "coverage": 0.814,
+          "spans_per_document": {
+            "0": 558,
+            "1": 2442,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 14.0,
+          "position": {
+            "first 5%": 0.0020475020475020475,
+            "5-25%": 0.027436527436527438,
+            "25-50%": 0.43611793611793614,
+            "second half": 0.5343980343980343
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 1334,
+            "buddhist-era/arabic-numerals": 611,
+            "numeric": 263,
+            "christian-era/arabic-numerals": 109,
+            "year-without-era/thai-numerals": 85,
+            "buddhist-era/thai-numerals": 31,
+            "christian-era/thai-numerals": 9
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5462735462735463,
+            "buddhist-era/arabic-numerals": 0.2502047502047502,
+            "numeric": 0.1076986076986077,
+            "christian-era/arabic-numerals": 0.04463554463554464,
+            "year-without-era/thai-numerals": 0.03480753480753481,
+            "buddhist-era/thai-numerals": 0.012694512694512694,
+            "christian-era/thai-numerals": 0.0036855036855036856
+          },
+          "form_examples": {
+            "buddhist-era/arabic-numerals": "21 มกราคม พ.ศ. 2566",
+            "year-without-era/arabic-numerals": "26 มิถุนายน 2566",
+            "numeric": "๒๐/๐๒/๒๕๖๗",
+            "year-without-era/thai-numerals": "๘ ตุลาคม ๒๐๒๗",
+            "christian-era/arabic-numerals": "1 ตุลาคม ค.ศ. 2021",
+            "christian-era/thai-numerals": "๑๑ กุมภาพันธ์ ค.ศ. ๒๐๒๑",
+            "buddhist-era/thai-numerals": "๔ พฤศจิกายน พ.ศ. ๒๕๖๒"
+          },
+          "forms_absent": [
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 2137,
+          "n_documents_with_label": 2137,
+          "coverage": 0.7123333333333334,
+          "spans_per_document": {
+            "0": 863,
+            "1": 2137,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.021993448759943846,
+            "25-50%": 0.37950397753860554,
+            "second half": 0.5985025737014507
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 1156,
+            "buddhist-era/arabic-numerals": 508,
+            "numeric": 253,
+            "christian-era/arabic-numerals": 103,
+            "year-without-era/thai-numerals": 77,
+            "buddhist-era/thai-numerals": 34,
+            "christian-era/thai-numerals": 6
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5409452503509593,
+            "buddhist-era/arabic-numerals": 0.2377164248947122,
+            "numeric": 0.11839026672905943,
+            "christian-era/arabic-numerals": 0.048198408984557795,
+            "year-without-era/thai-numerals": 0.03603182030884417,
+            "buddhist-era/thai-numerals": 0.015910154422087038,
+            "christian-era/thai-numerals": 0.0028076743097800653
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "20 เม.ย. 2566",
+            "buddhist-era/thai-numerals": "๑๙ พฤษภาคม พ.ศ. ๒๕๖๗",
+            "buddhist-era/arabic-numerals": "31 ธันวาคม พ.ศ. 2565",
+            "year-without-era/thai-numerals": "๗ ตุลาคม ๒๕๗๒",
+            "christian-era/arabic-numerals": "31 ธันวาคม ค.ศ. 2023",
+            "numeric": "31-12-2562",
+            "christian-era/thai-numerals": "๒๙ กุมภาพันธ์ ค.ศ. ๒๐๒๔"
+          },
+          "forms_absent": [
+            "duration",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "CONTRACT_VALUE": {
+          "label": "CONTRACT_VALUE",
+          "n_spans": 2338,
+          "n_documents_with_label": 2338,
+          "coverage": 0.7793333333333333,
+          "spans_per_document": {
+            "0": 662,
+            "1": 2338,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 2.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 15.0,
+          "position": {
+            "first 5%": 0.0012831479897348161,
+            "5-25%": 0.0213857998289136,
+            "25-50%": 0.3887938408896493,
+            "second half": 0.5885372112917023
+          },
+          "forms": {
+            "baht-digits": 1734,
+            "per-period": 473,
+            "foreign-currency": 131
+          },
+          "form_share": {
+            "baht-digits": 0.7416595380667237,
+            "per-period": 0.20230966638152267,
+            "foreign-currency": 0.05603079555175364
+          },
+          "form_examples": {
+            "foreign-currency": "USD 304,390,000",
+            "baht-digits": "5,480,000 บาท",
+            "per-period": "407,000.00 บาท ต่อเดือน"
+          },
+          "forms_absent": [
+            "amount-in-words"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "PAYMENT_DUE": {
+          "label": "PAYMENT_DUE",
+          "n_spans": 2090,
+          "n_documents_with_label": 2090,
+          "coverage": 0.6966666666666667,
+          "spans_per_document": {
+            "0": 910,
+            "1": 2090,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 4,
+          "words_max": 6,
+          "chars_median": 27.0,
+          "position": {
+            "first 5%": 0.0004784688995215311,
+            "5-25%": 0.015789473684210527,
+            "25-50%": 0.3167464114832536,
+            "second half": 0.6669856459330143
+          },
+          "forms": {
+            "within-n-days": 1074,
+            "recurring-day": 568,
+            "other": 448
+          },
+          "form_share": {
+            "within-n-days": 0.5138755980861244,
+            "recurring-day": 0.27177033492822966,
+            "other": 0.21435406698564594
+          },
+          "form_examples": {
+            "recurring-day": "ทุกสิ้นเดือน",
+            "other": "ทุก 1 เดือน",
+            "within-n-days": "ภายใน 7 วันนับจากวันสิ้นเดือน"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "PENALTY_RATE": {
+          "label": "PENALTY_RATE",
+          "n_spans": 2383,
+          "n_documents_with_label": 2268,
+          "coverage": 0.756,
+          "spans_per_document": {
+            "0": 732,
+            "1": 2153,
+            "2": 115,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 17,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.007133864876206463,
+            "25-50%": 0.3113722198908938,
+            "second half": 0.6814939152328997
+          },
+          "forms": {
+            "percent-word": 934,
+            "percent-sign": 809,
+            "fixed-amount": 640
+          },
+          "form_share": {
+            "percent-word": 0.3919429290809903,
+            "percent-sign": 0.3394880402853546,
+            "fixed-amount": 0.26856903063365506
+          },
+          "form_examples": {
+            "percent-word": "ร้อยละ 10 ต่อปี",
+            "percent-sign": "๑๘% ของมูลค่าสัญญาต่อปี",
+            "fixed-amount": "10,000 บาท ต่อการฝ่าฝืนแต่ละครั้ง"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.000419639110365086
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 2573,
+          "n_documents_with_label": 2254,
+          "coverage": 0.7513333333333333,
+          "spans_per_document": {
+            "0": 746,
+            "1": 1935,
+            "2": 319,
+            "3+": 0
+          },
+          "words_median": 1,
+          "words_p90": 2,
+          "words_max": 3,
+          "chars_median": 18,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.000388651379712398,
+            "second half": 0.9996113486202876
+          },
+          "forms": {
+            "court": 1480,
+            "governing-law": 709,
+            "arbitration": 384
+          },
+          "form_share": {
+            "court": 0.575204041974349,
+            "governing-law": 0.27555382821609015,
+            "arbitration": 0.14924212980956084
+          },
+          "form_examples": {
+            "court": "ศาลจังหวัดสงขลา",
+            "governing-law": "กฎหมายแห่งราชอาณาจักรไทย",
+            "arbitration": "สำนักงานอนุญาโตตุลาการ สภาหอการค้าแห่งประเทศไทย"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        }
+      }
+    },
+    {
+      "name": "val",
+      "path": "data/processed/thai/val.jsonl",
+      "lang": "th",
+      "n_documents": 300,
+      "n_spans": 2547,
+      "chars_median": 1469,
+      "entity_char_ratio": 0.14369154510541243,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 951,
+          "n_documents_with_label": 281,
+          "coverage": 0.9366666666666666,
+          "spans_per_document": {
+            "0": 19,
+            "1": 0,
+            "2": 112,
+            "3+": 169
+          },
+          "words_median": 3,
+          "words_p90": 5,
+          "words_max": 6,
+          "chars_median": 25,
+          "position": {
+            "first 5%": 0.13038906414300735,
+            "5-25%": 0.3732912723449001,
+            "25-50%": 0.10830704521556257,
+            "second half": 0.38801261829652994
+          },
+          "forms": {
+            "company": 612,
+            "person": 143,
+            "other": 110,
+            "organization": 86
+          },
+          "form_share": {
+            "company": 0.6435331230283912,
+            "person": 0.15036803364879076,
+            "other": 0.1156677181913775,
+            "organization": 0.0904311251314406
+          },
+          "form_examples": {
+            "company": "บริษัท ฟาร์มา จำกัด (มหาชน)",
+            "other": "ว่าที่ร้อยตรีอรทัย ใจดี",
+            "person": "ดร. ชัยวัฒน์ รักไทย",
+            "organization": "องค์การบริหารส่วนจังหวัดภูเก็ต"
+          },
+          "forms_absent": [
+            "latin-name"
+          ],
+          "repeated_value_rate": 0.40904311251314407
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 281,
+          "n_documents_with_label": 281,
+          "coverage": 0.9366666666666666,
+          "spans_per_document": {
+            "0": 19,
+            "1": 281,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.302491103202847,
+            "5-25%": 0.3594306049822064,
+            "25-50%": 0.24199288256227758,
+            "second half": 0.09608540925266904
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 159,
+            "buddhist-era/arabic-numerals": 61,
+            "numeric": 31,
+            "christian-era/arabic-numerals": 14,
+            "year-without-era/thai-numerals": 9,
+            "buddhist-era/thai-numerals": 7
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5658362989323843,
+            "buddhist-era/arabic-numerals": 0.21708185053380782,
+            "numeric": 0.1103202846975089,
+            "christian-era/arabic-numerals": 0.0498220640569395,
+            "year-without-era/thai-numerals": 0.03202846975088968,
+            "buddhist-era/thai-numerals": 0.02491103202846975
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "15 มิถุนายน 2569",
+            "christian-era/arabic-numerals": "1 ธันวาคม ค.ศ. 2020",
+            "buddhist-era/arabic-numerals": "1 เมษายน พ.ศ. 2568",
+            "numeric": "7-10-2562",
+            "year-without-era/thai-numerals": "๑๔ กุมภาพันธ์ ๒๕๖๙",
+            "buddhist-era/thai-numerals": "๒๕ เดือน มกราคม พ.ศ. ๒๕๖๖"
+          },
+          "forms_absent": [
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 229,
+          "n_documents_with_label": 229,
+          "coverage": 0.7633333333333333,
+          "spans_per_document": {
+            "0": 71,
+            "1": 229,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.021834061135371178,
+            "25-50%": 0.48034934497816595,
+            "second half": 0.4978165938864629
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 126,
+            "buddhist-era/arabic-numerals": 62,
+            "numeric": 17,
+            "christian-era/arabic-numerals": 12,
+            "buddhist-era/thai-numerals": 7,
+            "year-without-era/thai-numerals": 4,
+            "christian-era/thai-numerals": 1
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5502183406113537,
+            "buddhist-era/arabic-numerals": 0.27074235807860264,
+            "numeric": 0.07423580786026202,
+            "christian-era/arabic-numerals": 0.05240174672489083,
+            "buddhist-era/thai-numerals": 0.03056768558951965,
+            "year-without-era/thai-numerals": 0.017467248908296942,
+            "christian-era/thai-numerals": 0.004366812227074236
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "15 กรกฎาคม 2569",
+            "buddhist-era/arabic-numerals": "6 ธันวาคม พ.ศ. 2562",
+            "numeric": "13-08-2566",
+            "year-without-era/thai-numerals": "๑ มีนาคม ๒๕๖๙",
+            "buddhist-era/thai-numerals": "๒๔ กุมภาพันธ์ พ.ศ. ๒๕๖๖",
+            "christian-era/arabic-numerals": "10 กุมภาพันธ์ ค.ศ. 2019",
+            "christian-era/thai-numerals": "๑ มีนาคม ค.ศ. ๒๐๒๔"
+          },
+          "forms_absent": [
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 208,
+          "n_documents_with_label": 208,
+          "coverage": 0.6933333333333334,
+          "spans_per_document": {
+            "0": 92,
+            "1": 208,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.019230769230769232,
+            "25-50%": 0.3605769230769231,
+            "second half": 0.6201923076923077
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 121,
+            "buddhist-era/arabic-numerals": 48,
+            "numeric": 24,
+            "year-without-era/thai-numerals": 6,
+            "christian-era/arabic-numerals": 5,
+            "buddhist-era/thai-numerals": 4
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5817307692307693,
+            "buddhist-era/arabic-numerals": 0.23076923076923078,
+            "numeric": 0.11538461538461539,
+            "year-without-era/thai-numerals": 0.028846153846153848,
+            "christian-era/arabic-numerals": 0.02403846153846154,
+            "buddhist-era/thai-numerals": 0.019230769230769232
+          },
+          "form_examples": {
+            "buddhist-era/arabic-numerals": "31 พฤษภาคม พ.ศ. 2564",
+            "year-without-era/arabic-numerals": "8 เมษายน 2564",
+            "christian-era/arabic-numerals": "22 พฤษภาคม ค.ศ. 2029",
+            "numeric": "04/02/2569",
+            "buddhist-era/thai-numerals": "๒๘ กุมภาพันธ์ พ.ศ. ๒๕๗๔",
+            "year-without-era/thai-numerals": "๑๗ April ๒๐๒๘"
+          },
+          "forms_absent": [
+            "duration",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "CONTRACT_VALUE": {
+          "label": "CONTRACT_VALUE",
+          "n_spans": 221,
+          "n_documents_with_label": 221,
+          "coverage": 0.7366666666666667,
+          "spans_per_document": {
+            "0": 79,
+            "1": 221,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 2,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.004524886877828055,
+            "5-25%": 0.04072398190045249,
+            "25-50%": 0.3212669683257919,
+            "second half": 0.6334841628959276
+          },
+          "forms": {
+            "baht-digits": 160,
+            "per-period": 51,
+            "foreign-currency": 10
+          },
+          "form_share": {
+            "baht-digits": 0.7239819004524887,
+            "per-period": 0.23076923076923078,
+            "foreign-currency": 0.04524886877828054
+          },
+          "form_examples": {
+            "baht-digits": "5,411,000 บาท",
+            "per-period": "ในอัตราเดือนละ 70,000 บาท",
+            "foreign-currency": "22,663,000 เยน"
+          },
+          "forms_absent": [
+            "amount-in-words"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "PAYMENT_DUE": {
+          "label": "PAYMENT_DUE",
+          "n_spans": 197,
+          "n_documents_with_label": 197,
+          "coverage": 0.6566666666666666,
+          "spans_per_document": {
+            "0": 103,
+            "1": 197,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 6,
+          "chars_median": 27,
+          "position": {
+            "first 5%": 0.005076142131979695,
+            "5-25%": 0.005076142131979695,
+            "25-50%": 0.26903553299492383,
+            "second half": 0.7208121827411168
+          },
+          "forms": {
+            "within-n-days": 90,
+            "recurring-day": 57,
+            "other": 50
+          },
+          "form_share": {
+            "within-n-days": 0.45685279187817257,
+            "recurring-day": 0.2893401015228426,
+            "other": 0.25380710659898476
+          },
+          "form_examples": {
+            "other": "ในวันที่ 6 พฤศจิกายน 2569",
+            "recurring-day": "ทุกเดือน เดือนละ 30,000 บาท",
+            "within-n-days": "ภายใน 45 วันหลังจากวันได้รับใบแจ้งหนี้ถูกต้องครบถ้วน"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "PENALTY_RATE": {
+          "label": "PENALTY_RATE",
+          "n_spans": 224,
+          "n_documents_with_label": 215,
+          "coverage": 0.7166666666666667,
+          "spans_per_document": {
+            "0": 85,
+            "1": 206,
+            "2": 9,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 17.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.013392857142857142,
+            "25-50%": 0.3125,
+            "second half": 0.6741071428571429
+          },
+          "forms": {
+            "percent-sign": 82,
+            "percent-word": 77,
+            "fixed-amount": 65
+          },
+          "form_share": {
+            "percent-sign": 0.36607142857142855,
+            "percent-word": 0.34375,
+            "fixed-amount": 0.29017857142857145
+          },
+          "form_examples": {
+            "percent-word": "ร้อยละ 10 ของมูลค่าสัญญา",
+            "percent-sign": "0.5% ต่อปี",
+            "fixed-amount": "คนละ 2,000 บาทต่อชั่วโมง"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 236,
+          "n_documents_with_label": 215,
+          "coverage": 0.7166666666666667,
+          "spans_per_document": {
+            "0": 85,
+            "1": 194,
+            "2": 21,
+            "3+": 0
+          },
+          "words_median": 1.0,
+          "words_p90": 2,
+          "words_max": 3,
+          "chars_median": 17.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.0,
+            "second half": 1.0
+          },
+          "forms": {
+            "court": 130,
+            "governing-law": 70,
+            "arbitration": 36
+          },
+          "form_share": {
+            "court": 0.5508474576271186,
+            "governing-law": 0.2966101694915254,
+            "arbitration": 0.15254237288135594
+          },
+          "form_examples": {
+            "governing-law": "กฎหมายไทย",
+            "court": "ศาลจังหวัดขอนแก่น",
+            "arbitration": "สถาบันอนุญาโตตุลาการ สำนักงานศาลยุติธรรม"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        }
+      }
+    },
+    {
+      "name": "test_gold",
+      "path": "data/processed/thai/test_gold.jsonl",
+      "lang": "th",
+      "n_documents": 24,
+      "n_spans": 217,
+      "chars_median": 1005,
+      "entity_char_ratio": 0.18345563709139426,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 57,
+          "n_documents_with_label": 24,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 0,
+            "2": 18,
+            "3+": 6
+          },
+          "words_median": 3,
+          "words_p90": 5,
+          "words_max": 6,
+          "chars_median": 29,
+          "position": {
+            "first 5%": 0.14035087719298245,
+            "5-25%": 0.7368421052631579,
+            "25-50%": 0.017543859649122806,
+            "second half": 0.10526315789473684
+          },
+          "forms": {
+            "company": 35,
+            "person": 12,
+            "organization": 7,
+            "latin-name": 2,
+            "other": 1
+          },
+          "form_share": {
+            "company": 0.6140350877192983,
+            "person": 0.21052631578947367,
+            "organization": 0.12280701754385964,
+            "latin-name": 0.03508771929824561,
+            "other": 0.017543859649122806
+          },
+          "form_examples": {
+            "company": "บริษัท เอบีซี จำกัด",
+            "organization": "เทศบาลตำบลแม่ริม",
+            "person": "นางสาวพรทิพย์ ศรีวิไล",
+            "latin-name": "Siam Digital Ventures Co., Ltd.",
+            "other": "กิจการร่วมค้า เอสทีเอ็น-ไทยวัฒน์"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.14035087719298245
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 23,
+          "n_documents_with_label": 23,
+          "coverage": 0.9583333333333334,
+          "spans_per_document": {
+            "0": 1,
+            "1": 23,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 4,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.13043478260869565,
+            "5-25%": 0.6086956521739131,
+            "25-50%": 0.13043478260869565,
+            "second half": 0.13043478260869565
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 19,
+            "buddhist-era/arabic-numerals": 2,
+            "year-without-era/thai-numerals": 1,
+            "numeric": 1
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.8260869565217391,
+            "buddhist-era/arabic-numerals": 0.08695652173913043,
+            "year-without-era/thai-numerals": 0.043478260869565216,
+            "numeric": 0.043478260869565216
+          },
+          "form_examples": {
+            "year-without-era/thai-numerals": "๑๒ กุมภาพันธ์ ๒๕๖๗",
+            "buddhist-era/arabic-numerals": "25 มีนาคม พ.ศ. 2568",
+            "year-without-era/arabic-numerals": "9 สิงหาคม 2567",
+            "numeric": "01/04/2569"
+          },
+          "forms_absent": [
+            "buddhist-era/thai-numerals",
+            "christian-era/arabic-numerals",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 19,
+          "n_documents_with_label": 19,
+          "coverage": 0.7916666666666666,
+          "spans_per_document": {
+            "0": 5,
+            "1": 19,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 13,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.631578947368421,
+            "second half": 0.3684210526315789
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 17,
+            "year-without-era/thai-numerals": 1,
+            "numeric": 1
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.8947368421052632,
+            "year-without-era/thai-numerals": 0.05263157894736842,
+            "numeric": 0.05263157894736842
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "1 มกราคม 2569",
+            "year-without-era/thai-numerals": "๑๓ กุมภาพันธ์ ๒๕๖๗",
+            "numeric": "15/04/2569"
+          },
+          "forms_absent": [
+            "buddhist-era/arabic-numerals",
+            "buddhist-era/thai-numerals",
+            "christian-era/arabic-numerals",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 22,
+          "n_documents_with_label": 22,
+          "coverage": 0.9166666666666666,
+          "spans_per_document": {
+            "0": 2,
+            "1": 22,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 15.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.5454545454545454,
+            "second half": 0.45454545454545453
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 20,
+            "year-without-era/thai-numerals": 1,
+            "numeric": 1
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.9090909090909091,
+            "year-without-era/thai-numerals": 0.045454545454545456,
+            "numeric": 0.045454545454545456
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "31 ธันวาคม 2569",
+            "year-without-era/thai-numerals": "๑๒ พฤษภาคม ๒๕๖๗",
+            "numeric": "14/10/2569"
+          },
+          "forms_absent": [
+            "buddhist-era/arabic-numerals",
+            "buddhist-era/thai-numerals",
+            "christian-era/arabic-numerals",
+            "duration",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "CONTRACT_VALUE": {
+          "label": "CONTRACT_VALUE",
+          "n_spans": 23,
+          "n_documents_with_label": 23,
+          "coverage": 0.9583333333333334,
+          "spans_per_document": {
+            "0": 1,
+            "1": 23,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 2,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 13,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.043478260869565216,
+            "25-50%": 0.7391304347826086,
+            "second half": 0.21739130434782608
+          },
+          "forms": {
+            "baht-digits": 15,
+            "per-period": 6,
+            "foreign-currency": 1,
+            "amount-in-words": 1
+          },
+          "form_share": {
+            "baht-digits": 0.6521739130434783,
+            "per-period": 0.2608695652173913,
+            "foreign-currency": 0.043478260869565216,
+            "amount-in-words": 0.043478260869565216
+          },
+          "form_examples": {
+            "baht-digits": "2,500,000 บาท",
+            "per-period": "เดือนละ 45,000 บาท",
+            "foreign-currency": "USD 48,000",
+            "amount-in-words": "4.5 ล้านบาท"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "PAYMENT_DUE": {
+          "label": "PAYMENT_DUE",
+          "n_spans": 24,
+          "n_documents_with_label": 23,
+          "coverage": 0.9583333333333334,
+          "spans_per_document": {
+            "0": 1,
+            "1": 22,
+            "2": 1,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 4,
+          "words_max": 4,
+          "chars_median": 29.5,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.25,
+            "second half": 0.75
+          },
+          "forms": {
+            "within-n-days": 18,
+            "recurring-day": 6
+          },
+          "form_share": {
+            "within-n-days": 0.75,
+            "recurring-day": 0.25
+          },
+          "form_examples": {
+            "recurring-day": "ทุกวันที่ 5 ของเดือน",
+            "within-n-days": "ภายใน ๓๐ วันนับถัดจากวันที่ตรวจรับงานถูกต้องครบถ้วน"
+          },
+          "forms_absent": [
+            "other"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "PENALTY_RATE": {
+          "label": "PENALTY_RATE",
+          "n_spans": 24,
+          "n_documents_with_label": 23,
+          "coverage": 0.9583333333333334,
+          "spans_per_document": {
+            "0": 1,
+            "1": 22,
+            "2": 1,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 17.5,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.0,
+            "second half": 1.0
+          },
+          "forms": {
+            "percent-word": 12,
+            "fixed-amount": 8,
+            "percent-sign": 4
+          },
+          "form_share": {
+            "percent-word": 0.5,
+            "fixed-amount": 0.3333333333333333,
+            "percent-sign": 0.16666666666666666
+          },
+          "form_examples": {
+            "percent-sign": "15% ต่อเดือน",
+            "percent-word": "ร้อยละ ๐.๒๕ ของค่าจ้างตามสัญญาต่อวัน",
+            "fixed-amount": "วันละ 500 บาท"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 25,
+          "n_documents_with_label": 20,
+          "coverage": 0.8333333333333334,
+          "spans_per_document": {
+            "0": 4,
+            "1": 15,
+            "2": 5,
+            "3+": 0
+          },
+          "words_median": 1,
+          "words_p90": 1,
+          "words_max": 2,
+          "chars_median": 16,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.0,
+            "second half": 1.0
+          },
+          "forms": {
+            "court": 18,
+            "governing-law": 5,
+            "arbitration": 2
+          },
+          "form_share": {
+            "court": 0.72,
+            "governing-law": 0.2,
+            "arbitration": 0.08
+          },
+          "form_examples": {
+            "court": "ศาลแพ่งกรุงเทพฯ",
+            "governing-law": "กฎหมายไทย",
+            "arbitration": "สถาบันอนุญาโตตุลาการ สำนักงานศาลยุติธรรม"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        }
+      }
+    },
+    {
+      "name": "test_gold_blind",
+      "path": "data/processed/thai/test_gold_blind.jsonl",
+      "lang": "th",
+      "n_documents": 8,
+      "n_spans": 73,
+      "chars_median": 1183,
+      "entity_char_ratio": 0.18077004442563993,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 19,
+          "n_documents_with_label": 8,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 0,
+            "2": 6,
+            "3+": 2
+          },
+          "words_median": 3,
+          "words_p90": 5,
+          "words_max": 5,
+          "chars_median": 29,
+          "position": {
+            "first 5%": 0.10526315789473684,
+            "5-25%": 0.7894736842105263,
+            "25-50%": 0.0,
+            "second half": 0.10526315789473684
+          },
+          "forms": {
+            "company": 9,
+            "person": 5,
+            "organization": 3,
+            "latin-name": 2
+          },
+          "form_share": {
+            "company": 0.47368421052631576,
+            "person": 0.2631578947368421,
+            "organization": 0.15789473684210525,
+            "latin-name": 0.10526315789473684
+          },
+          "form_examples": {
+            "company": "บริษัท เน็ตเวิร์ค โปร โซลูชั่น จำกัด",
+            "person": "นายกิตติพงษ์ อรุณรัตน์",
+            "latin-name": "Sunrise Holidays Pte. Ltd.",
+            "organization": "สมาคมกีฬาฟุตบอลจังหวัดขอนแก่น"
+          },
+          "forms_absent": [
+            "other"
+          ],
+          "repeated_value_rate": 0.15789473684210525
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 8,
+          "n_documents_with_label": 8,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 8,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 14.5,
+          "position": {
+            "first 5%": 0.25,
+            "5-25%": 0.5,
+            "25-50%": 0.125,
+            "second half": 0.125
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 6,
+            "year-without-era/thai-numerals": 2
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.75,
+            "year-without-era/thai-numerals": 0.25
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "20 ธันวาคม 2567",
+            "year-without-era/thai-numerals": "๕ มีนาคม ๒๕๖๘"
+          },
+          "forms_absent": [
+            "buddhist-era/arabic-numerals",
+            "buddhist-era/thai-numerals",
+            "christian-era/arabic-numerals",
+            "numeric",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 7,
+          "n_documents_with_label": 7,
+          "coverage": 0.875,
+          "spans_per_document": {
+            "0": 1,
+            "1": 7,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 14,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.14285714285714285,
+            "25-50%": 0.5714285714285714,
+            "second half": 0.2857142857142857
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 5,
+            "year-without-era/thai-numerals": 2
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.7142857142857143,
+            "year-without-era/thai-numerals": 0.2857142857142857
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "1 มกราคม 2569",
+            "year-without-era/thai-numerals": "๑๗ มีนาคม ๒๕๖๘"
+          },
+          "forms_absent": [
+            "buddhist-era/arabic-numerals",
+            "buddhist-era/thai-numerals",
+            "christian-era/arabic-numerals",
+            "numeric",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 7,
+          "n_documents_with_label": 7,
+          "coverage": 0.875,
+          "spans_per_document": {
+            "0": 1,
+            "1": 7,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 14,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.5714285714285714,
+            "second half": 0.42857142857142855
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 5,
+            "year-without-era/thai-numerals": 2
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.7142857142857143,
+            "year-without-era/thai-numerals": 0.2857142857142857
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "31 ธันวาคม 2569",
+            "year-without-era/thai-numerals": "๓๐ พฤศจิกายน ๒๕๖๘"
+          },
+          "forms_absent": [
+            "buddhist-era/arabic-numerals",
+            "buddhist-era/thai-numerals",
+            "christian-era/arabic-numerals",
+            "numeric",
+            "duration",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "CONTRACT_VALUE": {
+          "label": "CONTRACT_VALUE",
+          "n_spans": 8,
+          "n_documents_with_label": 8,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 8,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 2.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 13.5,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.75,
+            "second half": 0.25
+          },
+          "forms": {
+            "baht-digits": 4,
+            "per-period": 3,
+            "foreign-currency": 1
+          },
+          "form_share": {
+            "baht-digits": 0.5,
+            "per-period": 0.375,
+            "foreign-currency": 0.125
+          },
+          "form_examples": {
+            "per-period": "ปีละ 1,260,000 บาท",
+            "baht-digits": "๑๒,๗๕๐,๐๐๐ บาท",
+            "foreign-currency": "USD 96,000"
+          },
+          "forms_absent": [
+            "amount-in-words"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "PAYMENT_DUE": {
+          "label": "PAYMENT_DUE",
+          "n_spans": 8,
+          "n_documents_with_label": 8,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 8,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 4,
+          "words_max": 4,
+          "chars_median": 37.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.375,
+            "second half": 0.625
+          },
+          "forms": {
+            "within-n-days": 8
+          },
+          "form_share": {
+            "within-n-days": 1.0
+          },
+          "form_examples": {
+            "within-n-days": "ภายใน 30 วันนับจากวันที่ได้รับใบแจ้งหนี้"
+          },
+          "forms_absent": [
+            "recurring-day",
+            "other"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "PENALTY_RATE": {
+          "label": "PENALTY_RATE",
+          "n_spans": 8,
+          "n_documents_with_label": 8,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 8,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 5,
+          "words_max": 5,
+          "chars_median": 21.5,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.0,
+            "second half": 1.0
+          },
+          "forms": {
+            "fixed-amount": 4,
+            "percent-word": 4
+          },
+          "form_share": {
+            "fixed-amount": 0.5,
+            "percent-word": 0.5
+          },
+          "form_examples": {
+            "fixed-amount": "ชั่วโมงละ 2,000 บาท",
+            "percent-word": "ร้อยละ 10 ของราคาซื้อขาย"
+          },
+          "forms_absent": [
+            "percent-sign"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 8,
+          "n_documents_with_label": 7,
+          "coverage": 0.875,
+          "spans_per_document": {
+            "0": 1,
+            "1": 6,
+            "2": 1,
+            "3+": 0
+          },
+          "words_median": 1.0,
+          "words_p90": 2,
+          "words_max": 2,
+          "chars_median": 17.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.0,
+            "second half": 1.0
+          },
+          "forms": {
+            "court": 6,
+            "governing-law": 1,
+            "arbitration": 1
+          },
+          "form_share": {
+            "court": 0.75,
+            "governing-law": 0.125,
+            "arbitration": 0.125
+          },
+          "form_examples": {
+            "court": "ศาลจังหวัดพัทยา",
+            "governing-law": "กฎหมายไทย",
+            "arbitration": "สถาบันอนุญาโตตุลาการ (THAC)"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        }
+      }
+    },
+    {
+      "name": "test_synthetic",
+      "path": "data/processed/thai/test_synthetic.jsonl",
+      "lang": "th",
+      "n_documents": 300,
+      "n_spans": 2662,
+      "chars_median": 1611,
+      "entity_char_ratio": 0.14159787598273868,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 1017,
+          "n_documents_with_label": 289,
+          "coverage": 0.9633333333333334,
+          "spans_per_document": {
+            "0": 11,
+            "1": 0,
+            "2": 94,
+            "3+": 195
+          },
+          "words_median": 3,
+          "words_p90": 5,
+          "words_max": 6,
+          "chars_median": 26,
+          "position": {
+            "first 5%": 0.13077679449360866,
+            "5-25%": 0.36578171091445427,
+            "25-50%": 0.0855457227138643,
+            "second half": 0.41789577187807275
+          },
+          "forms": {
+            "company": 684,
+            "person": 150,
+            "other": 117,
+            "organization": 66
+          },
+          "form_share": {
+            "company": 0.672566371681416,
+            "person": 0.14749262536873156,
+            "other": 0.11504424778761062,
+            "organization": 0.06489675516224189
+          },
+          "form_examples": {
+            "company": "บริษัท กรุ๊ป จำกัด",
+            "organization": "เทศบาลนครนครราชสีมา",
+            "person": "นางสาว ศิริพร สุขสันต์",
+            "other": "ว่าที่ร้อยตรี ณัฐพล พงษ์พันธ์"
+          },
+          "forms_absent": [
+            "latin-name"
+          ],
+          "repeated_value_rate": 0.43166175024582104
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 289,
+          "n_documents_with_label": 289,
+          "coverage": 0.9633333333333334,
+          "spans_per_document": {
+            "0": 11,
+            "1": 289,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.34256055363321797,
+            "5-25%": 0.3391003460207612,
+            "25-50%": 0.2664359861591695,
+            "second half": 0.05190311418685121
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 146,
+            "buddhist-era/arabic-numerals": 75,
+            "numeric": 34,
+            "christian-era/arabic-numerals": 18,
+            "year-without-era/thai-numerals": 8,
+            "buddhist-era/thai-numerals": 7,
+            "christian-era/thai-numerals": 1
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5051903114186851,
+            "buddhist-era/arabic-numerals": 0.25951557093425603,
+            "numeric": 0.11764705882352941,
+            "christian-era/arabic-numerals": 0.06228373702422145,
+            "year-without-era/thai-numerals": 0.02768166089965398,
+            "buddhist-era/thai-numerals": 0.02422145328719723,
+            "christian-era/thai-numerals": 0.0034602076124567475
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "1 มิถุนายน 2019",
+            "buddhist-era/arabic-numerals": "17 พฤศจิกายน พ.ศ. 2567",
+            "christian-era/arabic-numerals": "7 มีนาคม ค.ศ. 2022",
+            "numeric": "29/01/2562",
+            "buddhist-era/thai-numerals": "๑๓ มิถุนายน พ.ศ. ๒๕๖๘",
+            "year-without-era/thai-numerals": "๑ มิ.ย. ๒๕๗๐",
+            "christian-era/thai-numerals": "๑ กันยายน ค.ศ. ๒๐๒๓"
+          },
+          "forms_absent": [
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 247,
+          "n_documents_with_label": 247,
+          "coverage": 0.8233333333333334,
+          "spans_per_document": {
+            "0": 53,
+            "1": 247,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.024291497975708502,
+            "25-50%": 0.41700404858299595,
+            "second half": 0.5587044534412956
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 139,
+            "buddhist-era/arabic-numerals": 58,
+            "numeric": 22,
+            "christian-era/arabic-numerals": 15,
+            "year-without-era/thai-numerals": 10,
+            "buddhist-era/thai-numerals": 3
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.562753036437247,
+            "buddhist-era/arabic-numerals": 0.23481781376518218,
+            "numeric": 0.08906882591093117,
+            "christian-era/arabic-numerals": 0.06072874493927125,
+            "year-without-era/thai-numerals": 0.04048582995951417,
+            "buddhist-era/thai-numerals": 0.012145748987854251
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "1 มิ.ย. 2562",
+            "christian-era/arabic-numerals": "1 พฤศจิกายน ค.ศ. 2025",
+            "numeric": "12-01-2570",
+            "buddhist-era/arabic-numerals": "1 สิงหาคม พ.ศ. 2563",
+            "buddhist-era/thai-numerals": "๑๓ เดือน มิถุนายน พ.ศ. ๒๕๖๘",
+            "year-without-era/thai-numerals": "๑ มิถุนายน ๒๐๒๗"
+          },
+          "forms_absent": [
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 206,
+          "n_documents_with_label": 206,
+          "coverage": 0.6866666666666666,
+          "spans_per_document": {
+            "0": 94,
+            "1": 206,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 4,
+          "words_max": 5,
+          "chars_median": 15.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.019417475728155338,
+            "25-50%": 0.3592233009708738,
+            "second half": 0.6213592233009708
+          },
+          "forms": {
+            "year-without-era/arabic-numerals": 118,
+            "buddhist-era/arabic-numerals": 49,
+            "numeric": 19,
+            "christian-era/arabic-numerals": 9,
+            "year-without-era/thai-numerals": 8,
+            "buddhist-era/thai-numerals": 2,
+            "christian-era/thai-numerals": 1
+          },
+          "form_share": {
+            "year-without-era/arabic-numerals": 0.5728155339805825,
+            "buddhist-era/arabic-numerals": 0.23786407766990292,
+            "numeric": 0.09223300970873786,
+            "christian-era/arabic-numerals": 0.043689320388349516,
+            "year-without-era/thai-numerals": 0.038834951456310676,
+            "buddhist-era/thai-numerals": 0.009708737864077669,
+            "christian-era/thai-numerals": 0.0048543689320388345
+          },
+          "form_examples": {
+            "year-without-era/arabic-numerals": "31 พฤษภาคม 2563",
+            "buddhist-era/arabic-numerals": "16 เดือน มิถุนายน พ.ศ. 2563",
+            "numeric": "28/02/2568",
+            "christian-era/arabic-numerals": "6 พฤศจิกายน ค.ศ. 2021",
+            "year-without-era/thai-numerals": "๑๒ มิถุนายน ๒๕๗๒",
+            "buddhist-era/thai-numerals": "๓๑ พฤษภาคม พ.ศ. ๒๕๗๒",
+            "christian-era/thai-numerals": "๓๐ กันยายน ค.ศ. ๒๐๒๗"
+          },
+          "forms_absent": [
+            "duration",
+            "no-date"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "CONTRACT_VALUE": {
+          "label": "CONTRACT_VALUE",
+          "n_spans": 238,
+          "n_documents_with_label": 238,
+          "coverage": 0.7933333333333333,
+          "spans_per_document": {
+            "0": 62,
+            "1": 238,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 2.0,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 15.0,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.008403361344537815,
+            "25-50%": 0.3739495798319328,
+            "second half": 0.6176470588235294
+          },
+          "forms": {
+            "baht-digits": 174,
+            "per-period": 51,
+            "foreign-currency": 13
+          },
+          "form_share": {
+            "baht-digits": 0.7310924369747899,
+            "per-period": 0.21428571428571427,
+            "foreign-currency": 0.0546218487394958
+          },
+          "form_examples": {
+            "baht-digits": "6,525,000.00 บาท",
+            "per-period": "352,000 เหรียญสหรัฐ ต่อเดือน",
+            "foreign-currency": "20,385,000 ยูโร"
+          },
+          "forms_absent": [
+            "amount-in-words"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "PAYMENT_DUE": {
+          "label": "PAYMENT_DUE",
+          "n_spans": 213,
+          "n_documents_with_label": 213,
+          "coverage": 0.71,
+          "spans_per_document": {
+            "0": 87,
+            "1": 213,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 4,
+          "words_max": 6,
+          "chars_median": 27,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.004694835680751174,
+            "25-50%": 0.3427230046948357,
+            "second half": 0.6525821596244131
+          },
+          "forms": {
+            "within-n-days": 113,
+            "recurring-day": 54,
+            "other": 46
+          },
+          "form_share": {
+            "within-n-days": 0.5305164319248826,
+            "recurring-day": 0.2535211267605634,
+            "other": 0.215962441314554
+          },
+          "form_examples": {
+            "within-n-days": "ภายในวันที่ 28 ของแต่ละเดือน",
+            "recurring-day": "ล่วงหน้าทุกต้นเดือน",
+            "other": "ทุกวันศุกร์สุดท้ายของเดือน"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "PENALTY_RATE": {
+          "label": "PENALTY_RATE",
+          "n_spans": 217,
+          "n_documents_with_label": 210,
+          "coverage": 0.7,
+          "spans_per_document": {
+            "0": 90,
+            "1": 203,
+            "2": 7,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 3,
+          "words_max": 3,
+          "chars_median": 16,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.004608294930875576,
+            "25-50%": 0.25806451612903225,
+            "second half": 0.7373271889400922
+          },
+          "forms": {
+            "percent-sign": 80,
+            "percent-word": 76,
+            "fixed-amount": 61
+          },
+          "form_share": {
+            "percent-sign": 0.3686635944700461,
+            "percent-word": 0.35023041474654376,
+            "fixed-amount": 0.28110599078341014
+          },
+          "form_examples": {
+            "percent-word": "ร้อยละ 10 ต่อวัน",
+            "percent-sign": "วันละ 1%",
+            "fixed-amount": "1,000 บาท ต่อวัน"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 235,
+          "n_documents_with_label": 210,
+          "coverage": 0.7,
+          "spans_per_document": {
+            "0": 90,
+            "1": 185,
+            "2": 25,
+            "3+": 0
+          },
+          "words_median": 1,
+          "words_p90": 2,
+          "words_max": 3,
+          "chars_median": 18,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.0,
+            "second half": 1.0
+          },
+          "forms": {
+            "court": 139,
+            "governing-law": 54,
+            "arbitration": 42
+          },
+          "form_share": {
+            "court": 0.5914893617021276,
+            "governing-law": 0.2297872340425532,
+            "arbitration": 0.17872340425531916
+          },
+          "form_examples": {
+            "court": "ศาลจังหวัดนครศรีธรรมราช",
+            "governing-law": "กฎหมายของประเทศไทย",
+            "arbitration": "สำนักงานอนุญาโตตุลาการ สภาหอการค้าแห่งประเทศไทย"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        }
+      }
+    }
+  ],
+  "drift": {
+    "val": [
+      {
+        "label": "START_DATE",
+        "form": "buddhist-era/thai-numerals",
+        "reference_share": 0.012694512694512694,
+        "other_share": 0.03056768558951965,
+        "other_count": 7,
+        "verdict": "under-represented in training"
+      }
+    ],
+    "test_gold": [
+      {
+        "label": "PARTY",
+        "form": "latin-name",
+        "reference_share": 0.0,
+        "other_share": 0.03508771929824561,
+        "other_count": 2,
+        "verdict": "unseen in training"
+      }
+    ],
+    "test_gold_blind": [
+      {
+        "label": "AGREEMENT_DATE",
+        "form": "year-without-era/thai-numerals",
+        "reference_share": 0.03191862504384427,
+        "other_share": 0.25,
+        "other_count": 2,
+        "verdict": "under-represented in training"
+      },
+      {
+        "label": "END_DATE",
+        "form": "year-without-era/thai-numerals",
+        "reference_share": 0.03603182030884417,
+        "other_share": 0.2857142857142857,
+        "other_count": 2,
+        "verdict": "under-represented in training"
+      },
+      {
+        "label": "PARTY",
+        "form": "latin-name",
+        "reference_share": 0.0,
+        "other_share": 0.10526315789473684,
+        "other_count": 2,
+        "verdict": "unseen in training"
+      },
+      {
+        "label": "START_DATE",
+        "form": "year-without-era/thai-numerals",
+        "reference_share": 0.03480753480753481,
+        "other_share": 0.2857142857142857,
+        "other_count": 2,
+        "verdict": "under-represented in training"
+      }
+    ],
+    "test_synthetic": []
+  },
+  "windowing": {}
+}

@@ -60,30 +60,62 @@ _TH_DATE_RE = re.compile(
     rf"(?P<d>\d{{1,2}})\s*(?:เดือน\s*)?(?P<m>{_MONTH_ALT})\s*(?:พ\.?ศ\.?|ค\.?ศ\.?)?\s*(?P<y>\d{{4}})",
     re.IGNORECASE,
 )
-_NUMERIC_DATE_RE = re.compile(r"(?P<d>\d{1,2})[/\-.](?P<m>\d{1,2})[/\-.](?P<y>\d{4})")
+_NUMERIC_DATE_RE = re.compile(r"(?<![\d.])(?P<a>\d{1,2})[/\-.](?P<b>\d{1,2})[/\-.](?P<y>\d{4})(?!\d)")
+_NUMERIC_DATE_YY_RE = re.compile(r"(?<![\d./-])(?P<a>\d{1,2})[/\-](?P<b>\d{1,2})[/\-](?P<y>\d{2})(?![\d./-])")  # 7/7/98, 3-31-16
 _EN_MDY_RE = re.compile(rf"(?P<m>{_MONTH_ALT})\.?\s+(?P<d>\d{{1,2}})(?:st|nd|rd|th)?,?\s+(?P<y>\d{{4}})", re.IGNORECASE)
+_EN_DMY_RE = re.compile(rf"(?<!\d)(?P<d>\d{{1,2}})(?:st|nd|rd|th)?\s+(?:day\s+of\s+)?(?P<m>{_MONTH_ALT})\.?,?\s+(?P<y>\d{{4}})", re.IGNORECASE)
 _MONTH_YEAR_RE = re.compile(rf"(?P<m>{_MONTH_ALT})\s*(?:พ\.?ศ\.?)?\s*(?P<y>\d{{4}})", re.IGNORECASE)
 _CE_MARK_RE = re.compile(r"ค\.?ศ\.?")
+# "the first day of July, 2017", "the twenty-first day of May 2003"
+_ORDINAL_WORDS = {
+    "first": 1, "second": 2, "third": 3, "fourth": 4, "fifth": 5, "sixth": 6, "seventh": 7, "eighth": 8, "ninth": 9,
+    "tenth": 10, "eleventh": 11, "twelfth": 12, "thirteenth": 13, "fourteenth": 14, "fifteenth": 15, "sixteenth": 16,
+    "seventeenth": 17, "eighteenth": 18, "nineteenth": 19, "twentieth": 20, "thirtieth": 30,
+}
+_ORDINAL_RE = re.compile(
+    r"\b(?:(?P<tens>twenty|thirty)-(?P<ones>first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)|(?P<word>"
+    + "|".join(_ORDINAL_WORDS) + r"))\b(?=\s+(?:\(\d+\w*\)\s+)?(?:day\s+of|of)\b)",
+    re.IGNORECASE,
+)
 
 
 def _fix_year(y: int, text: str) -> int:
-    """Buddhist-era years (พ.ศ.) are 543 ahead of the common era."""
+    """Buddhist-era years (พ.ศ.) are 543 ahead of the common era; two-digit years are pivoted at 70."""
+    if y < 100:
+        return 1900 + y if y >= 70 else 2000 + y
     if _CE_MARK_RE.search(text):
         return y
     return y - 543 if y > 2400 else y
 
 
-def normalize_date(text: str) -> str | None:
-    """Thai/English date expression → ISO ``YYYY-MM-DD`` (or ``YYYY-MM``)."""
-    t = ascii_digits(text)
-    m = _TH_DATE_RE.search(t) or _EN_MDY_RE.search(t)
+def _spell_ordinals(t: str) -> str:
+    def repl(m: re.Match) -> str:
+        if m.group("word"):
+            return str(_ORDINAL_WORDS[m.group("word").lower()])
+        return str({"twenty": 20, "thirty": 30}[m.group("tens").lower()] + _ORDINAL_WORDS[m.group("ones").lower()])
+    return _ORDINAL_RE.sub(repl, t)
+
+
+def normalize_date(text: str, lang: str | None = None) -> str | None:
+    """Thai/English date expression → ISO ``YYYY-MM-DD`` (or ``YYYY-MM``).
+
+    All-numeric dates are read day-first for Thai and month-first for English
+    (``lang`` defaults to a script guess), unless only one order is valid.
+    """
+    t = _spell_ordinals(ascii_digits(text))
+    lang = lang or guess_lang(t)
+    m = _TH_DATE_RE.search(t) or _EN_MDY_RE.search(t) or _EN_DMY_RE.search(t)
     if m:
         mon = _MONTH_LOOKUP.get(m.group("m").lower())
         if mon:
             return _iso(int(m.group("d")), mon, _fix_year(int(m.group("y")), t))
-    m = _NUMERIC_DATE_RE.search(t)
+    m = _NUMERIC_DATE_RE.search(t) or _NUMERIC_DATE_YY_RE.search(t)
     if m:
-        return _iso(int(m.group("d")), int(m.group("m")), _fix_year(int(m.group("y")), t))
+        a, b, y = int(m.group("a")), int(m.group("b")), _fix_year(int(m.group("y")), t)
+        d, mo = (b, a) if lang == "en" and int(m.group("y")) < 2400 else (a, b)  # a BE year means a Thai date
+        if mo > 12 and d <= 12:
+            d, mo = mo, d
+        return _iso(d, mo, y)
     # English free text ("8th day of May 2014", "the 1st of June, 2019")
     if re.search(r"\d{4}", t) and re.search(r"[A-Za-z]{3,}", t) and re.search(r"(?<!\d)\d{1,2}(?!\d)", t):
         try:
@@ -260,13 +292,16 @@ _COURT_EN = {
     "กฎหมายของประเทศไทย": "Laws of Thailand",
 }
 _PROV_COURT_RE = re.compile(r"^ศาล(จังหวัด|แขวง|ปกครอง)(.+)$")
+_GOVERN_CUE_RE = re.compile(r"govern|construed|interpreted|บังคับ|ตีความ", re.IGNORECASE)
 _ARBITRATION_RE = re.compile(r"อนุญาโตตุลาการ|arbitrat|THAC", re.IGNORECASE)
 _GOV_LAW_RE = re.compile(r"กฎหมาย|laws? of|governed by", re.IGNORECASE)
 # "the laws of the State of New York", "laws of England and Wales", "courts located in Harris County, Texas"
 _EN_LAW_PLACE_RE = re.compile(
-    r"laws?\s+of\s+(?:the\s+)?((?:State|Commonwealth|Province|Republic|Kingdom|District|Federal Republic)\s+of\s+)?"
-    r"([A-Z][A-Za-z.]*(?:\s+(?:and|of|the|&)?\s*[A-Z][A-Za-z.]*){0,4})",
+    r"(?i:laws?\s+of\s+(?:the\s+)?)((?i:(?:State|Commonwealth|Province|Republic|Kingdom|District|Federal Republic)\s+of\s+))?"
+    r"([A-Z][A-Za-z.'’]*(?:\s+(?i:and|of|the|&)?\s*[A-Z][A-Za-z.'’]*){0,4})",
 )
+# "governed by English law", "subject to Swiss law"
+_EN_ADJ_LAW_RE = re.compile(r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+law\b")
 _EN_COURT_PLACE_RE = re.compile(r"courts?\s+(?:of|in|located in|sitting in)\s+(?:the\s+)?([A-Z][A-Za-z.]*(?:[\s,]+[A-Z][A-Za-z.]*){0,4})")
 
 
@@ -284,7 +319,7 @@ def normalize_jurisdiction(text: str) -> dict:
             english = "Thai Arbitration Institute, Office of the Judiciary"
         elif "THAC" in t:
             english = "Thailand Arbitration Center (THAC)"
-        elif t.isascii():
+        elif guess_lang(t) == "en":
             m = _EN_LAW_PLACE_RE.search(t)
             if m:
                 english = ((m.group(1) or "") + m.group(2)).strip().rstrip(".,")
@@ -293,12 +328,17 @@ def normalize_jurisdiction(text: str) -> dict:
                 m = _EN_COURT_PLACE_RE.search(t)
                 if m:
                     english = "courts of " + m.group(1).strip().rstrip(".,")
+                else:
+                    m = _EN_ADJ_LAW_RE.search(t)
+                    if m:
+                        english = m.group(1) + " law"
     return {"kind": kind, "english": english}
 
 
 # ------------------------------------------------------------------ span validation
 _ALNUM_RE = re.compile(r"\w")
-_EN_STOPWORDS = {"the", "and", "or", "of", "a", "an", "to", "by", "in", "on", "for", "with", "each", "party", "parties"}
+_EN_STOPWORDS = {"the", "and", "or", "of", "a", "an", "to", "by", "in", "on", "for", "with", "each", "party", "parties",
+                 "together", "affiliates", "individually", "collectively", "hereinafter", "herein"}
 
 
 def validate_span(span: Span, lang: str | None = None) -> bool:
@@ -332,6 +372,8 @@ def _party_key(text: str) -> str:
 
 _QUOTED_RE = re.compile(r"^\s*[\"'“”‘’(\[]")
 _LATIN_RE = re.compile(r"^[A-Za-z0-9 .,&'\-]+$")
+# CUAD-style "X and Y are referred to ... as the Parties" spans: gold for the tagger, never a party name
+_BOILERPLATE_RE = re.compile(r"referred to|collectively|individually|\beach (a|an|of)\b", re.IGNORECASE)
 
 
 @dataclass
@@ -350,7 +392,7 @@ class PartyGroup:
         Only quoted spans or short Latin tokens without a legal suffix qualify;
         Thai person names (``นายสมชาย ใจดี``) are never treated as aliases.
         """
-        if self.quoted:
+        if self.quoted or _BOILERPLATE_RE.search(self.surface):
             return True
         words = self.surface.split()
         return (len(words) <= 2 and _LATIN_RE.match(self.surface) is not None
@@ -400,6 +442,32 @@ def _pick_primary(cands: list[tuple[Span, float]], prefer=None) -> tuple[Span, f
     return min(cands, key=lambda c: (-round(c[1], 1), c[0].start))
 
 
+_EFFECTIVE_CUE_RE = re.compile(r"effective|commenc|in effect|มีผล", re.IGNORECASE)
+
+
+def split_effective_date(text: str, cands: list[tuple[Span, float]], lang: str
+                         ) -> tuple[list[tuple[Span, float]], list[tuple[Span, float]]]:
+    """Separate agreement-date candidates into (signing, effective) when they name two different dates.
+
+    Models that fold ``START_DATE`` into ``AGREEMENT_DATE`` tag both dates of
+    "entered into on October 1, 2019 and effective as of November 1, 2019";
+    a date preceded (within 40 characters) by "effective"/"commence" is the
+    effective date, the earliest remaining mention the signing date. With a
+    single distinct date nothing is split and ``Start_Date`` is inferred as usual.
+    """
+    values = {normalize_date(sp.text, lang) or sp.text.strip().casefold() for sp, _ in cands}
+    if len(values) < 2:
+        return cands, []
+    effective = [(sp, c) for sp, c in cands if _EFFECTIVE_CUE_RE.search(text[max(0, sp.start - 40):sp.start])]
+    if not effective:
+        return cands, []
+    signing = [(sp, c) for sp, c in cands if (sp, c) not in effective]
+    if not signing:
+        first = min(cands, key=lambda c: c[0].start)
+        signing, effective = [first], [c for c in cands if c is not first]
+    return signing, effective
+
+
 def assemble(text: str, spans: list[tuple[Span, float]], lang: str = "th") -> dict:
     """Build the structured record from ``(span, confidence)`` predictions."""
     valid = [(sp, c) for sp, c in spans if validate_span(sp, lang)]
@@ -417,9 +485,12 @@ def assemble(text: str, spans: list[tuple[Span, float]], lang: str = "th") -> di
         }
     out["Other_Parties"] = [g.surface for g in others]
 
-    for key, label in (("Agreement_Date", "AGREEMENT_DATE"), ("Start_Date", "START_DATE"), ("End_Date", "END_DATE")):
-        p = _pick_primary(by_label.get(label, []))
-        out[key] = None if p is None else _span_record(p[0], p[1], normalized=normalize_date(p[0].text))
+    agreement, effective = split_effective_date(text, by_label.get("AGREEMENT_DATE", []), lang)
+    dated = lambda s: normalize_date(s.text, lang) is not None  # noqa: E731
+    for key, cands in (("Agreement_Date", agreement), ("Start_Date", by_label.get("START_DATE", []) or effective),
+                       ("End_Date", by_label.get("END_DATE", []))):
+        p = _pick_primary(cands, prefer=dated if key != "End_Date" else None)
+        out[key] = None if p is None else _span_record(p[0], p[1], normalized=normalize_date(p[0].text, lang))
     if out["Start_Date"] is None and out["Agreement_Date"] is not None:
         out["Start_Date"] = {**out["Agreement_Date"], "inferred_from": "Agreement_Date"}
 
@@ -434,11 +505,10 @@ def assemble(text: str, spans: list[tuple[Span, float]], lang: str = "th") -> di
 
     p = _pick_primary(by_label.get("JURISDICTION", []), prefer=lambda s: normalize_jurisdiction(s.text)["kind"] in ("court", "arbitration"))
     out["Jurisdiction"] = None if p is None else _span_record(p[0], p[1], normalized=normalize_jurisdiction(p[0].text))
-    out["Governing_Law"] = None
-    for sp, c in by_label.get("JURISDICTION", []):
-        if normalize_jurisdiction(sp.text)["kind"] == "governing_law":
-            out["Governing_Law"] = _span_record(sp, c, normalized=normalize_jurisdiction(sp.text))
-            break
+    # the clause that says which law governs, not one that merely mentions complying with laws
+    gov = [(sp, c) for sp, c in by_label.get("JURISDICTION", []) if normalize_jurisdiction(sp.text)["kind"] == "governing_law"]
+    p = _pick_primary(gov, prefer=lambda s: _GOVERN_CUE_RE.search(s.text) is not None)
+    out["Governing_Law"] = None if p is None else _span_record(p[0], p[1], normalized=normalize_jurisdiction(p[0].text))
 
     out["entities"] = [
         {**_span_record(sp, c), "label": sp.label, "valid": True} for sp, c in valid

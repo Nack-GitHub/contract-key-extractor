@@ -1,0 +1,2436 @@
+{
+  "n_docs": 54,
+  "types": [
+    "PARTY",
+    "AGREEMENT_DATE",
+    "START_DATE",
+    "END_DATE",
+    "JURISDICTION"
+  ],
+  "strict": {
+    "precision": 0.5063291139240507,
+    "recall": 0.6862745098039216,
+    "f1": 0.5827263267429761
+  },
+  "relaxed": {
+    "PARTY": {
+      "precision": 0.6153846153846154,
+      "recall": 0.819672131147541,
+      "f1": 0.70298769771529,
+      "support": 244
+    },
+    "AGREEMENT_DATE": {
+      "precision": 0.43478260869565216,
+      "recall": 0.8,
+      "f1": 0.5633802816901409,
+      "support": 50
+    },
+    "START_DATE": {
+      "precision": 0.3333333333333333,
+      "recall": 0.1875,
+      "f1": 0.24000000000000005,
+      "support": 16
+    },
+    "END_DATE": {
+      "precision": 0.5588235294117647,
+      "recall": 0.8085106382978723,
+      "f1": 0.6608695652173914,
+      "support": 47
+    },
+    "JURISDICTION": {
+      "precision": 0.847457627118644,
+      "recall": 0.9803921568627451,
+      "f1": 0.909090909090909,
+      "support": 51
+    },
+    "micro": {
+      "precision": 0.5985533453887885,
+      "recall": 0.8112745098039216,
+      "f1": 0.688865764828304,
+      "support": 408
+    }
+  },
+  "fields": {
+    "PARTY": {
+      "precision": 0.6580882352941176,
+      "recall": 0.7336065573770492,
+      "f1": 0.6937984496124031,
+      "support": 244
+    },
+    "AGREEMENT_DATE": {
+      "precision": 0.5,
+      "recall": 0.66,
+      "f1": 0.5689655172413792,
+      "support": 50
+    },
+    "START_DATE": {
+      "precision": 0.1111111111111111,
+      "recall": 0.0625,
+      "f1": 0.08,
+      "support": 16
+    },
+    "END_DATE": {
+      "precision": 0.4411764705882353,
+      "recall": 0.6382978723404256,
+      "f1": 0.5217391304347826,
+      "support": 47
+    },
+    "JURISDICTION": {
+      "precision": 0.8275862068965517,
+      "recall": 0.9411764705882353,
+      "f1": 0.8807339449541284,
+      "support": 51
+    },
+    "micro": {
+      "precision": 0.6152219873150105,
+      "recall": 0.7132352941176471,
+      "f1": 0.6606129398410897,
+      "support": 408
+    }
+  },
+  "slots": {
+    "Parties": {
+      "precision": 0.7244094488188977,
+      "recall": 0.7244094488188977,
+      "f1": 0.7244094488188977,
+      "support": 127,
+      "docs_with_gold": 54
+    },
+    "Agreement_Date": {
+      "precision": 0.7727272727272727,
+      "recall": 0.6938775510204082,
+      "f1": 0.7311827956989247,
+      "support": 49,
+      "docs_with_gold": 49
+    },
+    "Start_Date": {
+      "precision": 0.717391304347826,
+      "recall": 0.66,
+      "f1": 0.6875,
+      "support": 50,
+      "docs_with_gold": 50
+    },
+    "End_Date": {
+      "precision": 0.6904761904761905,
+      "recall": 0.6590909090909091,
+      "f1": 0.6744186046511628,
+      "support": 44,
+      "docs_with_gold": 44
+    },
+    "Jurisdiction": {
+      "precision": 0.9795918367346939,
+      "recall": 0.9795918367346939,
+      "f1": 0.9795918367346939,
+      "support": 49,
+      "docs_with_gold": 49
+    },
+    "micro": {
+      "precision": 0.7662337662337663,
+      "recall": 0.7398119122257053,
+      "f1": 0.7527910685805422,
+      "support": 319
+    }
+  },
+  "forms": {
+    "AGREEMENT_DATE": {
+      "clause-no-date": {
+        "found": 0,
+        "missed": 2,
+        "support": 2,
+        "recall": 0.0
+      },
+      "d-month-y": {
+        "found": 9,
+        "missed": 1,
+        "support": 10,
+        "recall": 0.9
+      },
+      "month-d-y": {
+        "found": 23,
+        "missed": 2,
+        "support": 25,
+        "recall": 0.92
+      },
+      "month-y": {
+        "found": 7,
+        "missed": 0,
+        "support": 7,
+        "recall": 1.0
+      },
+      "numeric": {
+        "found": 0,
+        "missed": 1,
+        "support": 1,
+        "recall": 0.0
+      },
+      "placeholder-blank": {
+        "found": 1,
+        "missed": 2,
+        "support": 3,
+        "recall": 0.3333333333333333
+      },
+      "year-only": {
+        "found": 0,
+        "missed": 2,
+        "support": 2,
+        "recall": 0.0
+      }
+    },
+    "END_DATE": {
+      "duration": {
+        "found": 19,
+        "missed": 3,
+        "support": 22,
+        "recall": 0.8636363636363636
+      },
+      "explicit-date": {
+        "found": 8,
+        "missed": 4,
+        "support": 12,
+        "recall": 0.6666666666666666
+      },
+      "open-ended": {
+        "found": 9,
+        "missed": 2,
+        "support": 11,
+        "recall": 0.8181818181818182
+      },
+      "other": {
+        "found": 2,
+        "missed": 0,
+        "support": 2,
+        "recall": 1.0
+      }
+    },
+    "JURISDICTION": {
+      "governed-by-clause": {
+        "found": 48,
+        "missed": 0,
+        "support": 48,
+        "recall": 1.0
+      },
+      "laws-of-phrase": {
+        "found": 2,
+        "missed": 1,
+        "support": 3,
+        "recall": 0.6666666666666666
+      }
+    },
+    "PARTY": {
+      "caps-no-suffix": {
+        "found": 0,
+        "missed": 1,
+        "support": 1,
+        "recall": 0.0
+      },
+      "legal-name": {
+        "found": 63,
+        "missed": 12,
+        "support": 75,
+        "recall": 0.84
+      },
+      "legal-name-caps": {
+        "found": 26,
+        "missed": 6,
+        "support": 32,
+        "recall": 0.8125
+      },
+      "other": {
+        "found": 8,
+        "missed": 11,
+        "support": 19,
+        "recall": 0.42105263157894735
+      },
+      "parties-boilerplate": {
+        "found": 17,
+        "missed": 2,
+        "support": 19,
+        "recall": 0.8947368421052632
+      },
+      "person": {
+        "found": 1,
+        "missed": 3,
+        "support": 4,
+        "recall": 0.25
+      },
+      "quoted-alias": {
+        "found": 85,
+        "missed": 9,
+        "support": 94,
+        "recall": 0.9042553191489362
+      }
+    },
+    "START_DATE": {
+      "clause-no-date": {
+        "found": 1,
+        "missed": 7,
+        "support": 8,
+        "recall": 0.125
+      },
+      "d-month-y": {
+        "found": 1,
+        "missed": 0,
+        "support": 1,
+        "recall": 1.0
+      },
+      "month-d-y": {
+        "found": 1,
+        "missed": 5,
+        "support": 6,
+        "recall": 0.16666666666666666
+      },
+      "numeric": {
+        "found": 0,
+        "missed": 1,
+        "support": 1,
+        "recall": 0.0
+      }
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.370     0.680     0.479        50\n      END_DATE      0.441     0.638     0.522        47\n  JURISDICTION      0.814     0.941     0.873        51\n         PARTY      0.514     0.684     0.587       244\n    START_DATE      0.111     0.062     0.080        16\n\n     micro avg      0.506     0.686     0.583       408\n     macro avg      0.450     0.601     0.508       408\n  weighted avg      0.509     0.686     0.582       408\n",
+  "errors": [
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Hong Kong \"the Customer\""
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "ORGANIC PREPARATIONS INC."
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "AGAPE ATP INTERNATIONAL HOLDING LIMITED"
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Agape ATP International Holding Limited"
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Agape ATP International Holding Limited"
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "The Manufacturer grants exclusive rights to the Customer for the term of ten (10) years from the date of the signing of "
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Organic Preparations INC."
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "'the Manufacturer'",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-0241cac128",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "This agreement commences upon execution of this document.",
+      "form": "clause-no-date"
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "November 14, 2018"
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Armstrong Wood Products, Inc."
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"AWP\""
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "HomerWood Hardwood Flooring Company"
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"HHFC,\" and together with the Company, the \"Company Subsidiaries\""
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Company Entities\" and each a \"Company Entity\""
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "November 14, 2018"
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Seller\""
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Seller\""
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "This Assignment shall be governed by the laws of the State of Delaware, its rules of conflict of laws notwithstanding."
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "THE BABCOCK & WILCOX COMPANY"
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "BABCOCK & WILCOX ENTERPRISES, INC."
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "June 26, 2015"
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "June 8, 2015"
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Reference Materials\""
+    },
+    {
+      "doc": "cuad-9e86ee6c1f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Products\""
+    },
+    {
+      "doc": "cuad-9e86ee6c1f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Exhibit \"B\" attached hereto"
+    },
+    {
+      "doc": "cuad-9e86ee6c1f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "SNOTARATOR LLC"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "BLOOM ENERGY CORP, DRS/A"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "BLOOM ENERGY CORP, DRS/A"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "BLOOM ENERGY CORP, DRS/A"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "BLOOM ENERGY CORP, DRS/A"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "April 13, 2012"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "BLOOM ENERGY CORPORATION"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DIAMOND STATE GENERATION PARTNERS, LLC"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "each, a \"Party\", and together, the \"Parties\""
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"DPL\""
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"DPSC\""
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"MESPA\""
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Clean Technologies II, LLC and Mehetia Inc."
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "February 10, 2012"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Clean Technologies II, LLC"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "October 18, 2011"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "START_DATE",
+      "text": "\"Letter Agreement\" means that certain Letter Agreement dated October 10, 2011"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "October 18, 2011"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "The Parties expressly disclaim, to the extent permitted under applicable law, any and all provisions of the Uniform Comm"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"Operator\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-d85726602f",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "5/12/03                         Date:       5/12/03"
+    },
+    {
+      "doc": "cuad-9f9e535b55",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "the Distributor is the distributor of each Fund and enters into broker-dealer selling agreements (\"Selling Agreements\""
+    },
+    {
+      "doc": "cuad-9f9e535b55",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"FINRA\""
+    },
+    {
+      "doc": "cuad-9f9e535b55",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Intermediary\" and collectively, \"Intermediaries\""
+    },
+    {
+      "doc": "cuad-9deffeff93",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "September 30, 2019"
+    },
+    {
+      "doc": "cuad-9deffeff93",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "NUANCE COMMUNICATIONS, INC."
+    },
+    {
+      "doc": "cuad-9deffeff93",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "CERENCE INC."
+    },
+    {
+      "doc": "cuad-61f16bb5ed",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "February 19, 2019"
+    },
+    {
+      "doc": "cuad-61f16bb5ed",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"MBI\""
+    },
+    {
+      "doc": "cuad-61f16bb5ed",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "WPD Pharmaceuticals",
+      "form": "other"
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 8, 2009"
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 2013"
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Ares Trading S.A."
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Merck Serono S.A."
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Columbia Laboratories, (Bermuda) Ltd.",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"Fleet\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "kind": "FN",
+      "label": "AGREEMENT_DATE",
+      "text": "2018",
+      "form": "year-only"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS, INC."
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "VALEANT PHARMACEUTICALS NORTH AMERICA LLC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "September 26, 2018"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "DOVA PHARMACEUTICALS INC"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Bausch Health Companies, Inc."
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "\"Calendar Year\" shall mean each successive period of twelve (12) months commencing on January 1 and ending on December 3"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "\"Tail Period\" shall mean the period commencing on the day after the last day of the Term and ending on the earlier of (i"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "\"Effective Date\" shall have the meaning set forth in the preamble to this Agreement.",
+      "form": "clause-no-date"
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Food Channel www.women.com/food"
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Gateway Page\""
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "This Agreement will become effective as of the Effective Date and, unless sooner terminated pursuant to Sections 3.1  [A"
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "This agreement shall automatically renew for additional successive terms of twelve (12) months each at the end of the In"
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "EDIETS.COM, INC."
+    },
+    {
+      "doc": "cuad-8059be6d41",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Dr."
+    },
+    {
+      "doc": "cuad-8059be6d41",
+      "kind": "FP",
+      "label": "START_DATE",
+      "text": "This Agreement shall become effective as of the Effective Date and shall remain in effect as follows."
+    },
+    {
+      "doc": "cuad-8059be6d41",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Michael T. Murray, N.D",
+      "form": "other"
+    },
+    {
+      "doc": "cuad-8059be6d41",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "Dr. Murray's obligations set out herein shall be performed from the Effective Date until December 31, 2018 (the initial ",
+      "form": "explicit-date"
+    },
+    {
+      "doc": "cuad-531d1ce8c1",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"VOD\""
+    },
+    {
+      "doc": "cuad-531d1ce8c1",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "At Rogers' option, this Agreement shall renew for a subsequent term of two (2) years on the terms and conditions herein "
+    },
+    {
+      "doc": "cuad-531d1ce8c1",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "______ day of ____________, 2006"
+    },
+    {
+      "doc": "cuad-9eb4eb8b00",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"Adviser\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GLOBAL MUSIC INTERNATIONAL, INC."
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"MTS\""
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GLOBAL TECHNOLOGIES GROUP, INC."
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "START_DATE",
+      "text": "This Agreement is effective as of the last date signed below (\"Effective Date\")."
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "MOBILEVISION COMMUNICATIONS LTD."
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GLOBAL MUSIC INTERNATIONAL, INC."
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GLOBAL MUSIC INTERNATIONAL, INC."
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Distributor",
+      "form": "other"
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "kind": "FN",
+      "label": "AGREEMENT_DATE",
+      "text": "13/07/05",
+      "form": "numeric"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "Period\" shall mean that period of time of three (3) years commencing on November 1st, 2017 and concluding November 2nd, "
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GRIDIRON BIONUTRIENTS, INC"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GRIDIRON BIONUTRIENTS, INC"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GRIDIRON BIONUTRIENTS, INC"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GRIDIRON BIONUTRIENTS, INC"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GRIDIRON BIONUTRIENTS, INC"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "National Football League Alumni, Inc."
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "All terms of this Agreement will automatically commence on November 1st, 2017, and expire on November 2nd, 2020.",
+      "form": "explicit-date"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Merger Corp.\""
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Merger\""
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "December 14, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "14th day of December, 1997"
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Gulf South Medical Supply, Inc.",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Ian Bannerman Blackwell Science Ltd"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Geertsen Munksgaard International Publishers Ltd 35 Norre Sogade, P.O."
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Blackwell Science Limited."
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Mr J S"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Healthgate Data Corp / Blackwell Science Ltd / NCC"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Blackwell Science Ltd group\" after       \"Blackwell Science Ltd\"."
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "NCC ESCROW INTERNATIONAL LIMITED"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "NCC Escrow International Limited",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"the Owner\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"the Licensee\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-3cb8c05597",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Holiday RV Superstores, Inc.",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-3cb8c05597",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "d/b/a Recreation USA",
+      "form": "other"
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "HPIL ENERGYTECH Inc."
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "GINARES GROUP AG"
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FP",
+      "label": "START_DATE",
+      "text": "COOPERATION AGREEMENT   THIS COOPERATION AGREEMENT (\"Agreement\") is signed this 5th day of January, 2015"
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FN",
+      "label": "AGREEMENT_DATE",
+      "text": "5th day of January, 2015",
+      "form": "d-month-y"
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"HPIL ET\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "\"GINARES\"",
+      "form": "quoted-alias"
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "HPIL ET and GINARES (hereafter the \"Party\" or collectively the \"Partie",
+      "form": "parties-boilerplate"
+    },
+    {
+      "doc": "cuad-34b6aadc5d",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "SUNWAI Technology",
+      "form": "other"
+    },
+    {
+      "doc": "cuad-44c5b9ab23",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "THERAVANCE, INC.   and   GLAXO GROUP LIMITED"
+    },
+    {
+      "doc": "cuad-44c5b9ab23",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "November 14, 2002"
+    },
+    {
+      "doc": "cuad-44c5b9ab23",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Theravance and GSK may be referred to as a \"Party\" or together, the \"Parties\".",
+      "form": "parties-boilerplate"
+    },
+    {
+      "doc": "cuad-44c5b9ab23",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "\"Term\" means, on a Country-by-Country and Collaboration Product-by-Collaboration Product basis, the period from the Effe",
+      "form": "duration"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "April 17, 2017"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Anderson Cancer Center"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Collaboration\""
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"JSC\""
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "July 22, 2016"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "The Parties agree that any dispute or controversy arising out of or relating to any interpretation, construction, perfor"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "MD Anderson is an agency of the State of Texas and under the constitution and laws of the State of Texas possesses certa"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "April 17, 2017",
+      "form": "month-d-y"
+    },
+    {
+      "doc": "cuad-aab085813d",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "KITOV PHARMA LTD"
+    },
+    {
+      "doc": "cuad-aab085813d",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "\"Effective Date\" shall mean the date of signature of the last Party to execute this Agreement.",
+      "form": "clause-no-date"
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "The period of license granted shall be for the Term and shall extend for a period of twenty four (24) months or until te"
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Celebrity Speakers",
+      "form": "person"
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Robbie Fowler",
+      "form": "person"
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "\"Term\" means: 1.5t January 2013 to 315t December 2013 or until terminated under the provisions of this Agreement or the ",
+      "form": "open-ended"
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Electric City Corp."
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Market\""
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "For purposes of this Agreement, a Product Year shall be the twelve (12) month period  following the  commencement  of th"
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "Unless  earlier   terminated   otherwise  provided                   therein,  this  Agreement,  subject to the  commenc"
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "Unless  earlier   terminated   otherwise  provided                   therein,  this  Agreement,  subject to the  commenc",
+      "form": "clause-no-date"
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Electric City of Illinois L.L.C.",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Electric City Corp.",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-050e046894",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "SHENZHEN LEHEYUAN TRADING CO, LTD"
+    },
+    {
+      "doc": "cuad-050e046894",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "Law application It will be governed by the law of the People's Republic of China ,otherwise it is governed by United Nat"
+    },
+    {
+      "doc": "cuad-050e046894",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "The buyer/End-User: Shenzhen LOHAS Supply Chain Management Co., Ltd.",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-050e046894",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "The seller:",
+      "form": "other"
+    },
+    {
+      "doc": "cuad-050e046894",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "The Contract is valid for 5 years, beginning from and ended on .",
+      "form": "duration"
+    },
+    {
+      "doc": "cuad-436554c401",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "January 1, 1996"
+    },
+    {
+      "doc": "cuad-436554c401",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "1,000,000 in           respect of Licensee's fiscal year beginning April 1, 1999, (ii)           $2,000,000 in respect o"
+    },
+    {
+      "doc": "cuad-436554c401",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "November 19, 1998"
+    },
+    {
+      "doc": "cuad-436554c401",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "1st day of January, 1999"
+    },
+    {
+      "doc": "cuad-436554c401",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "Peregrine/Bridge Transfer Corporation",
+      "form": "legal-name"
+    },
+    {
+      "doc": "cuad-0bd94b48ce",
+      "kind": "FN",
+      "label": "AGREEMENT_DATE",
+      "text": "[·], 2019",
+      "form": "year-only"
+    },
+    {
+      "doc": "cuad-0bd94b48ce",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "The license granted to the Licensee under this Agreement shall continue perpetually",
+      "form": "open-ended"
+    },
+    {
+      "doc": "cuad-93d3becf34",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "April 4, 2005"
+    },
+    {
+      "doc": "cuad-93d3becf34",
+      "kind": "FN",
+      "label": "AGREEMENT_DATE",
+      "text": "April __, 2005",
+      "form": "placeholder-blank"
+    },
+    {
+      "doc": "cuad-07b442e88a",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "\"Services\""
+    },
+    {
+      "doc": "cuad-07b442e88a",
+      "kind": "FN",
+      "label": "START_DATE",
+      "text": "25/05/2008",
+      "form": "numeric"
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "PennTex Midstream Partners, LLC and each of its subsidiaries."
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "MRD WHR LA Midstream LLC"
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "\"Commencement Date\" shall be the first day of the Month following the date Transporter notifies Customer that (i) the Tr"
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "The term \"Imbalance\" means the cumulative difference in a Month between: (i) the quantity of Gas in MMBtu received for t"
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "MRD Operating LLC"
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "JURISDICTION",
+      "text": "This Agreement is subject to all applicable state and federal laws and to all applicable orders, rules, and regulations "
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "MRD OPERATING LLC"
+    },
+    {
+      "doc": "cuad-9d0de29064",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": "Golfers  Incorporated"
+    },
+    {
+      "doc": "cuad-9d0de29064",
+      "kind": "FN",
+      "label": "PARTY",
+      "text": "ANDY NORTH",
+      "form": "caps-no-suffix"
+    },
+    {
+      "doc": "cuad-9d0de29064",
+      "kind": "FN",
+      "label": "END_DATE",
+      "text": "\"Contract Period\" shall mean that period of time from February 21, 2011 through December 31, 2012.",
+      "form": "explicit-date"
+    },
+    {
+      "doc": "cuad-e4926d48cc",
+      "kind": "FP",
+      "label": "AGREEMENT_DATE",
+      "text": "November 21, 2017"
+    },
+    {
+      "doc": "cuad-e4926d48cc",
+      "kind": "FP",
+      "label": "PARTY",
+      "text": ", such Party or its Affiliates, agents"
+    },
+    {
+      "doc": "cuad-e4926d48cc",
+      "kind": "FP",
+      "label": "END_DATE",
+      "text": "\"Development Term\" means the period commencing on the Effective Date and ending on the later of (a) the latest of the Co"
+    }
+  ],
+  "slot_errors": [
+    {
+      "doc": "cuad-0241cac128",
+      "slot": "Parties",
+      "gold": [
+        "organic preparations inc",
+        "agape atp international holding limited"
+      ],
+      "pred": [
+        "organic preparations inc",
+        "agape atp international holding limited",
+        "hong kong the customer"
+      ]
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "slot": "Parties",
+      "gold": [
+        "armstrong flooring inc",
+        "afi licensing llc",
+        "ahf holding inc",
+        "formerly known as tarzan holdco inc",
+        "armstrong hardwood flooring company",
+        "the company and together with buyer the buyer entities"
+      ],
+      "pred": [
+        "armstrong flooring inc",
+        "afi licensing llc",
+        "ahf holding inc",
+        "formerly known as tarzan holdco inc",
+        "armstrong hardwood flooring company",
+        "armstrong wood products inc",
+        "homerwood hardwood flooring company"
+      ]
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2018-12-31"
+      ],
+      "pred": "2018-11-14"
+    },
+    {
+      "doc": "cuad-51dca17230",
+      "slot": "Start_Date",
+      "gold": [
+        "2018-12-31"
+      ],
+      "pred": "2018-11-14"
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2015-06-26"
+      ],
+      "pred": "2015-06-08"
+    },
+    {
+      "doc": "cuad-0111a4ca5e",
+      "slot": "Start_Date",
+      "gold": [
+        "2015-06-26"
+      ],
+      "pred": "2015-06-08"
+    },
+    {
+      "doc": "cuad-9e86ee6c1f",
+      "slot": "Parties",
+      "gold": [
+        "snotarator llc",
+        "smsa ballinger acquisition corp"
+      ],
+      "pred": [
+        "snotarator llc",
+        "smsa ballinger acquisition corp",
+        "exhibit b attached hereto"
+      ]
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "slot": "Parties",
+      "gold": [
+        "diamond state generation partners llc",
+        "bloom energy corporation"
+      ],
+      "pred": [
+        "diamond state generation partners llc",
+        "bloom energy corporation",
+        "bloom energy corp drs/a",
+        "each a party and together the parties",
+        "clean technologies ii llc and mehetia inc"
+      ]
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "slot": "Start_Date",
+      "gold": [
+        "2012-04-13"
+      ],
+      "pred": "2011-10-10"
+    },
+    {
+      "doc": "cuad-8a11012fe8",
+      "slot": "End_Date",
+      "gold": [
+        "the term of this agreement (the \"term\") (a) shall commence on the first day of the warranty period for the first bloom system to achieve commencement of operation and (b) shall, unless terminated earlier under section 4.1 of this agreement or unless extended by mutual agreement of the parties, terminate on the date that is the last day of the warranty period for the last bloom system to achieve commencement of operation"
+      ],
+      "pred": "the term of this agreement (the \"term\") (a) shall commence on the first day of the warranty period for the first bloom system to achieve commencement of operation and (b) shall, unless terminated earlier under section 4.1 of this agreement or unless extended by mutual agreement of the parties, terminate on the date that is the last day of the warranty period for the last bloom system to achieve commencement of operation. 18"
+    },
+    {
+      "doc": "cuad-9f9e535b55",
+      "slot": "Parties",
+      "gold": [
+        "alps distributors inc",
+        "s2k financial llc"
+      ],
+      "pred": [
+        "alps distributors inc",
+        "s2k financial llc",
+        "the distributor is the distributor of each fund and enters into broker-dealer selling agreements selling agreements"
+      ]
+    },
+    {
+      "doc": "cuad-9deffeff93",
+      "slot": "Start_Date",
+      "gold": [
+        "2019-09-30"
+      ],
+      "pred": "this agreement may be executed in one or more counterparts, all of which counterparts shall be considered one and the same agreement, and shall become effective when one or more counterparts have been signed by each party and delivered to the other party"
+    },
+    {
+      "doc": "cuad-61f16bb5ed",
+      "slot": "Parties",
+      "gold": [
+        "cns pharmaceuticals inc",
+        "wpd pharmaceuticals"
+      ],
+      "pred": [
+        "cns pharmaceuticals inc"
+      ]
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "slot": "Parties",
+      "gold": [
+        "columbia laboratories bermuda ltd",
+        "fleet laboratories limited"
+      ],
+      "pred": [
+        "fleet laboratories limited",
+        "ares trading sa",
+        "merck serono sa"
+      ]
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2018"
+      ],
+      "pred": "2009-12-08"
+    },
+    {
+      "doc": "cuad-a7be88f32d",
+      "slot": "Start_Date",
+      "gold": [
+        "2018"
+      ],
+      "pred": "2009-12-08"
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "slot": "Parties",
+      "gold": [
+        "dova pharmaceuticals inc",
+        "valeant pharmaceuticals north america llc"
+      ],
+      "pred": [
+        "dova pharmaceuticals inc",
+        "valeant pharmaceuticals north america llc",
+        "bausch health companies inc"
+      ]
+    },
+    {
+      "doc": "cuad-0bc630259d",
+      "slot": "End_Date",
+      "gold": [
+        "4 year"
+      ],
+      "pred": "tail period\" shall mean the period commencing on the day after the last day of the term and ending on the earlier of (i) [***] and (ii) [***], unless terminated early pursuant to section 2.3.1(a) of the agreement"
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "slot": "Parties",
+      "gold": [
+        "womencom networks inc",
+        "edietscom inc"
+      ],
+      "pred": [
+        "womencom networks inc",
+        "edietscom inc",
+        "food channel wwwwomencom/food"
+      ]
+    },
+    {
+      "doc": "cuad-0d33175be9",
+      "slot": "End_Date",
+      "gold": [],
+      "pred": "2 year"
+    },
+    {
+      "doc": "cuad-8059be6d41",
+      "slot": "Parties",
+      "gold": [
+        "emerald health sciences inc",
+        "emerald health nutraceuticals inc",
+        "michael t murray nd"
+      ],
+      "pred": [
+        "emerald health sciences inc",
+        "emerald health nutraceuticals inc"
+      ]
+    },
+    {
+      "doc": "cuad-8059be6d41",
+      "slot": "Start_Date",
+      "gold": [
+        "2016-09-01"
+      ],
+      "pred": "this agreement shall become effective as of the effective date and shall remain in effect as follows"
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "slot": "Parties",
+      "gold": [
+        "global music international inc d/b/a independent music network",
+        "distributor",
+        "mobilevision communications ltd"
+      ],
+      "pred": [
+        "global music international inc",
+        "mobilevision communications ltd",
+        "global technologies group inc"
+      ]
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2005-07-13"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-f2127a1b5f",
+      "slot": "Start_Date",
+      "gold": [
+        "2005-07-13"
+      ],
+      "pred": "this agreement is effective as of the last date signed below (\"effective date"
+    },
+    {
+      "doc": "cuad-65a767f0c9",
+      "slot": "Parties",
+      "gold": [
+        "national football league alumni - northern california chapter",
+        "national football league alumni inc",
+        "food for athletes inc",
+        "gridiron bionutrients™"
+      ],
+      "pred": [
+        "national football league alumni - northern california chapter",
+        "national football league alumni inc",
+        "food for athletes inc",
+        "gridiron bionutrients™",
+        "gridiron bionutrients inc"
+      ]
+    },
+    {
+      "doc": "cuad-ddaaa95a45",
+      "slot": "Parties",
+      "gold": [
+        "gulf south medical supply inc",
+        "physician sales & service inc",
+        "pss merger corp"
+      ],
+      "pred": [
+        "sales & service inc",
+        "pss merger corp"
+      ]
+    },
+    {
+      "doc": "cuad-0c3230fbc9",
+      "slot": "Parties",
+      "gold": [
+        "ncc escrow international limited"
+      ],
+      "pred": [
+        "ian bannerman blackwell science ltd",
+        "geertsen munksgaard international publishers ltd 35 norre sogade po",
+        "blackwell science limited",
+        "mr j s",
+        "healthgate data corp / blackwell science ltd / ncc",
+        "blackwell science ltd group after blackwell science ltd",
+        "ncc escrow international limited"
+      ]
+    },
+    {
+      "doc": "cuad-3cb8c05597",
+      "slot": "Parties",
+      "gold": [
+        "holiday rv superstores inc",
+        "d/b/a recreation usa",
+        "affinity group inc"
+      ],
+      "pred": [
+        "affinity group inc"
+      ]
+    },
+    {
+      "doc": "cuad-a79a88a40c",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2015-01-05"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-34b6aadc5d",
+      "slot": "Parties",
+      "gold": [
+        "imine corporation",
+        "sunwai technology"
+      ],
+      "pred": [
+        "imine corporation"
+      ]
+    },
+    {
+      "doc": "cuad-44c5b9ab23",
+      "slot": "Parties",
+      "gold": [
+        "theravance inc",
+        "glaxo group limited"
+      ],
+      "pred": [
+        "theravance inc and glaxo group limited"
+      ]
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "slot": "Parties",
+      "gold": [
+        "lion biotechnologies inc",
+        "the university of texas m d anderson cancer center"
+      ],
+      "pred": [
+        "lion biotechnologies inc",
+        "the university of texas m",
+        "anderson cancer center"
+      ]
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "slot": "Agreement_Date",
+      "gold": [],
+      "pred": "2016-07-22"
+    },
+    {
+      "doc": "cuad-6ee33f98cd",
+      "slot": "End_Date",
+      "gold": [
+        "the term of this agreement commences on the effective date and shall continue in effect until the later of (a) the fourth (4th) anniversary of the effective date, or (b) the completion or termination of the research and receipt by lbio of all deliverables due from md anderson hereunder, unless sooner terminated in accordance with the provisions of section 2.2 or section 9.14"
+      ],
+      "pred": "the term of this agreement commences on the effective date and shall continue in effect until the later of (a) the fourth (4th) anniversary of the effective date, or (b) the completion or termination of the research and receipt by lbio of all deliverables due from md anderson hereunder, unless sooner terminated in accordance with the provisions of section"
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "slot": "Parties",
+      "gold": [
+        "tigrent learning uk limited",
+        "celebrity speakers",
+        "csa",
+        "robbie fowler"
+      ],
+      "pred": [
+        "tigrent learning uk limited"
+      ]
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "slot": "Agreement_Date",
+      "gold": [
+        "____ day of ______________ 2013"
+      ],
+      "pred": "_____ day of ______________ 2013"
+    },
+    {
+      "doc": "cuad-801b6f4a79",
+      "slot": "End_Date",
+      "gold": [
+        "2013-01"
+      ],
+      "pred": "4 month"
+    },
+    {
+      "doc": "cuad-332e0f81fe",
+      "slot": "End_Date",
+      "gold": [
+        "10 year"
+      ],
+      "pred": "unless earlier terminated otherwise provided therein, this agreement, subject to the commencement date established in section 1.3, shall be effective immediately"
+    },
+    {
+      "doc": "cuad-050e046894",
+      "slot": "Parties",
+      "gold": [
+        "the buyer/end-user: shenzhen lohas supply chain management co ltd",
+        "the seller"
+      ],
+      "pred": [
+        "shenzhen leheyuan trading co ltd"
+      ]
+    },
+    {
+      "doc": "cuad-050e046894",
+      "slot": "End_Date",
+      "gold": [
+        "5 year"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-050e046894",
+      "slot": "Jurisdiction",
+      "gold": [],
+      "pred": "people's china"
+    },
+    {
+      "doc": "cuad-436554c401",
+      "slot": "Parties",
+      "gold": [
+        "peregrine/bridge transfer corporation",
+        "neon systems inc"
+      ],
+      "pred": [
+        "neon systems inc"
+      ]
+    },
+    {
+      "doc": "cuad-436554c401",
+      "slot": "End_Date",
+      "gold": [
+        "2004-03-31"
+      ],
+      "pred": "1999-04-01"
+    },
+    {
+      "doc": "cuad-0bd94b48ce",
+      "slot": "Parties",
+      "gold": [
+        "new mountain capital llc",
+        "the licensor",
+        "nmf senior loan fund i inc",
+        "the licensee"
+      ],
+      "pred": [
+        "new mountain capital llc",
+        "nmf senior loan fund i inc"
+      ]
+    },
+    {
+      "doc": "cuad-0bd94b48ce",
+      "slot": "Agreement_Date",
+      "gold": [
+        "·], 2019"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-0bd94b48ce",
+      "slot": "Start_Date",
+      "gold": [
+        "·], 2019"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-93d3becf34",
+      "slot": "Agreement_Date",
+      "gold": [
+        "april __, 2005"
+      ],
+      "pred": "2005-04-04"
+    },
+    {
+      "doc": "cuad-93d3becf34",
+      "slot": "Start_Date",
+      "gold": [
+        "april __, 2005"
+      ],
+      "pred": "2005-04-04"
+    },
+    {
+      "doc": "cuad-07b442e88a",
+      "slot": "Start_Date",
+      "gold": [
+        "2008-05-25"
+      ],
+      "pred": "2018-05-25"
+    },
+    {
+      "doc": "cuad-b37a614fcd",
+      "slot": "Parties",
+      "gold": [
+        "penntex north louisiana operating llc",
+        "mrd operating llc"
+      ],
+      "pred": [
+        "penntex north louisiana operating llc",
+        "mrd operating llc",
+        "mrd whr la midstream llc"
+      ]
+    },
+    {
+      "doc": "cuad-9d0de29064",
+      "slot": "Parties",
+      "gold": [
+        "andy north",
+        "golfers incorporated"
+      ],
+      "pred": [
+        "golfers incorporated"
+      ]
+    },
+    {
+      "doc": "cuad-9d0de29064",
+      "slot": "End_Date",
+      "gold": [
+        "2011-02-21"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-e4926d48cc",
+      "slot": "Parties",
+      "gold": [
+        "phasebio pharmaceuticals inc",
+        "sfj pharmaceuticals x ltd"
+      ],
+      "pred": [
+        "phasebio pharmaceuticals inc",
+        "sfj pharmaceuticals x ltd",
+        "such party or its affiliates agents",
+        "silicon valley bank"
+      ]
+    },
+    {
+      "doc": "cuad-e4926d48cc",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2020-01-09"
+      ],
+      "pred": "2017-11-21"
+    },
+    {
+      "doc": "cuad-e4926d48cc",
+      "slot": "End_Date",
+      "gold": [
+        "the term of this agreement (the \"term\") will commence on the effective date and will expire upon the earliest of (i) termination of this agreement in accordance with section 14.2, or (ii) the date of payment of the last approval payment due based on all applicable regulatory approvals which have been received"
+      ],
+      "pred": "2022-11-21"
+    },
+    {
+      "doc": "cuad-8e1e6bdd05",
+      "slot": "Parties",
+      "gold": [
+        "primeevergy corporation",
+        "prime offshore llc",
+        "guaranty bank"
+      ],
+      "pred": []
+    },
+    {
+      "doc": "cuad-8e098f728a",
+      "slot": "Parties",
+      "gold": [
+        "penntex north louisiana operating llc",
+        "mrd operating llc"
+      ],
+      "pred": [
+        "penntex north louisiana operating llc",
+        "mrd operating llc",
+        "shipper penntex nla holdings llc",
+        "mrd whr la midstream llc"
+      ]
+    },
+    {
+      "doc": "cuad-78d903ef33",
+      "slot": "Start_Date",
+      "gold": [
+        "2019-11-01"
+      ],
+      "pred": "the \"term\" of this agreement will commence on the effective date and will end on the earlier of"
+    },
+    {
+      "doc": "cuad-540d844cd2",
+      "slot": "Parties",
+      "gold": [
+        "rise tianjin education information consulting co ltd"
+      ],
+      "pred": [
+        "education information consulting co ltd",
+        "party b"
+      ]
+    },
+    {
+      "doc": "cuad-540d844cd2",
+      "slot": "Agreement_Date",
+      "gold": [
+        "date"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-540d844cd2",
+      "slot": "Start_Date",
+      "gold": [
+        "date"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-63c785858a",
+      "slot": "Parties",
+      "gold": [
+        "salesforceorg",
+        "salesforcecom inc",
+        "the reseller named above"
+      ],
+      "pred": [
+        "salesforcecom inc"
+      ]
+    },
+    {
+      "doc": "cuad-86a6432705",
+      "slot": "Parties",
+      "gold": [
+        "didi chuxing technology co ltd",
+        "hunan ruixi financial leasing co ltd"
+      ],
+      "pred": [
+        "didi chuxing technology co ltd",
+        "ting chen party b",
+        "hunan ruixi financial leasing co ltd legal representative",
+        "party b is an automobile leasing company"
+      ]
+    },
+    {
+      "doc": "cuad-86a6432705",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2018-12-17"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-86a6432705",
+      "slot": "Start_Date",
+      "gold": [
+        "2018-12-17"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-86a6432705",
+      "slot": "End_Date",
+      "gold": [
+        "1 year"
+      ],
+      "pred": "this agreement shall terminate as of the date of termination specified in the notice of termination"
+    },
+    {
+      "doc": "cuad-aea706c935",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2019-05-31"
+      ],
+      "pred": "2016-08-18"
+    },
+    {
+      "doc": "cuad-aea706c935",
+      "slot": "Start_Date",
+      "gold": [
+        "2019-05-31"
+      ],
+      "pred": "2016-08-18"
+    },
+    {
+      "doc": "cuad-aea706c935",
+      "slot": "End_Date",
+      "gold": [
+        "5 year"
+      ],
+      "pred": "the term shall commence on the effective date and end on december 31 of the year in which the effective date occurs and the last calendar year of the term shall commence on january 1 of the year in which the term ends and end on the last day of the term"
+    },
+    {
+      "doc": "cuad-ad74fdbb25",
+      "slot": "Parties",
+      "gold": [
+        "slinger bag inc",
+        "the company",
+        "aitan zacharin",
+        "the consultant"
+      ],
+      "pred": [
+        "slinger bag inc"
+      ]
+    },
+    {
+      "doc": "cuad-ad74fdbb25",
+      "slot": "Agreement_Date",
+      "gold": [
+        "30th day of april"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-ad74fdbb25",
+      "slot": "Start_Date",
+      "gold": [
+        "30th day of april"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-3b460d74ef",
+      "slot": "Parties",
+      "gold": [
+        "ubs oncology impact fund lp",
+        "oncology impact fund cayman management lp",
+        "mpm oncology impact management lp",
+        "mpm oncology impact management gp llc"
+      ],
+      "pred": [
+        "ubs oncology impact fund lp"
+      ]
+    },
+    {
+      "doc": "cuad-d6d13004a8",
+      "slot": "Agreement_Date",
+      "gold": [
+        "____________"
+      ],
+      "pred": "__ day of ____, 20___"
+    },
+    {
+      "doc": "cuad-d6d13004a8",
+      "slot": "Start_Date",
+      "gold": [
+        "____________"
+      ],
+      "pred": "__ day of ____, 20___"
+    },
+    {
+      "doc": "cuad-d6d13004a8",
+      "slot": "End_Date",
+      "gold": [
+        "1 year"
+      ],
+      "pred": "the term of this agreement shall commence on the effective date and terminate in _____________, on _____________, unless terminated earlier pursuant to the terms of this agreement; provided, however"
+    },
+    {
+      "doc": "cuad-e3945f11ef",
+      "slot": "Parties",
+      "gold": [
+        "great lakes gas transmission limited partnership",
+        "transporter",
+        "anr pipeline company",
+        "shipper"
+      ],
+      "pred": []
+    },
+    {
+      "doc": "cuad-e3945f11ef",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2015-12-14"
+      ],
+      "pred": "2016-04-01"
+    },
+    {
+      "doc": "cuad-e3945f11ef",
+      "slot": "End_Date",
+      "gold": [
+        "2014-11-01"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-e3945f11ef",
+      "slot": "Jurisdiction",
+      "gold": [
+        "michigan"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "cuad-735868c342",
+      "slot": "Parties",
+      "gold": [
+        "tri city national bank",
+        "marshall & ilsley corporation"
+      ],
+      "pred": [
+        "tri city national bank",
+        "including its affiliates customer",
+        "marshall & ilsley corporation",
+        "customer that are transmitted to m&i"
+      ]
+    },
+    {
+      "doc": "cuad-735868c342",
+      "slot": "End_Date",
+      "gold": [
+        "term\" shall mean the period commencing on the effective date and terminating on the eighth anniversary of the commencement date, unless the agreement is extended in accordance with its provisions"
+      ],
+      "pred": "the initial term of this agreement shall be the term, unless extended or earlier terminated in accordance with this agreement"
+    },
+    {
+      "doc": "cuad-25ab7c70d2",
+      "slot": "Parties",
+      "gold": [
+        "dr george d green",
+        "union dental corp"
+      ],
+      "pred": [
+        "dr",
+        "george d",
+        "union dental corp"
+      ]
+    },
+    {
+      "doc": "cuad-ed4dfac5bf",
+      "slot": "Parties",
+      "gold": [
+        "american international group inc",
+        "american general life insurance company"
+      ],
+      "pred": [
+        "american international group inc",
+        "american general life insurance company",
+        "am"
+      ]
+    },
+    {
+      "doc": "cuad-ed4dfac5bf",
+      "slot": "End_Date",
+      "gold": [
+        "unless earlier terminated in accordance with this paragraph 7, this agreement shall continue indefinitely"
+      ],
+      "pred": "30 day"
+    },
+    {
+      "doc": "cuad-49df16239f",
+      "slot": "Parties",
+      "gold": [
+        "bunker one usa inc",
+        "vertex energy operating llc"
+      ],
+      "pred": [
+        "vertex energy operating llc"
+      ]
+    },
+    {
+      "doc": "cuad-fe31f31c85",
+      "slot": "Parties",
+      "gold": [
+        "famous fixins inc",
+        "pey dirt inc"
+      ],
+      "pred": [
+        "famous fixins inc",
+        "pey dirt inc",
+        "company"
+      ]
+    },
+    {
+      "doc": "cuad-fe31f31c85",
+      "slot": "Start_Date",
+      "gold": [
+        "1999-05-31"
+      ],
+      "pred": "1999-06-01"
+    }
+  ]
+}

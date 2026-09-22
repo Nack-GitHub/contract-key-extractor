@@ -40,22 +40,29 @@ def pick_device(name: str | None = None) -> torch.device:
 class Extractor:
     """Text → entity spans, using a model directory produced by ``train``."""
 
-    def __init__(self, model_dir: str | Path, device: str | None = None, batch_size: int = 16):
+    def __init__(self, model_dir: str | Path, device: str | None = None, batch_size: int = 16,
+                 min_confidence: float = 0.6):
         model_dir = Path(model_dir)
         with open(model_dir / "pipeline_config.json", encoding="utf-8") as f:
             pc = json.load(f)
         self.lang: str = pc["lang"]
         # models trained before ``entity_types`` was recorded carry the full label space
         self.entity_types: tuple[str, ...] = tuple(pc.get("entity_types") or ENTITY_TYPES)
+        # gold labels the model was trained to fold into another type (evaluation maps gold the same way)
+        self.label_map: dict[str, str] = dict(pc.get("label_map") or {})
         per_word = pc.get("per_word", False)
         transformers.logging.set_verbosity_error()  # we window long inputs ourselves
         self.tokenizer = AutoTokenizer.from_pretrained(model_dir)
-        self.model = AutoModelForTokenClassification.from_pretrained(model_dir)
+        self.model = AutoModelForTokenClassification.from_pretrained(model_dir, dtype=torch.float32)
         self.device = pick_device(device)
         self.model.to(self.device).eval()
         self.encoder = Encoder(self.tokenizer, max_length=pc["max_length"], stride=pc["stride"],
                                lowercase=pc["lowercase"], per_word=per_word)
         self.batch_size = batch_size
+        # spans whose mean label probability is below this are dropped: the tagger emits low-confidence
+        # one-token fragments (punctuation, page-footer dates) that the span rules cannot all catch;
+        # 0.6 was chosen on the CUAD validation split (strict/relaxed up on both splits, slot-level neutral)
+        self.min_confidence = min_confidence
         self.id2label = {int(k): v for k, v in self.model.config.id2label.items()} or ID2LABEL
 
     # ------------------------------------------------------------------ core
@@ -131,7 +138,9 @@ class Extractor:
             while j < len(wp.offsets) and wp.offsets[j][0] < sp.end:
                 confs.append(wp.confidence[j])
                 j += 1
-            out.append((sp, float(np.mean(confs)) if confs else 0.0))
+            conf = float(np.mean(confs)) if confs else 0.0
+            if conf >= self.min_confidence:
+                out.append((sp, conf))
         return out
 
     def predict(self, text: str) -> list[Span]:

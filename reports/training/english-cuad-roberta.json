@@ -1,0 +1,144 @@
+{
+  "config": {
+    "name": "english-cuad-roberta",
+    "model_name": "roberta-base",
+    "lang": "en",
+    "train": "data/processed/cuad/train.jsonl",
+    "val": "data/processed/cuad/val.jsonl",
+    "output_dir": "models/english-cuad-roberta",
+    "test": [
+      "data/processed/cuad/test.jsonl"
+    ],
+    "entity_types": [
+      "PARTY",
+      "AGREEMENT_DATE",
+      "START_DATE",
+      "END_DATE",
+      "JURISDICTION"
+    ],
+    "lowercase": false,
+    "per_word": true,
+    "max_length": 256,
+    "stride": 64,
+    "epochs": 3,
+    "lr": 3e-05,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "seed": 42,
+    "negative_window_keep": 0.15,
+    "max_train_docs": null,
+    "grad_accum": 1
+  },
+  "validation_per_epoch": [
+    {
+      "epoch": 1.0,
+      "eval_f1": 0.48931116389548696,
+      "eval_precision": 0.40657894736842104,
+      "eval_recall": 0.614314115308151
+    },
+    {
+      "epoch": 2.0,
+      "eval_f1": 0.6061615320566195,
+      "eval_precision": 0.5214899713467048,
+      "eval_recall": 0.7236580516898609
+    },
+    {
+      "epoch": 3.0,
+      "eval_f1": 0.5752351097178684,
+      "eval_precision": 0.47477360931435963,
+      "eval_recall": 0.7296222664015904
+    },
+    {
+      "epoch": 3.0,
+      "eval_f1": 0.6061615320566195,
+      "eval_precision": 0.5214899713467048,
+      "eval_recall": 0.7236580516898609
+    }
+  ],
+  "training_loss": [
+    {
+      "epoch": 0.16339869281045752,
+      "loss": 1.1031995391845704
+    },
+    {
+      "epoch": 0.32679738562091504,
+      "loss": 0.1662107849121094
+    },
+    {
+      "epoch": 0.49019607843137253,
+      "loss": 0.1255814266204834
+    },
+    {
+      "epoch": 0.6535947712418301,
+      "loss": 0.0775944709777832
+    },
+    {
+      "epoch": 0.8169934640522876,
+      "loss": 0.08692143440246582
+    },
+    {
+      "epoch": 0.9803921568627451,
+      "loss": 0.06244046211242676
+    },
+    {
+      "epoch": 1.1437908496732025,
+      "loss": 0.04863537788391113
+    },
+    {
+      "epoch": 1.3071895424836601,
+      "loss": 0.04331651210784912
+    },
+    {
+      "epoch": 1.4705882352941178,
+      "loss": 0.05532233715057373
+    },
+    {
+      "epoch": 1.6339869281045751,
+      "loss": 0.03782989740371704
+    },
+    {
+      "epoch": 1.7973856209150327,
+      "loss": 0.04081710338592529
+    },
+    {
+      "epoch": 1.9607843137254903,
+      "loss": 0.04214376926422119
+    },
+    {
+      "epoch": 2.1241830065359477,
+      "loss": 0.02344851016998291
+    },
+    {
+      "epoch": 2.287581699346405,
+      "loss": 0.030756099224090575
+    },
+    {
+      "epoch": 2.450980392156863,
+      "loss": 0.02996619462966919
+    },
+    {
+      "epoch": 2.6143790849673203,
+      "loss": 0.028606719970703125
+    },
+    {
+      "epoch": 2.7777777777777777,
+      "loss": 0.025999743938446045
+    },
+    {
+      "epoch": 2.9411764705882355,
+      "loss": 0.023730559349060057
+    }
+  ],
+  "final_validation": {
+    "eval_loss": 0.017059072852134705,
+    "eval_precision": 0.5214899713467048,
+    "eval_recall": 0.7236580516898609,
+    "eval_f1": 0.6061615320566195,
+    "eval_runtime": 74.3919,
+    "eval_samples_per_second": 39.588,
+    "eval_steps_per_second": 1.25,
+    "epoch": 3.0
+  }
+}

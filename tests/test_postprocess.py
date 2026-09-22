@@ -201,3 +201,70 @@ def test_unquoted_short_latin_alias_is_demoted():
     rec = assemble(text, spans, lang="en")
     assert (rec["Party_A"]["text"], rec["Party_B"]["text"]) == ("Skype Communications S.A.", "Big Company Limited")
     assert rec["Other_Parties"] == ["Skype"]
+
+
+def test_english_validation_rejects_name_fragments_and_dateless_term_clauses():
+    # legal-form suffix on its own is a fragment of a name; a lowercase common word is not a name
+    for frag in ("Corp", "LTD", "GP", "S.A.", '"Corporation"', "together", "anonyme", "Affiliates"):
+        assert not validate_span(Span(0, 5, "PARTY", frag), lang="en"), frag
+    # ...but CUAD-style quoted defined terms and real short names stay
+    for ok in ('"Company"', '"you"', "IREYA B.V", "Bruce Jenner", "Party A", "DISTRIBUTOR"):
+        assert validate_span(Span(0, 5, "PARTY", ok), lang="en"), ok
+    # an END_DATE clause must talk about ending or duration; a year alone is not enough
+    assert not validate_span(Span(0, 5, "END_DATE", "Antitrust Improvements Act of 1976, as amended."), lang="en")
+    assert not validate_span(Span(0, 5, "END_DATE", "Addendum, set forth in Section 7.2."), lang="en")
+    assert validate_span(Span(0, 5, "END_DATE", "The Agreement shall end on the End Date without further action"), lang="en")
+    assert validate_span(Span(0, 5, "END_DATE", "shall continue for so long as Photronics holds the shares"), lang="en")
+    assert validate_span(Span(0, 5, "END_DATE", "December 31, 2020"), lang="en")
+
+
+def test_parties_boilerplate_never_becomes_party_a_or_b():
+    text = ('NICE and Contractor are collectively referred to as the Parties. '
+            'NICE Ltd. ("NICE") and Acme Corp. ("Contractor")')
+    spans = [_sp("NICE and Contractor are collectively referred to as the Parties.", 0, "PARTY", 0.95),
+             _sp("NICE Ltd.", text.index("NICE Ltd."), "PARTY"), _sp("Acme Corp.", text.index("Acme"), "PARTY")]
+    rec = assemble(text, spans, lang="en")
+    assert (rec["Party_A"]["text"], rec["Party_B"]["text"]) == ("NICE Ltd.", "Acme Corp.")
+    assert rec["Other_Parties"][0].startswith("NICE and Contractor")
+
+
+def test_assemble_splits_signing_and_effective_dates_from_merged_agreement_dates():
+    from contract_ner.postprocess import assemble
+
+    text = ('This Agreement is entered into on October 1, 2019 and is made effective as of November 1, 2019 '
+            '(the "Effective Date"), by and between Acme Corp. and Beta Inc.')
+    spans = [(Span(text.index(d), text.index(d) + len(d), "AGREEMENT_DATE", d), c)
+             for d, c in (("October 1, 2019", 0.9), ("November 1, 2019", 0.85))]
+    s = assemble(text, spans, lang="en")["summary"]
+    assert (s["Agreement_Date"], s["Start_Date"]) == ("2019-10-01", "2019-11-01")
+    # a single date is both the agreement date and the inferred start date
+    rec = assemble(text, spans[:1], lang="en")
+    assert rec["summary"]["Start_Date"] == "2019-10-01" and rec["Start_Date"]["inferred_from"] == "Agreement_Date"
+
+
+@pytest.mark.parametrize("text,iso", [
+    ("7/7/98", "1998-07-07"),
+    ("3-31-16", "2016-03-31"),
+    ("Dated 05/05/98", "1998-05-05"),
+    ("4/8/2020", "2020-04-08"),          # English: month first
+    ("24 OCT 2011", "2011-10-24"),
+    ("the first day of July, 2017 (", "2017-07-01"),
+    ("the twenty-first day of May 2003", "2003-05-21"),
+    ("Section 5.1.2", None),
+    ("September ___, 2019", None),
+])
+def test_normalize_date_english_numeric_and_ordinal_forms(text, iso):
+    assert normalize_date(text, "en") == iso
+
+
+def test_normalize_date_reads_thai_numeric_dates_day_first():
+    assert normalize_date("4/8/2568", "th") == "2025-08-04"
+    assert normalize_date("4/8/2568") == "2025-08-04"  # a BE year marks a Thai date even without Thai script
+
+
+def test_normalize_jurisdiction_handles_caps_apostrophes_and_adjective_law():
+    from contract_ner.postprocess import normalize_jurisdiction
+
+    assert normalize_jurisdiction("SHALL BE GOVERNED BY THE LAWS OF THE STATE OF NEW YORK (INCLUDING")["english"] == "STATE OF NEW YORK"
+    assert normalize_jurisdiction("the laws of the People's Republic of China that")["english"] == "People's Republic of China"
+    assert normalize_jurisdiction("construed in accordance with English law, save")["english"] == "English law"

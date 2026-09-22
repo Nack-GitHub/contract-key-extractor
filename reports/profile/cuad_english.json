@@ -1,0 +1,879 @@
+{
+  "splits": [
+    {
+      "name": "train",
+      "path": "data/processed/cuad/train.jsonl",
+      "lang": "en",
+      "n_documents": 398,
+      "n_spans": 3099,
+      "chars_median": 33871,
+      "entity_char_ratio": 0.01031236092228458,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 1953,
+          "n_documents_with_label": 397,
+          "coverage": 0.9974874371859297,
+          "spans_per_document": {
+            "0": 1,
+            "1": 1,
+            "2": 16,
+            "3+": 380
+          },
+          "words_median": 2,
+          "words_p90": 6,
+          "words_max": 88,
+          "chars_median": 17,
+          "position": {
+            "first 5%": 0.8197644649257553,
+            "5-25%": 0.08755760368663594,
+            "25-50%": 0.00972862263184844,
+            "second half": 0.08294930875576037
+          },
+          "forms": {
+            "quoted-alias": 709,
+            "legal-name": 654,
+            "legal-name-caps": 240,
+            "other": 152,
+            "parties-boilerplate": 121,
+            "caps-no-suffix": 51,
+            "person": 26
+          },
+          "form_share": {
+            "quoted-alias": 0.3630312339989759,
+            "legal-name": 0.3348694316436252,
+            "legal-name-caps": 0.1228878648233487,
+            "other": 0.07782898105478751,
+            "parties-boilerplate": 0.061955965181771634,
+            "caps-no-suffix": 0.026113671274961597,
+            "person": 0.013312852022529442
+          },
+          "form_examples": {
+            "legal-name-caps": "I-ESCROW, INC.",
+            "quoted-alias": "\"i-Escrow\"",
+            "legal-name": "Collectible Concepts Group, Inc.",
+            "parties-boilerplate": "(the \"Parties\" or \"Joint Venturers\" if referred to collectively, or the \"Party\" or Joint Venturer\" if referred",
+            "caps-no-suffix": "SIEMENS AKTIENGESELLSCHAFT",
+            "other": "The University of Texas M. D. Anderson Cancer Center",
+            "person": "Gregory P. Spivy"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 363,
+          "n_documents_with_label": 360,
+          "coverage": 0.9045226130653267,
+          "spans_per_document": {
+            "0": 38,
+            "1": 357,
+            "2": 3,
+            "3+": 0
+          },
+          "words_median": 3,
+          "words_p90": 5,
+          "words_max": 18,
+          "chars_median": 16,
+          "position": {
+            "first 5%": 0.8347107438016529,
+            "5-25%": 0.05785123966942149,
+            "25-50%": 0.011019283746556474,
+            "second half": 0.09641873278236915
+          },
+          "forms": {
+            "month-d-y": 191,
+            "d-month-y": 91,
+            "month-y": 20,
+            "numeric": 20,
+            "placeholder-blank": 18,
+            "year-only": 15,
+            "clause-no-date": 8
+          },
+          "form_share": {
+            "month-d-y": 0.5261707988980716,
+            "d-month-y": 0.25068870523415976,
+            "month-y": 0.05509641873278237,
+            "numeric": 0.05509641873278237,
+            "placeholder-blank": 0.049586776859504134,
+            "year-only": 0.04132231404958678,
+            "clause-no-date": 0.02203856749311295
+          },
+          "form_examples": {
+            "month-d-y": "June 21, 1999",
+            "d-month-y": "23rd day of September, 2016",
+            "placeholder-blank": "this ___ day of _________, 2004",
+            "clause-no-date": "this Agreement as of the Effective Date.",
+            "year-only": "[ ] day of [ ], 2020 (",
+            "month-y": "1s t day of June, 2004.",
+            "numeric": "03/01/05"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 76,
+          "n_documents_with_label": 71,
+          "coverage": 0.17839195979899497,
+          "spans_per_document": {
+            "0": 327,
+            "1": 66,
+            "2": 5,
+            "3+": 0
+          },
+          "words_median": 10.0,
+          "words_p90": 26,
+          "words_max": 43,
+          "chars_median": 58.0,
+          "position": {
+            "first 5%": 0.27631578947368424,
+            "5-25%": 0.3684210526315789,
+            "25-50%": 0.02631578947368421,
+            "second half": 0.32894736842105265
+          },
+          "forms": {
+            "month-d-y": 30,
+            "clause-no-date": 30,
+            "d-month-y": 9,
+            "placeholder-blank": 3,
+            "numeric": 3,
+            "year-only": 1
+          },
+          "form_share": {
+            "month-d-y": 0.39473684210526316,
+            "clause-no-date": 0.39473684210526316,
+            "d-month-y": 0.11842105263157894,
+            "placeholder-blank": 0.039473684210526314,
+            "numeric": 0.039473684210526314,
+            "year-only": 0.013157894736842105
+          },
+          "form_examples": {
+            "month-d-y": "December 21, 2017",
+            "placeholder-blank": "________________, 2000",
+            "d-month-y": "Signed and effective this 25th day of May, 1999.",
+            "clause-no-date": "This Agreement shall become effective as of the first date above written",
+            "numeric": "Contract start: 04-01-06",
+            "year-only": "IN WITNESS WHEREOF the parties hereto have hereunto executed this Agreement on the 1st day of JUNE , 2006 , bu"
+          },
+          "forms_absent": [
+            "month-y"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 361,
+          "n_documents_with_label": 320,
+          "coverage": 0.8040201005025126,
+          "spans_per_document": {
+            "0": 78,
+            "1": 295,
+            "2": 19,
+            "3+": 6
+          },
+          "words_median": 31,
+          "words_p90": 66,
+          "words_max": 204,
+          "chars_median": 191,
+          "position": {
+            "first 5%": 0.08033240997229917,
+            "5-25%": 0.2659279778393352,
+            "25-50%": 0.22714681440443213,
+            "second half": 0.4265927977839335
+          },
+          "forms": {
+            "duration": 160,
+            "open-ended": 96,
+            "explicit-date": 79,
+            "other": 26
+          },
+          "form_share": {
+            "duration": 0.44321329639889195,
+            "open-ended": 0.2659279778393352,
+            "explicit-date": 0.2188365650969529,
+            "other": 0.07202216066481995
+          },
+          "form_examples": {
+            "duration": "The term of this Agreement shall continue for one (1) year following the Launch Date, unless earlier terminate",
+            "explicit-date": "The Joint Venture shall commence on the 1st of March, 2003, and shall be effective until February 28, 2004 unl",
+            "open-ended": "Term: This Study Order will continue until the Study is completed, which is expected to be ________ (__) month",
+            "other": "This Agreement is effective as of the date hereof and shall remain in full force and effect for the period (th"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 346,
+          "n_documents_with_label": 330,
+          "coverage": 0.8291457286432161,
+          "spans_per_document": {
+            "0": 68,
+            "1": 317,
+            "2": 11,
+            "3+": 2
+          },
+          "words_median": 29.0,
+          "words_p90": 51,
+          "words_max": 114,
+          "chars_median": 173.0,
+          "position": {
+            "first 5%": 0.002890173410404624,
+            "5-25%": 0.017341040462427744,
+            "25-50%": 0.049132947976878616,
+            "second half": 0.930635838150289
+          },
+          "forms": {
+            "governed-by-clause": 325,
+            "laws-of-phrase": 11,
+            "forum-court": 7,
+            "place-only": 2,
+            "other": 1
+          },
+          "form_share": {
+            "governed-by-clause": 0.9393063583815029,
+            "laws-of-phrase": 0.031791907514450865,
+            "forum-court": 0.02023121387283237,
+            "place-only": 0.005780346820809248,
+            "other": 0.002890173410404624
+          },
+          "form_examples": {
+            "governed-by-clause": "This Agreement will be governed and construed in accordance with the laws of the State of California without g",
+            "place-only": "South Dakota",
+            "laws-of-phrase": "This Agreement shall be interpreted under the laws of the State of Nevada.",
+            "other": "Effective legislation of the Republic of Kazakhstan shall apply to any relations of the Parties arising out of",
+            "forum-court": "Any lawsuit relating to any matter arising under this Agreement may be initiated in a State or Federal Court l"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        }
+      }
+    },
+    {
+      "name": "val",
+      "path": "data/processed/cuad/val.jsonl",
+      "lang": "en",
+      "n_documents": 54,
+      "n_spans": 408,
+      "chars_median": 30088,
+      "entity_char_ratio": 0.010611688358597108,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 244,
+          "n_documents_with_label": 54,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 0,
+            "2": 1,
+            "3+": 53
+          },
+          "words_median": 2.0,
+          "words_p90": 6,
+          "words_max": 21,
+          "chars_median": 17.0,
+          "position": {
+            "first 5%": 0.8811475409836066,
+            "5-25%": 0.06557377049180328,
+            "25-50%": 0.020491803278688523,
+            "second half": 0.03278688524590164
+          },
+          "forms": {
+            "quoted-alias": 94,
+            "legal-name": 75,
+            "legal-name-caps": 32,
+            "other": 19,
+            "parties-boilerplate": 19,
+            "person": 4,
+            "caps-no-suffix": 1
+          },
+          "form_share": {
+            "quoted-alias": 0.38524590163934425,
+            "legal-name": 0.3073770491803279,
+            "legal-name-caps": 0.13114754098360656,
+            "other": 0.0778688524590164,
+            "parties-boilerplate": 0.0778688524590164,
+            "person": 0.01639344262295082,
+            "caps-no-suffix": 0.004098360655737705
+          },
+          "form_examples": {
+            "legal-name-caps": "ORGANIC PREPARATIONS INC.",
+            "quoted-alias": "'the Manufacturer'",
+            "legal-name": "Armstrong Flooring, Inc.",
+            "other": "\"Licensing\" and together with Seller, \"Arizona\"",
+            "parties-boilerplate": "(each of Arizona on the one hand and the Buyer Entities on the other hand, a \"Party\" and collectively, the \"Pa",
+            "person": "Celebrity Speakers",
+            "caps-no-suffix": "ANDY NORTH"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 50,
+          "n_documents_with_label": 49,
+          "coverage": 0.9074074074074074,
+          "spans_per_document": {
+            "0": 5,
+            "1": 48,
+            "2": 1,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 6,
+          "words_max": 13,
+          "chars_median": 17.0,
+          "position": {
+            "first 5%": 0.86,
+            "5-25%": 0.04,
+            "25-50%": 0.04,
+            "second half": 0.06
+          },
+          "forms": {
+            "month-d-y": 25,
+            "d-month-y": 10,
+            "month-y": 7,
+            "placeholder-blank": 3,
+            "year-only": 2,
+            "clause-no-date": 2,
+            "numeric": 1
+          },
+          "form_share": {
+            "month-d-y": 0.5,
+            "d-month-y": 0.2,
+            "month-y": 0.14,
+            "placeholder-blank": 0.06,
+            "year-only": 0.04,
+            "clause-no-date": 0.04,
+            "numeric": 0.02
+          },
+          "form_examples": {
+            "month-y": "15t h day of January 2018",
+            "month-d-y": "December 31, 2018",
+            "d-month-y": "1st day of August, 2013",
+            "year-only": "2018",
+            "numeric": "13/07/05",
+            "placeholder-blank": "____ day of ______________ 2013",
+            "clause-no-date": "[Date]"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 16,
+          "n_documents_with_label": 15,
+          "coverage": 0.2777777777777778,
+          "spans_per_document": {
+            "0": 39,
+            "1": 14,
+            "2": 1,
+            "3+": 0
+          },
+          "words_median": 7.5,
+          "words_p90": 43,
+          "words_max": 43,
+          "chars_median": 51.0,
+          "position": {
+            "first 5%": 0.25,
+            "5-25%": 0.5,
+            "25-50%": 0.0,
+            "second half": 0.25
+          },
+          "forms": {
+            "clause-no-date": 8,
+            "month-d-y": 6,
+            "d-month-y": 1,
+            "numeric": 1
+          },
+          "form_share": {
+            "clause-no-date": 0.5,
+            "month-d-y": 0.375,
+            "d-month-y": 0.0625,
+            "numeric": 0.0625
+          },
+          "form_examples": {
+            "clause-no-date": "This agreement commences upon execution of this document.",
+            "month-d-y": "April 17, 2017",
+            "d-month-y": "\"Commencement Date\" means: 1st January 2013.",
+            "numeric": "25/05/2008"
+          },
+          "forms_absent": [
+            "month-y",
+            "year-only",
+            "placeholder-blank"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 47,
+          "n_documents_with_label": 44,
+          "coverage": 0.8148148148148148,
+          "spans_per_document": {
+            "0": 10,
+            "1": 41,
+            "2": 3,
+            "3+": 0
+          },
+          "words_median": 31,
+          "words_p90": 69,
+          "words_max": 87,
+          "chars_median": 192,
+          "position": {
+            "first 5%": 0.0851063829787234,
+            "5-25%": 0.2765957446808511,
+            "25-50%": 0.2765957446808511,
+            "second half": 0.3617021276595745
+          },
+          "forms": {
+            "duration": 22,
+            "explicit-date": 12,
+            "open-ended": 11,
+            "other": 2
+          },
+          "form_share": {
+            "duration": 0.46808510638297873,
+            "explicit-date": 0.2553191489361702,
+            "open-ended": 0.23404255319148937,
+            "other": 0.0425531914893617
+          },
+          "form_examples": {
+            "duration": "This agreement is for a term of ten (10) years.",
+            "open-ended": "Unless earlier terminated pursuant to the provisions hereof, the term of this Agreement and the licenses and o",
+            "explicit-date": "The term of this Agreement shall terminate on May 31, 2015, unless sooner terminated.",
+            "other": "The Agreement shall commence on the Effective Date and remain in full force and effect for an initial term of "
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 51,
+          "n_documents_with_label": 49,
+          "coverage": 0.9074074074074074,
+          "spans_per_document": {
+            "0": 5,
+            "1": 47,
+            "2": 2,
+            "3+": 0
+          },
+          "words_median": 28,
+          "words_p90": 56,
+          "words_max": 63,
+          "chars_median": 171,
+          "position": {
+            "first 5%": 0.0,
+            "5-25%": 0.0,
+            "25-50%": 0.058823529411764705,
+            "second half": 0.9411764705882353
+          },
+          "forms": {
+            "governed-by-clause": 48,
+            "laws-of-phrase": 3
+          },
+          "form_share": {
+            "governed-by-clause": 0.9411764705882353,
+            "laws-of-phrase": 0.058823529411764705
+          },
+          "form_examples": {
+            "governed-by-clause": "This agreement shall be governed by the Laws of England (English common and statutory Law).",
+            "laws-of-phrase": "This Agreement shall be interpreted and enforced in accordance with the laws of the State of California as app"
+          },
+          "forms_absent": [
+            "forum-court",
+            "place-only",
+            "other"
+          ],
+          "repeated_value_rate": 0.0
+        }
+      }
+    },
+    {
+      "name": "test",
+      "path": "data/processed/cuad/test.jsonl",
+      "lang": "en",
+      "n_documents": 47,
+      "n_spans": 370,
+      "chars_median": 33577,
+      "entity_char_ratio": 0.0080319977404972,
+      "labels": {
+        "PARTY": {
+          "label": "PARTY",
+          "n_spans": 244,
+          "n_documents_with_label": 47,
+          "coverage": 1.0,
+          "spans_per_document": {
+            "0": 0,
+            "1": 0,
+            "2": 2,
+            "3+": 45
+          },
+          "words_median": 2.0,
+          "words_p90": 5,
+          "words_max": 55,
+          "chars_median": 17.5,
+          "position": {
+            "first 5%": 0.8032786885245902,
+            "5-25%": 0.06557377049180328,
+            "25-50%": 0.03278688524590164,
+            "second half": 0.09836065573770492
+          },
+          "forms": {
+            "legal-name": 90,
+            "quoted-alias": 83,
+            "legal-name-caps": 35,
+            "other": 14,
+            "parties-boilerplate": 14,
+            "caps-no-suffix": 7,
+            "person": 1
+          },
+          "form_share": {
+            "legal-name": 0.36885245901639346,
+            "quoted-alias": 0.3401639344262295,
+            "legal-name-caps": 0.14344262295081966,
+            "other": 0.05737704918032787,
+            "parties-boilerplate": 0.05737704918032787,
+            "caps-no-suffix": 0.028688524590163935,
+            "person": 0.004098360655737705
+          },
+          "form_examples": {
+            "quoted-alias": "\"Provider\"",
+            "legal-name-caps": "TELCOSTAR PTE, LTD.",
+            "legal-name": "Ability Computer & Software Industries Ltd",
+            "other": "each and both of them \"Recipient\"",
+            "parties-boilerplate": "Each of the foregoing parties is referred to herein as a \"Party\" and together as the \"Parties\".",
+            "caps-no-suffix": "DISTRIBUTOR",
+            "person": "Bruce Jenner"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "AGREEMENT_DATE": {
+          "label": "AGREEMENT_DATE",
+          "n_spans": 42,
+          "n_documents_with_label": 42,
+          "coverage": 0.8936170212765957,
+          "spans_per_document": {
+            "0": 5,
+            "1": 42,
+            "2": 0,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 5,
+          "words_max": 6,
+          "chars_median": 16.0,
+          "position": {
+            "first 5%": 0.8333333333333334,
+            "5-25%": 0.023809523809523808,
+            "25-50%": 0.023809523809523808,
+            "second half": 0.11904761904761904
+          },
+          "forms": {
+            "month-d-y": 18,
+            "d-month-y": 9,
+            "numeric": 5,
+            "month-y": 4,
+            "placeholder-blank": 3,
+            "clause-no-date": 2,
+            "year-only": 1
+          },
+          "form_share": {
+            "month-d-y": 0.42857142857142855,
+            "d-month-y": 0.21428571428571427,
+            "numeric": 0.11904761904761904,
+            "month-y": 0.09523809523809523,
+            "placeholder-blank": 0.07142857142857142,
+            "clause-no-date": 0.047619047619047616,
+            "year-only": 0.023809523809523808
+          },
+          "form_examples": {
+            "month-d-y": "October 1, 2019",
+            "month-y": "first day of July, 2017 (",
+            "d-month-y": "5th day of December, 2007",
+            "numeric": "7/7/98",
+            "placeholder-blank": "September ___, 2019",
+            "year-only": "November 19t h, 2012",
+            "clause-no-date": "[●]"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "START_DATE": {
+          "label": "START_DATE",
+          "n_spans": 10,
+          "n_documents_with_label": 9,
+          "coverage": 0.19148936170212766,
+          "spans_per_document": {
+            "0": 38,
+            "1": 8,
+            "2": 1,
+            "3+": 0
+          },
+          "words_median": 3.0,
+          "words_p90": 35,
+          "words_max": 35,
+          "chars_median": 15.5,
+          "position": {
+            "first 5%": 0.7,
+            "5-25%": 0.1,
+            "25-50%": 0.1,
+            "second half": 0.1
+          },
+          "forms": {
+            "month-d-y": 4,
+            "clause-no-date": 4,
+            "numeric": 1,
+            "d-month-y": 1
+          },
+          "form_share": {
+            "month-d-y": 0.4,
+            "clause-no-date": 0.4,
+            "numeric": 0.1,
+            "d-month-y": 0.1
+          },
+          "form_examples": {
+            "month-d-y": "November 1, 2019",
+            "numeric": "7/1/98",
+            "clause-no-date": "This Agreement shall become effective when it shall have been executed by all parties and upon receipt of all ",
+            "d-month-y": "27 January 2020"
+          },
+          "forms_absent": [
+            "month-y",
+            "year-only",
+            "placeholder-blank"
+          ],
+          "repeated_value_rate": 0.0
+        },
+        "END_DATE": {
+          "label": "END_DATE",
+          "n_spans": 38,
+          "n_documents_with_label": 32,
+          "coverage": 0.6808510638297872,
+          "spans_per_document": {
+            "0": 15,
+            "1": 26,
+            "2": 6,
+            "3+": 0
+          },
+          "words_median": 29.5,
+          "words_p90": 65,
+          "words_max": 100,
+          "chars_median": 185.5,
+          "position": {
+            "first 5%": 0.07894736842105263,
+            "5-25%": 0.2894736842105263,
+            "25-50%": 0.18421052631578946,
+            "second half": 0.4473684210526316
+          },
+          "forms": {
+            "duration": 20,
+            "explicit-date": 9,
+            "open-ended": 8,
+            "other": 1
+          },
+          "form_share": {
+            "duration": 0.5263157894736842,
+            "explicit-date": 0.23684210526315788,
+            "open-ended": 0.21052631578947367,
+            "other": 0.02631578947368421
+          },
+          "form_examples": {
+            "explicit-date": "This Agreement be deemed effective as of the Effective Date, Agreement and shall terminate on December 31, 202",
+            "duration": "The term of this Agreement shall begin on the Effective Date and continue in effect for a period of five (5) y",
+            "open-ended": "This Agreement between HEMISPHERX and SCIEN shall be in effect beginning the last date of execution set forth ",
+            "other": "Party A and Party B agree and confirm that the term of cooperation under this Agreement shall commence from th"
+          },
+          "forms_absent": [],
+          "repeated_value_rate": 0.0
+        },
+        "JURISDICTION": {
+          "label": "JURISDICTION",
+          "n_spans": 36,
+          "n_documents_with_label": 34,
+          "coverage": 0.723404255319149,
+          "spans_per_document": {
+            "0": 13,
+            "1": 32,
+            "2": 2,
+            "3+": 0
+          },
+          "words_median": 29.0,
+          "words_p90": 56,
+          "words_max": 120,
+          "chars_median": 175.0,
+          "position": {
+            "first 5%": 0.027777777777777776,
+            "5-25%": 0.027777777777777776,
+            "25-50%": 0.08333333333333333,
+            "second half": 0.8611111111111112
+          },
+          "forms": {
+            "governed-by-clause": 34,
+            "laws-of-phrase": 2
+          },
+          "form_share": {
+            "governed-by-clause": 0.9444444444444444,
+            "laws-of-phrase": 0.05555555555555555
+          },
+          "form_examples": {
+            "governed-by-clause": "This Agreement and any claim, controversy or dispute arising out of or related to this Agreement, any of the t",
+            "laws-of-phrase": "This Agreement is made under and subject to the provision of the substantive laws of the State of New York, wi"
+          },
+          "forms_absent": [
+            "forum-court",
+            "place-only",
+            "other"
+          ],
+          "repeated_value_rate": 0.0
+        }
+      }
+    }
+  ],
+  "drift": {
+    "val": [
+      {
+        "label": "AGREEMENT_DATE",
+        "form": "month-y",
+        "reference_share": 0.05509641873278237,
+        "other_share": 0.14,
+        "other_count": 7,
+        "verdict": "under-represented in training"
+      }
+    ],
+    "test": [
+      {
+        "label": "AGREEMENT_DATE",
+        "form": "numeric",
+        "reference_share": 0.05509641873278237,
+        "other_share": 0.11904761904761904,
+        "other_count": 5,
+        "verdict": "under-represented in training"
+      },
+      {
+        "label": "AGREEMENT_DATE",
+        "form": "clause-no-date",
+        "reference_share": 0.02203856749311295,
+        "other_share": 0.047619047619047616,
+        "other_count": 2,
+        "verdict": "under-represented in training"
+      }
+    ]
+  },
+  "windowing": {
+    "train": {
+      "max_length": 256,
+      "stride": 64,
+      "n_windows": 22673,
+      "windows_with_entity": 1713,
+      "entity_window_share": 0.07555241917699466,
+      "spans_cut_by_a_boundary": 14,
+      "spans_cut_share": 0.00451758631816715,
+      "spans_longer_than_a_window": 1,
+      "subwords_per_span": {
+        "AGREEMENT_DATE": {
+          "median": 4,
+          "p90": 7,
+          "max": 27
+        },
+        "END_DATE": {
+          "median": 39,
+          "p90": 84,
+          "max": 272
+        },
+        "JURISDICTION": {
+          "median": 33.0,
+          "p90": 61,
+          "max": 149
+        },
+        "PARTY": {
+          "median": 5,
+          "p90": 14,
+          "max": 107
+        },
+        "START_DATE": {
+          "median": 12.0,
+          "p90": 37,
+          "max": 49
+        }
+      }
+    },
+    "val": {
+      "max_length": 256,
+      "stride": 64,
+      "n_windows": 2945,
+      "windows_with_entity": 241,
+      "entity_window_share": 0.08183361629881154,
+      "spans_cut_by_a_boundary": 3,
+      "spans_cut_share": 0.007352941176470588,
+      "spans_longer_than_a_window": 0,
+      "subwords_per_span": {
+        "AGREEMENT_DATE": {
+          "median": 4.5,
+          "p90": 8,
+          "max": 17
+        },
+        "END_DATE": {
+          "median": 38,
+          "p90": 89,
+          "max": 122
+        },
+        "JURISDICTION": {
+          "median": 32,
+          "p90": 61,
+          "max": 72
+        },
+        "PARTY": {
+          "median": 5.0,
+          "p90": 12,
+          "max": 32
+        },
+        "START_DATE": {
+          "median": 11.5,
+          "p90": 46,
+          "max": 61
+        }
+      }
+    },
+    "test": {
+      "max_length": 256,
+      "stride": 64,
+      "n_windows": 3206,
+      "windows_with_entity": 187,
+      "entity_window_share": 0.05832813474734872,
+      "spans_cut_by_a_boundary": 1,
+      "spans_cut_share": 0.002702702702702703,
+      "spans_longer_than_a_window": 0,
+      "subwords_per_span": {
+        "AGREEMENT_DATE": {
+          "median": 5.0,
+          "p90": 8,
+          "max": 10
+        },
+        "END_DATE": {
+          "median": 35.5,
+          "p90": 75,
+          "max": 141
+        },
+        "JURISDICTION": {
+          "median": 31.0,
+          "p90": 76,
+          "max": 135
+        },
+        "PARTY": {
+          "median": 5.0,
+          "p90": 12,
+          "max": 88
+        },
+        "START_DATE": {
+          "median": 5.0,
+          "p90": 40,
+          "max": 40
+        }
+      }
+    }
+  }
+}

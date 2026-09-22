@@ -1,5 +1,15 @@
 {
   "n_docs": 300,
+  "types": [
+    "PARTY",
+    "AGREEMENT_DATE",
+    "START_DATE",
+    "END_DATE",
+    "CONTRACT_VALUE",
+    "PAYMENT_DUE",
+    "PENALTY_RATE",
+    "JURISDICTION"
+  ],
   "strict": {
     "precision": 0.996982270841192,
     "recall": 0.992862509391435,
@@ -117,6 +127,49 @@
       "support": 2223
     }
   },
+  "slots": {
+    "Parties": {
+      "precision": 0.998272884283247,
+      "recall": 1.0,
+      "f1": 0.9991356957649092,
+      "support": 578,
+      "docs_with_gold": 289
+    },
+    "Agreement_Date": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 289,
+      "docs_with_gold": 289
+    },
+    "Start_Date": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 296,
+      "docs_with_gold": 296
+    },
+    "End_Date": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 206,
+      "docs_with_gold": 206
+    },
+    "Jurisdiction": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 210,
+      "docs_with_gold": 210
+    },
+    "micro": {
+      "precision": 0.9993670886075949,
+      "recall": 1.0,
+      "f1": 0.9996834441278886,
+      "support": 1579
+    }
+  },
   "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      1.000     1.000     1.000       289\nCONTRACT_VALUE      0.987     0.987     0.987       238\n      END_DATE      1.000     1.000     1.000       206\n  JURISDICTION      1.000     1.000     1.000       235\n         PARTY      0.997     0.999     0.998      1017\n   PAYMENT_DUE      1.000     0.939     0.969       213\n  PENALTY_RATE      0.991     0.991     0.991       217\n    START_DATE      1.000     1.000     1.000       247\n\n     micro avg      0.997     0.993     0.995      2662\n     macro avg      0.997     0.990     0.993      2662\n  weighted avg      0.997     0.993     0.995      2662\n",
   "errors": [
     {
@@ -208,6 +261,21 @@
       "kind": "FN",
       "label": "PAYMENT_DUE",
       "text": "ภายในวันทำการสุดท้ายของเดือน"
+    }
+  ],
+  "slot_errors": [
+    {
+      "doc": "th-test-00194",
+      "slot": "Parties",
+      "gold": [
+        "บริษัท โลจิสติกส์ ศรี จำกัด มหาชน",
+        "นายแพทย์สิริมา บัวทอง"
+      ],
+      "pred": [
+        "บริษัท โลจิสติกส์ ศรี จำกัด มหาชน",
+        "นายแพทย์สิริ",
+        "บัวทอง"
+      ]
     }
   ]
 }

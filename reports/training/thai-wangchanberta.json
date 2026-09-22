@@ -1,0 +1,167 @@
+{
+  "config": {
+    "name": "thai-wangchanberta",
+    "model_name": "airesearch/wangchanberta-base-att-spm-uncased",
+    "lang": "th",
+    "train": "data/processed/thai/train.jsonl",
+    "val": "data/processed/thai/val.jsonl",
+    "output_dir": "models/thai-wangchanberta",
+    "test": [
+      "data/processed/thai/test_gold.jsonl",
+      "data/processed/thai/test_gold_blind.jsonl",
+      "data/processed/thai/test_synthetic.jsonl"
+    ],
+    "lowercase": true,
+    "per_word": true,
+    "max_length": 256,
+    "stride": 64,
+    "epochs": 3,
+    "lr": 3e-05,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "seed": 42,
+    "negative_window_keep": 1.0,
+    "max_train_docs": null,
+    "grad_accum": 1
+  },
+  "validation_per_epoch": [
+    {
+      "epoch": 1.0,
+      "eval_f1": 0.9784125953578965,
+      "eval_precision": 0.972885732730794,
+      "eval_recall": 0.9840026118184786
+    },
+    {
+      "epoch": 2.0,
+      "eval_f1": 0.9869960988296489,
+      "eval_precision": 0.9828423438005827,
+      "eval_recall": 0.9911851126346719
+    },
+    {
+      "epoch": 3.0,
+      "eval_f1": 0.9859934853420195,
+      "eval_precision": 0.983750406239844,
+      "eval_recall": 0.9882468168462292
+    },
+    {
+      "epoch": 3.0,
+      "eval_f1": 0.9869960988296489,
+      "eval_precision": 0.9828423438005827,
+      "eval_recall": 0.9911851126346719
+    }
+  ],
+  "training_loss": [
+    {
+      "epoch": 0.1182033096926714,
+      "loss": 1.6241889953613282
+    },
+    {
+      "epoch": 0.2364066193853428,
+      "loss": 0.3926448059082031
+    },
+    {
+      "epoch": 0.3546099290780142,
+      "loss": 0.15341832160949706
+    },
+    {
+      "epoch": 0.4728132387706856,
+      "loss": 0.06650955200195313
+    },
+    {
+      "epoch": 0.5910165484633569,
+      "loss": 0.02850052833557129
+    },
+    {
+      "epoch": 0.7092198581560284,
+      "loss": 0.018467177152633667
+    },
+    {
+      "epoch": 0.8274231678486997,
+      "loss": 0.016794546842575073
+    },
+    {
+      "epoch": 0.9456264775413712,
+      "loss": 0.009010785222053529
+    },
+    {
+      "epoch": 1.0638297872340425,
+      "loss": 0.007829524874687195
+    },
+    {
+      "epoch": 1.1820330969267139,
+      "loss": 0.005302503108978272
+    },
+    {
+      "epoch": 1.3002364066193852,
+      "loss": 0.004388067424297332
+    },
+    {
+      "epoch": 1.4184397163120568,
+      "loss": 0.004813906252384186
+    },
+    {
+      "epoch": 1.5366430260047281,
+      "loss": 0.004676032960414887
+    },
+    {
+      "epoch": 1.6548463356973995,
+      "loss": 0.0037175926566123964
+    },
+    {
+      "epoch": 1.773049645390071,
+      "loss": 0.003605977892875671
+    },
+    {
+      "epoch": 1.8912529550827424,
+      "loss": 0.0034254419803619383
+    },
+    {
+      "epoch": 2.0094562647754137,
+      "loss": 0.004163391292095185
+    },
+    {
+      "epoch": 2.127659574468085,
+      "loss": 0.00249159500002861
+    },
+    {
+      "epoch": 2.2458628841607564,
+      "loss": 0.0031063127517700195
+    },
+    {
+      "epoch": 2.3640661938534278,
+      "loss": 0.002945761978626251
+    },
+    {
+      "epoch": 2.482269503546099,
+      "loss": 0.0027235731482505797
+    },
+    {
+      "epoch": 2.6004728132387704,
+      "loss": 0.0028097882866859438
+    },
+    {
+      "epoch": 2.7186761229314422,
+      "loss": 0.002818584144115448
+    },
+    {
+      "epoch": 2.8368794326241136,
+      "loss": 0.003281120955944061
+    },
+    {
+      "epoch": 2.955082742316785,
+      "loss": 0.003154212236404419
+    }
+  ],
+  "final_validation": {
+    "eval_loss": 0.003817447228357196,
+    "eval_precision": 0.9828423438005827,
+    "eval_recall": 0.9911851126346719,
+    "eval_f1": 0.9869960988296489,
+    "eval_runtime": 12.7669,
+    "eval_samples_per_second": 49.816,
+    "eval_steps_per_second": 1.567,
+    "epoch": 3.0
+  }
+}

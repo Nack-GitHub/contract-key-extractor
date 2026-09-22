@@ -1,15 +1,25 @@
 {
   "n_docs": 24,
+  "types": [
+    "PARTY",
+    "AGREEMENT_DATE",
+    "START_DATE",
+    "END_DATE",
+    "CONTRACT_VALUE",
+    "PAYMENT_DUE",
+    "PENALTY_RATE",
+    "JURISDICTION"
+  ],
   "strict": {
-    "precision": 0.8733624454148472,
+    "precision": 0.8849557522123894,
     "recall": 0.9216589861751152,
-    "f1": 0.8968609865470852
+    "f1": 0.9029345372460497
   },
   "relaxed": {
     "PARTY": {
-      "precision": 0.8870967741935484,
+      "precision": 0.9166666666666666,
       "recall": 0.9649122807017544,
-      "f1": 0.9243697478991597,
+      "f1": 0.9401709401709402,
       "support": 57
     },
     "AGREEMENT_DATE": {
@@ -37,9 +47,9 @@
       "support": 23
     },
     "PAYMENT_DUE": {
-      "precision": 0.8214285714285714,
+      "precision": 0.8518518518518519,
       "recall": 0.9583333333333334,
-      "f1": 0.8846153846153847,
+      "f1": 0.9019607843137256,
       "support": 24
     },
     "PENALTY_RATE": {
@@ -55,17 +65,17 @@
       "support": 25
     },
     "micro": {
-      "precision": 0.9213973799126638,
+      "precision": 0.9336283185840708,
       "recall": 0.9723502304147466,
-      "f1": 0.946188340807175,
+      "f1": 0.9525959367945824,
       "support": 217
     }
   },
   "fields": {
     "PARTY": {
-      "precision": 0.8363636363636363,
+      "precision": 0.8679245283018868,
       "recall": 0.9387755102040817,
-      "f1": 0.8846153846153846,
+      "f1": 0.9019607843137256,
       "support": 49
     },
     "AGREEMENT_DATE": {
@@ -93,9 +103,9 @@
       "support": 23
     },
     "PAYMENT_DUE": {
-      "precision": 0.7142857142857143,
+      "precision": 0.7407407407407407,
       "recall": 0.8333333333333334,
-      "f1": 0.7692307692307692,
+      "f1": 0.7843137254901961,
       "support": 24
     },
     "PENALTY_RATE": {
@@ -111,13 +121,56 @@
       "support": 25
     },
     "micro": {
-      "precision": 0.8693693693693694,
+      "precision": 0.8812785388127854,
       "recall": 0.9234449760765551,
-      "f1": 0.8955916473317865,
+      "f1": 0.9018691588785046,
       "support": 209
     }
   },
-  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.917     0.957     0.936        23\nCONTRACT_VALUE      0.833     0.870     0.851        23\n      END_DATE      1.000     0.955     0.977        22\n  JURISDICTION      0.960     0.960     0.960        25\n         PARTY      0.855     0.930     0.891        57\n   PAYMENT_DUE      0.714     0.833     0.769        24\n  PENALTY_RATE      0.846     0.917     0.880        24\n    START_DATE      0.947     0.947     0.947        19\n\n     micro avg      0.873     0.922     0.897       217\n     macro avg      0.884     0.921     0.901       217\n  weighted avg      0.878     0.922     0.898       217\n",
+  "slots": {
+    "Parties": {
+      "precision": 0.9230769230769231,
+      "recall": 0.9795918367346939,
+      "f1": 0.9504950495049506,
+      "support": 49,
+      "docs_with_gold": 24
+    },
+    "Agreement_Date": {
+      "precision": 0.9565217391304348,
+      "recall": 0.9565217391304348,
+      "f1": 0.9565217391304348,
+      "support": 23,
+      "docs_with_gold": 23
+    },
+    "Start_Date": {
+      "precision": 0.9583333333333334,
+      "recall": 0.9583333333333334,
+      "f1": 0.9583333333333334,
+      "support": 24,
+      "docs_with_gold": 24
+    },
+    "End_Date": {
+      "precision": 1.0,
+      "recall": 0.9545454545454546,
+      "f1": 0.9767441860465117,
+      "support": 22,
+      "docs_with_gold": 22
+    },
+    "Jurisdiction": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 20,
+      "docs_with_gold": 20
+    },
+    "micro": {
+      "precision": 0.9571428571428572,
+      "recall": 0.9710144927536232,
+      "f1": 0.9640287769784173,
+      "support": 138
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.917     0.957     0.936        23\nCONTRACT_VALUE      0.833     0.870     0.851        23\n      END_DATE      1.000     0.955     0.977        22\n  JURISDICTION      0.960     0.960     0.960        25\n         PARTY      0.883     0.930     0.906        57\n   PAYMENT_DUE      0.741     0.833     0.784        24\n  PENALTY_RATE      0.846     0.917     0.880        24\n    START_DATE      0.947     0.947     0.947        19\n\n     micro avg      0.885     0.922     0.903       217\n     macro avg      0.891     0.921     0.905       217\n  weighted avg      0.888     0.922     0.904       217\n",
   "errors": [
     {
       "doc": "th-gold-002",
@@ -171,12 +224,6 @@
       "doc": "th-gold-009",
       "kind": "FP",
       "label": "PARTY",
-      "text": "ไข่มุก"
-    },
-    {
-      "doc": "th-gold-009",
-      "kind": "FP",
-      "label": "PARTY",
       "text": "ฉ่ำ"
     },
     {
@@ -190,12 +237,6 @@
       "kind": "FP",
       "label": "CONTRACT_VALUE",
       "text": "5,300,000 บาท"
-    },
-    {
-      "doc": "th-gold-014",
-      "kind": "FP",
-      "label": "PAYMENT_DUE",
-      "text": "4"
     },
     {
       "doc": "th-gold-014",
@@ -234,12 +275,6 @@
       "text": "ภายในเดือนสิงหาคมของแต่ละปี"
     },
     {
-      "doc": "th-gold-018",
-      "kind": "FP",
-      "label": "PARTY",
-      "text": "เทศบาลจังหวัดระยอง จำกัด"
-    },
-    {
       "doc": "th-gold-021",
       "kind": "FP",
       "label": "PAYMENT_DUE",
@@ -262,6 +297,83 @@
       "kind": "FP",
       "label": "PARTY",
       "text": "ไผ่"
+    }
+  ],
+  "slot_errors": [
+    {
+      "doc": "th-gold-004",
+      "slot": "End_Date",
+      "gold": [
+        "2026-08-09"
+      ],
+      "pred": null
+    },
+    {
+      "doc": "th-gold-007",
+      "slot": "Parties",
+      "gold": [
+        "บริษัท อุตสาหกรรมพลาสติกไทย จำกัด",
+        "บริษัท ซันไรส์ แมชชีนเนอรี่ จำกัด"
+      ],
+      "pred": [
+        "บริษัท อุตสาหกรรมพลาสติกไทย จำกัด",
+        "บริษัท ซันไรส์ แมชชีนเนอรี่ จำกัด",
+        "450t"
+      ]
+    },
+    {
+      "doc": "th-gold-009",
+      "slot": "Parties",
+      "gold": [
+        "บริษัท ฉ่ำ แบรนด์ จำกัด",
+        "นางสาวกัลยา มีสุข"
+      ],
+      "pred": [
+        "บริษัท ฉ่ำ แบรนด์ จำกัด",
+        "นางสาวกัลยา มีสุข",
+        "ฉ่ำ",
+        "นครราชสีมา"
+      ]
+    },
+    {
+      "doc": "th-gold-015",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2026-01-20"
+      ],
+      "pred": "2026-03-18"
+    },
+    {
+      "doc": "th-gold-015",
+      "slot": "Start_Date",
+      "gold": [
+        "2026-01-20"
+      ],
+      "pred": "2026-03-18"
+    },
+    {
+      "doc": "th-gold-016",
+      "slot": "Parties",
+      "gold": [
+        "bangkok bike rental co ltd",
+        "บริษัท คลิกเวิร์ธ ดิจิทัล จำกัด"
+      ],
+      "pred": [
+        "บริษัท คลิกเวิร์ธ ดิจิทัล จำกัด"
+      ]
+    },
+    {
+      "doc": "th-gold-023",
+      "slot": "Parties",
+      "gold": [
+        "กรมชลประทาน",
+        "กิจการร่วมค้า เอสทีเอ็น-ไทยวัฒน์"
+      ],
+      "pred": [
+        "กรมชลประทาน",
+        "กิจการร่วมค้า เอสทีเอ็น-ไทยวัฒน์",
+        "ไผ่"
+      ]
     }
   ]
 }

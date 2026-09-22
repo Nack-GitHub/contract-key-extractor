@@ -68,10 +68,15 @@ def test_train_config_entity_types(tmp_path):
 
     cfg = TrainConfig.load("configs/english_cuad.yaml")
     assert cfg.entity_types == ["PARTY", "AGREEMENT_DATE", "START_DATE", "END_DATE", "JURISDICTION"]
-    assert len(cfg.types) == 5
+    assert len(cfg.types) == 5 and cfg.label_map is None and cfg.date_augment == 0
+    merged = TrainConfig.load("configs/english_cuad_merged.yaml")
+    assert merged.entity_types == ["PARTY", "AGREEMENT_DATE", "END_DATE", "JURISDICTION"]
+    assert merged.label_map == {"START_DATE": "AGREEMENT_DATE"} and merged.date_augment > 0
+    with pytest.raises(ValueError):  # a folded label must land in the model's own types
+        TrainConfig(name="x", model_name="m", lang="en", train="t", val="v", output_dir="o",
+                    entity_types=["PARTY"], label_map={"START_DATE": "AGREEMENT_DATE"})
     th = TrainConfig.load("configs/thai_wangchanberta.yaml")
     assert th.entity_types is None and len(th.types) == 8
-    import pytest
     with pytest.raises(ValueError):
         TrainConfig(name="x", model_name="m", lang="en", train="t", val="v", output_dir="o",
                     entity_types=["PARTY", "NOPE"])

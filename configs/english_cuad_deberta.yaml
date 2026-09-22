@@ -1,0 +1,27 @@
+# English contract NER — DeBERTa-v3-base under the english_cuad_merged.yaml recipe (capacity check:
+# same data, label folding, augmentation and effective batch as the RoBERTa merged run).
+name: english-cuad-deberta
+model_name: microsoft/deberta-v3-base
+lang: en
+entity_types: [PARTY, AGREEMENT_DATE, END_DATE, JURISDICTION]   # 9 BIO labels
+label_map: {START_DATE: AGREEMENT_DATE}
+date_augment: 0.25         # rewrite a quarter of the dated spans into 7/7/98, 3-31-16, 24 OCT 2011, Month D, YYYY, …
+lowercase: false
+per_word: true             # word-by-word BPE so punctuation next to an entity keeps its own piece
+max_length: 256
+stride: 64
+train: data/processed/cuad/train.jsonl
+val: data/processed/cuad/val.jsonl
+test:
+  - data/processed/cuad/test.jsonl
+output_dir: models/english-cuad-deberta
+epochs: 3
+lr: 2.0e-5
+batch_size: 8
+grad_accum: 2            # same effective batch as the RoBERTa run within M2 memory
+eval_batch_size: 32
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+negative_window_keep: 0.3    # ~90% of a 50k-char contract has no target entity; keep 30% of those windows
+                             # (page footers carry dates too — the tagger needs to see them as negatives)

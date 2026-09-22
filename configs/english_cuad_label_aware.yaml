@@ -1,0 +1,43 @@
+# English contract NER — the training recipe the label-distribution analysis argues for.
+# Run `contract-ner profile --config configs/english_cuad.yaml` to regenerate the evidence
+# (reports/profile/cuad_english.md); the three differences from configs/english_cuad.yaml are:
+#
+#   1. START_DATE keeps its own label, but its dateless spans are dropped from the training data.
+#      Two of every five gold START_DATE spans in this corpus are definitional clauses averaging
+#      26 words ("shall become effective as of the first date above written") and the rest are
+#      three-word dates. One label, two span shapes, 76 examples in total — the tagger learned
+#      neither and predicted the type not once in the shipped model's test report.
+#   2. Entity-free windows from the first tenth of a contract are kept at 0.50 instead of 0.15,
+#      and the rest of the document at 0.12. The opening is where four of five short-type gold
+#      spans sit and where the look-alikes live (addresses, registration numbers, page headers),
+#      so its negatives are the ones worth training on. Chosen to leave the total window count
+#      unchanged: 1,387 windows on the first hundred contracts against 1,389 before.
+#   3. Four epochs instead of three, with the best validation checkpoint kept, because the
+#      smaller, cleaner training set converges later.
+#
+# The window length is unchanged: at 256 subwords with 64 of overlap only 14 of 3,099 training
+# spans (0.45%) fall across a window boundary, so a longer window would cost time and buy nothing.
+name: english-cuad-roberta-label-aware
+model_name: roberta-base
+lang: en
+entity_types: [PARTY, AGREEMENT_DATE, START_DATE, END_DATE, JURISDICTION]   # 11 BIO labels
+dateless_labels_to_drop: [START_DATE]   # training data only; the evaluation gold keeps every span
+lowercase: false
+per_word: true             # word-by-word encoding so punctuation next to an entity keeps its own piece
+max_length: 256
+stride: 64
+train: data/processed/cuad/train.jsonl
+val: data/processed/cuad/val.jsonl
+test:
+  - data/processed/cuad/test.jsonl
+output_dir: models/english-cuad-roberta-label-aware
+epochs: 4
+lr: 3.0e-5
+batch_size: 16
+eval_batch_size: 32
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+negative_window_keep: 0.12                 # body of the document
+negative_window_keep_document_head: 0.50   # its first tenth, where the look-alike negatives are
+document_head_fraction: 0.10

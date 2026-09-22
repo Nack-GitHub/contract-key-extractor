@@ -1,0 +1,32 @@
+# English contract NER, merged-label variant of english_cuad.yaml (experiment, not the shipped model).
+# CUAD's "Effective Date" (START_DATE) is folded into AGREEMENT_DATE — 37 of its 102 gold spans are
+# dateless definitional clauses (dropped) and the dated ones are not distinguishable from the
+# agreement date by surface form; assemble() splits signing / effective dates by context instead.
+# A quarter of the dated training spans are rewritten into formats CUAD rarely uses (7/7/98,
+# 3-31-16, 24 OCT 2011) and twice as many entity-free windows are kept so page-footer dates are
+# seen as negatives. Span recall is higher than the shipped model's, slot-level F1 is the same
+# within the noise of a 47-document test split — see docs/worklog_slot_eval_and_retrain.md.
+name: english-cuad-roberta-merged
+model_name: roberta-base
+lang: en
+entity_types: [PARTY, AGREEMENT_DATE, END_DATE, JURISDICTION]   # 9 BIO labels
+label_map: {START_DATE: AGREEMENT_DATE}
+date_augment: 0.25         # rewrite a quarter of the dated spans into 7/7/98, 3-31-16, 24 OCT 2011, Month D, YYYY, …
+lowercase: false
+per_word: true             # word-by-word BPE so punctuation next to an entity keeps its own piece
+max_length: 256
+stride: 64
+train: data/processed/cuad/train.jsonl
+val: data/processed/cuad/val.jsonl
+test:
+  - data/processed/cuad/test.jsonl
+output_dir: models/english-cuad-roberta-merged
+epochs: 3
+lr: 3.0e-5
+batch_size: 16
+eval_batch_size: 32
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+negative_window_keep: 0.3    # ~90% of a 50k-char contract has no target entity; keep 30% of those windows
+                             # (page footers carry dates too — the tagger needs to see them as negatives)

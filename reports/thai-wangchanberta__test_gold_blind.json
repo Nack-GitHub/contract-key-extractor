@@ -11,15 +11,15 @@
     "JURISDICTION"
   ],
   "strict": {
-    "precision": 0.7325581395348837,
+    "precision": 0.7411764705882353,
     "recall": 0.863013698630137,
-    "f1": 0.7924528301886793
+    "f1": 0.7974683544303799
   },
   "relaxed": {
     "PARTY": {
-      "precision": 0.782608695652174,
+      "precision": 0.8181818181818182,
       "recall": 0.9473684210526315,
-      "f1": 0.8571428571428571,
+      "f1": 0.8780487804878049,
       "support": 19
     },
     "AGREEMENT_DATE": {
@@ -65,17 +65,17 @@
       "support": 8
     },
     "micro": {
-      "precision": 0.813953488372093,
+      "precision": 0.8235294117647058,
       "recall": 0.958904109589041,
-      "f1": 0.880503144654088,
+      "f1": 0.8860759493670886,
       "support": 73
     }
   },
   "fields": {
     "PARTY": {
-      "precision": 0.7894736842105263,
+      "precision": 0.8333333333333334,
       "recall": 0.9375,
-      "f1": 0.8571428571428572,
+      "f1": 0.8823529411764706,
       "support": 16
     },
     "AGREEMENT_DATE": {
@@ -121,13 +121,56 @@
       "support": 8
     },
     "micro": {
-      "precision": 0.7439024390243902,
+      "precision": 0.7530864197530864,
       "recall": 0.8714285714285714,
-      "f1": 0.8026315789473685,
+      "f1": 0.8079470198675497,
       "support": 70
     }
   },
-  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.778     0.875     0.824         8\nCONTRACT_VALUE      0.889     1.000     0.941         8\n      END_DATE      0.778     1.000     0.875         7\n  JURISDICTION      0.875     0.875     0.875         8\n         PARTY      0.739     0.895     0.810        19\n   PAYMENT_DUE      0.364     0.500     0.421         8\n  PENALTY_RATE      0.600     0.750     0.667         8\n    START_DATE      1.000     1.000     1.000         7\n\n     micro avg      0.733     0.863     0.792        73\n     macro avg      0.753     0.862     0.801        73\n  weighted avg      0.747     0.863     0.799        73\n",
+  "slots": {
+    "Parties": {
+      "precision": 0.9375,
+      "recall": 0.9375,
+      "f1": 0.9375,
+      "support": 16,
+      "docs_with_gold": 8
+    },
+    "Agreement_Date": {
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75,
+      "support": 8,
+      "docs_with_gold": 8
+    },
+    "Start_Date": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 8,
+      "docs_with_gold": 8
+    },
+    "End_Date": {
+      "precision": 0.75,
+      "recall": 0.8571428571428571,
+      "f1": 0.7999999999999999,
+      "support": 7,
+      "docs_with_gold": 7
+    },
+    "Jurisdiction": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 7,
+      "docs_with_gold": 7
+    },
+    "micro": {
+      "precision": 0.8936170212765957,
+      "recall": 0.9130434782608695,
+      "f1": 0.9032258064516129,
+      "support": 46
+    }
+  },
+  "report": "                precision    recall  f1-score   support\n\nAGREEMENT_DATE      0.778     0.875     0.824         8\nCONTRACT_VALUE      0.889     1.000     0.941         8\n      END_DATE      0.778     1.000     0.875         7\n  JURISDICTION      0.875     0.875     0.875         8\n         PARTY      0.773     0.895     0.829        19\n   PAYMENT_DUE      0.364     0.500     0.421         8\n  PENALTY_RATE      0.600     0.750     0.667         8\n    START_DATE      1.000     1.000     1.000         7\n\n     micro avg      0.741     0.863     0.797        73\n     macro avg      0.757     0.862     0.804        73\n  weighted avg      0.756     0.863     0.804        73\n",
   "errors": [
     {
       "doc": "th-blind-001",
@@ -164,12 +207,6 @@
       "kind": "FP",
       "label": "END_DATE",
       "text": "30 มิถุนายน 2569"
-    },
-    {
-      "doc": "th-blind-003",
-      "kind": "FP",
-      "label": "PARTY",
-      "text": "สถาบันการเงิน"
     },
     {
       "doc": "th-blind-003",
@@ -242,6 +279,62 @@
       "kind": "FN",
       "label": "PAYMENT_DUE",
       "text": "ภายใน 15 วันนับจากวันลงนาม"
+    }
+  ],
+  "slot_errors": [
+    {
+      "doc": "th-blind-001",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2024-12-20"
+      ],
+      "pred": "2025-11-15"
+    },
+    {
+      "doc": "th-blind-001",
+      "slot": "End_Date",
+      "gold": [
+        "2026-12-31"
+      ],
+      "pred": "2025-12-31"
+    },
+    {
+      "doc": "th-blind-003",
+      "slot": "End_Date",
+      "gold": [],
+      "pred": "2026-06-30"
+    },
+    {
+      "doc": "th-blind-005",
+      "slot": "Parties",
+      "gold": [
+        "sunrise holidays pte ltd",
+        "บริษัท ไทยสไมล์ ทราเวล จำกัด"
+      ],
+      "pred": [
+        "บริษัท ไทยสไมล์ ทราเวล จำกัด"
+      ]
+    },
+    {
+      "doc": "th-blind-005",
+      "slot": "Agreement_Date",
+      "gold": [
+        "2025-09-03"
+      ],
+      "pred": "2025-09"
+    },
+    {
+      "doc": "th-blind-006",
+      "slot": "Parties",
+      "gold": [
+        "นางปราณี วงศ์สวัสดิ์",
+        "mr daniel weber"
+      ],
+      "pred": [
+        "เดอะ ริเวอร์ไซด์",
+        "นางปราณี วงศ์สวัสดิ์",
+        "mr daniel weber"
+      ]
     }
   ]
 }

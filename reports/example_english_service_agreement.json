@@ -1,63 +1,64 @@
 {
   "Party_A": {
     "text": "Northwind Analytics, Inc.",
-    "confidence": 0.9539,
+    "confidence": 0.9723,
     "mentions": 1,
     "start": 151,
     "end": 176
   },
   "Party_B": {
     "text": "Contoso Manufacturing Ltd.",
-    "confidence": 0.9517,
+    "confidence": 0.9706,
     "mentions": 1,
     "start": 279,
     "end": 305
   },
   "Other_Parties": [
-    "Northwind and Customer are each a \"Party\" and together the \"Parties\".",
+    ", INC.            CONTOSO MANUFACTURING LTD.",
     "Northwind",
-    "Customer"
+    "Customer",
+    "Northwind and Customer are each a \"Party\" and together the \"Parties\"."
   ],
   "Agreement_Date": {
     "text": "March 15, 2021",
     "start": 98,
     "end": 112,
-    "confidence": 0.8968,
+    "confidence": 0.9404,
     "normalized": "2021-03-15"
   },
   "Start_Date": {
     "text": "March 15, 2021",
     "start": 98,
     "end": 112,
-    "confidence": 0.8968,
+    "confidence": 0.9404,
     "normalized": "2021-03-15",
     "inferred_from": "Agreement_Date"
   },
   "End_Date": {
-    "text": "This Agreement shall commence on the Effective Date and, unless earlier terminated in accordance with Section 9, shall continue in effect until March 14, 2024 (the \"Initial Term\").",
+    "text": "This Agreement shall commence on the Effective Date and, unless earlier terminated in accordance with Section 9, shall continue in effect until March 14, 2024 (the \"Initial Term\")",
     "start": 590,
-    "end": 770,
-    "confidence": 0.9925,
+    "end": 769,
+    "confidence": 0.9949,
     "normalized": "2024-03-14"
   },
   "Contract_Value": null,
   "Payment_Due_Date": null,
   "Penalty_Rate": null,
   "Jurisdiction": {
-    "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles.",
+    "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles",
     "start": 1506,
-    "end": 1660,
-    "confidence": 0.9958,
+    "end": 1659,
+    "confidence": 0.998,
     "normalized": {
       "kind": "governing_law",
       "english": "State of New York"
     }
   },
   "Governing_Law": {
-    "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles.",
+    "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles",
     "start": 1506,
-    "end": 1660,
-    "confidence": 0.9958,
+    "end": 1659,
+    "confidence": 0.998,
     "normalized": {
       "kind": "governing_law",
       "english": "State of New York"
@@ -68,7 +69,7 @@
       "text": "March 15, 2021",
       "start": 98,
       "end": 112,
-      "confidence": 0.8968,
+      "confidence": 0.9404,
       "label": "AGREEMENT_DATE",
       "valid": true
     },
@@ -76,7 +77,7 @@
       "text": "Northwind Analytics, Inc.",
       "start": 151,
       "end": 176,
-      "confidence": 0.9539,
+      "confidence": 0.9723,
       "label": "PARTY",
       "valid": true
     },
@@ -84,7 +85,7 @@
       "text": "\"Northwind\"",
       "start": 261,
       "end": 272,
-      "confidence": 0.9669,
+      "confidence": 0.9859,
       "label": "PARTY",
       "valid": true
     },
@@ -92,7 +93,7 @@
       "text": "Contoso Manufacturing Ltd.",
       "start": 279,
       "end": 305,
-      "confidence": 0.9517,
+      "confidence": 0.9706,
       "label": "PARTY",
       "valid": true
     },
@@ -100,7 +101,7 @@
       "text": "\"Customer\"",
       "start": 364,
       "end": 374,
-      "confidence": 0.9584,
+      "confidence": 0.9819,
       "label": "PARTY",
       "valid": true
     },
@@ -108,24 +109,32 @@
       "text": "Northwind and Customer are each a \"Party\" and together the \"Parties\".",
       "start": 377,
       "end": 446,
-      "confidence": 0.8759,
+      "confidence": 0.9,
       "label": "PARTY",
       "valid": true
     },
     {
-      "text": "This Agreement shall commence on the Effective Date and, unless earlier terminated in accordance with Section 9, shall continue in effect until March 14, 2024 (the \"Initial Term\").",
+      "text": "This Agreement shall commence on the Effective Date and, unless earlier terminated in accordance with Section 9, shall continue in effect until March 14, 2024 (the \"Initial Term\")",
       "start": 590,
-      "end": 770,
-      "confidence": 0.9925,
+      "end": 769,
+      "confidence": 0.9949,
       "label": "END_DATE",
       "valid": true
     },
     {
-      "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles.",
+      "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of New York, without regard to its conflict of laws principles",
       "start": 1506,
-      "end": 1660,
-      "confidence": 0.9958,
+      "end": 1659,
+      "confidence": 0.998,
       "label": "JURISDICTION",
+      "valid": true
+    },
+    {
+      "text": ", INC.            CONTOSO MANUFACTURING LTD.",
+      "start": 1889,
+      "end": 1933,
+      "confidence": 0.6934,
+      "label": "PARTY",
       "valid": true
     }
   ],

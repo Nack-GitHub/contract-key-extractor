@@ -1,6 +1,10 @@
 # English contract NER — RoBERTa fine-tuned on CUAD spans re-aligned from the
 # Kaggle "Legal Contract Dataset". Covers PARTY, AGREEMENT_DATE, START_DATE,
 # END_DATE and JURISDICTION (CUAD has no clean value / payment / penalty spans).
+# This was the shipped model until the label-distribution analysis produced a better recipe;
+# configs/english_cuad_label_aware_augmented.yaml is now the one to train (see README).
+# Kept as the reference point every later recipe is measured against, and as the simplest
+# configuration that produces a working model.
 name: english-cuad-roberta
 model_name: roberta-base
 lang: en

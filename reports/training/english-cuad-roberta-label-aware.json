@@ -1,0 +1,181 @@
+{
+  "config": {
+    "name": "english-cuad-roberta-label-aware",
+    "model_name": "roberta-base",
+    "lang": "en",
+    "train": "data/processed/cuad/train.jsonl",
+    "val": "data/processed/cuad/val.jsonl",
+    "output_dir": "models/english-cuad-roberta-label-aware",
+    "test": [
+      "data/processed/cuad/test.jsonl"
+    ],
+    "entity_types": [
+      "PARTY",
+      "AGREEMENT_DATE",
+      "START_DATE",
+      "END_DATE",
+      "JURISDICTION"
+    ],
+    "lowercase": false,
+    "per_word": true,
+    "max_length": 256,
+    "stride": 64,
+    "epochs": 4,
+    "lr": 3e-05,
+    "batch_size": 16,
+    "eval_batch_size": 32,
+    "warmup_ratio": 0.1,
+    "weight_decay": 0.01,
+    "seed": 42,
+    "negative_window_keep": 0.12,
+    "negative_window_keep_document_head": 0.5,
+    "document_head_fraction": 0.1,
+    "max_train_docs": null,
+    "grad_accum": 1,
+    "label_map": null,
+    "dateless_labels_to_drop": [
+      "START_DATE"
+    ],
+    "date_augment": 0.0
+  },
+  "validation_per_epoch": [
+    {
+      "epoch": 1.0,
+      "eval_f1": 0.3647871116225547,
+      "eval_precision": 0.25668016194331983,
+      "eval_recall": 0.6302186878727635
+    },
+    {
+      "epoch": 2.0,
+      "eval_f1": 0.4871595330739299,
+      "eval_precision": 0.40025575447570333,
+      "eval_recall": 0.6222664015904572
+    },
+    {
+      "epoch": 3.0,
+      "eval_f1": 0.5367762128325508,
+      "eval_precision": 0.4425806451612903,
+      "eval_recall": 0.6819085487077535
+    },
+    {
+      "epoch": 4.0,
+      "eval_f1": 0.5485714285714285,
+      "eval_precision": 0.46537396121883656,
+      "eval_recall": 0.6679920477137177
+    },
+    {
+      "epoch": 4.0,
+      "eval_f1": 0.5485714285714285,
+      "eval_precision": 0.46537396121883656,
+      "eval_recall": 0.6679920477137177
+    }
+  ],
+  "training_loss": [
+    {
+      "epoch": 0.16339869281045752,
+      "loss": 1.2389696502685548
+    },
+    {
+      "epoch": 0.32679738562091504,
+      "loss": 0.1765110206604004
+    },
+    {
+      "epoch": 0.49019607843137253,
+      "loss": 0.10334869384765626
+    },
+    {
+      "epoch": 0.6535947712418301,
+      "loss": 0.08262988090515137
+    },
+    {
+      "epoch": 0.8169934640522876,
+      "loss": 0.06678311347961426
+    },
+    {
+      "epoch": 0.9803921568627451,
+      "loss": 0.06479002952575684
+    },
+    {
+      "epoch": 1.1437908496732025,
+      "loss": 0.05323652744293213
+    },
+    {
+      "epoch": 1.3071895424836601,
+      "loss": 0.04952636241912842
+    },
+    {
+      "epoch": 1.4705882352941178,
+      "loss": 0.04160191059112549
+    },
+    {
+      "epoch": 1.6339869281045751,
+      "loss": 0.04062044620513916
+    },
+    {
+      "epoch": 1.7973856209150327,
+      "loss": 0.03639409065246582
+    },
+    {
+      "epoch": 1.9607843137254903,
+      "loss": 0.039560873508453366
+    },
+    {
+      "epoch": 2.1241830065359477,
+      "loss": 0.030824363231658936
+    },
+    {
+      "epoch": 2.287581699346405,
+      "loss": 0.023928647041320802
+    },
+    {
+      "epoch": 2.450980392156863,
+      "loss": 0.028638923168182374
+    },
+    {
+      "epoch": 2.6143790849673203,
+      "loss": 0.027653875350952147
+    },
+    {
+      "epoch": 2.7777777777777777,
+      "loss": 0.02408308506011963
+    },
+    {
+      "epoch": 2.9411764705882355,
+      "loss": 0.024637250900268554
+    },
+    {
+      "epoch": 3.104575163398693,
+      "loss": 0.02252077579498291
+    },
+    {
+      "epoch": 3.2679738562091503,
+      "loss": 0.017692421674728395
+    },
+    {
+      "epoch": 3.431372549019608,
+      "loss": 0.016969785690307618
+    },
+    {
+      "epoch": 3.5947712418300655,
+      "loss": 0.017936396598815917
+    },
+    {
+      "epoch": 3.758169934640523,
+      "loss": 0.019965847730636598
+    },
+    {
+      "epoch": 3.9215686274509802,
+      "loss": 0.016664646863937378
+    }
+  ],
+  "final_validation": {
+    "eval_loss": 0.017691390588879585,
+    "eval_precision": 0.46537396121883656,
+    "eval_recall": 0.6679920477137177,
+    "eval_f1": 0.5485714285714285,
+    "eval_runtime": 81.1714,
+    "eval_samples_per_second": 36.281,
+    "eval_steps_per_second": 1.146,
+    "epoch": 4.0
+  }
+}

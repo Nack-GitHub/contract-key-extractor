@@ -50,3 +50,25 @@ def test_evaluate_defaults_to_all_types_for_legacy_models():
     doc = Document(id="d", text=text, lang="en", entities=[Span(0, 10, "PARTY")])
     res = evaluate_documents(Legacy({text: [Span(0, 10, "PARTY")]}), [doc], validate=False)
     assert set(res.relaxed) == set(ENTITY_TYPES) | {"micro"}
+
+
+def test_recall_is_reported_per_surface_form():
+    """The gold spans are grouped by how they are written, so a miss can be attributed to a form."""
+    text = ('Acme Corp. and BETA SYSTEMS INC. signed on June 8, 2010; a second contract on 7/7/98 '
+            'expires December 31, 2012.')
+    doc = Document(id="d1", text=text, lang="en", entities=[
+        Span(text.index("Acme"), text.index("Corp.") + 5, "PARTY"),
+        Span(text.index("BETA"), text.index("INC.") + 4, "PARTY"),
+        Span(text.index("December"), text.index("2012") + 4, "END_DATE"),
+    ])
+    preds = {text: [
+        Span(text.index("Acme"), text.index("Corp.") + 5, "PARTY"),      # title-case name: found
+        Span(text.index("December"), text.index("2012") + 4, "END_DATE"),
+    ]}                                                                    # the capitalised name is missed
+    res = evaluate_documents(_StubExtractor(preds), [doc], validate=False)
+
+    assert res.forms["PARTY"]["legal-name"] == {"found": 1, "missed": 0, "support": 1, "recall": 1.0}
+    assert res.forms["PARTY"]["legal-name-caps"] == {"found": 0, "missed": 1, "support": 1, "recall": 0.0}
+    assert res.forms["END_DATE"]["explicit-date"]["recall"] == 1.0
+    assert [e["form"] for e in res.errors if e["kind"] == "FN"] == ["legal-name-caps"]
+    assert "legal-name-caps" in format_result(res, "stub")

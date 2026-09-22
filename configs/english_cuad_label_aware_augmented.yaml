@@ -1,0 +1,45 @@
+# English contract NER — the shipped English recipe (slot F1 0.874 on validation, 0.855 on test,
+# against 0.853 / 0.840 for the earlier configs/english_cuad.yaml model).
+# It is configs/english_cuad_label_aware.yaml plus the two augmentations that the
+# per-surface-form recall of the shipped model asks for. Both target a form the model misses while
+# the training data contains little of it, and both were chosen from the validation split only, so
+# the test split stays untouched until the recipe is fixed:
+#
+#   * date_augment — agreement dates written as digits ("7/7/98", "3-31-16") are 5.5% of the
+#     training spans and the shipped model found none of them on the validation split. A sixth of
+#     the dated training spans are rewritten into another format (a third of those numeric), which
+#     roughly doubles the numeric share. An earlier experiment that rewrote a quarter of the spans
+#     made the tagger fire on page-footer dates; that is why the rate is lower here and why the
+#     entity-free windows from the opening of the document are kept at a high rate as negatives.
+#   * party_case_augment — party names in capitals ("TELCOSTAR PTE, LTD.") are found at 66% against
+#     83% for title-case names on the validation split. A sixth of the party spans are rewritten in
+#     capitals; capitals are the same length, so no offset moves.
+#
+# Everything else is identical to the label-aware recipe, so the difference between the two reports
+# is the augmentation alone.
+name: english-cuad-roberta-label-aware-augmented
+model_name: roberta-base
+lang: en
+entity_types: [PARTY, AGREEMENT_DATE, START_DATE, END_DATE, JURISDICTION]   # 11 BIO labels
+dateless_labels_to_drop: [START_DATE]   # training data only; the evaluation gold keeps every span
+date_augment: 0.16
+party_case_augment: 0.16
+lowercase: false
+per_word: true
+max_length: 256
+stride: 64
+train: data/processed/cuad/train.jsonl
+val: data/processed/cuad/val.jsonl
+test:
+  - data/processed/cuad/test.jsonl
+output_dir: models/english-cuad-roberta-label-aware-augmented
+epochs: 4
+lr: 3.0e-5
+batch_size: 16
+eval_batch_size: 32
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+negative_window_keep: 0.12
+negative_window_keep_document_head: 0.50
+document_head_fraction: 0.10

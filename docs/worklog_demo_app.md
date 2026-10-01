@@ -76,7 +76,7 @@ contract-ner serve --preload roberta crf thai      # แล้วเปิด ht
 ### 2.4 กันเดโมพัง
 
 1. **Fallback อัตโนมัติ:** ถ้าโมเดลโหลดไม่ได้ (ไม่มี weights / ไม่ได้ติดตั้ง Thai extra) API จะตอบจาก record ที่เก็บไว้และติดป้าย `"source": "cache"` (หน้าเว็บขึ้น *stored record* + toast บอกเหตุผล)
-2. **`contract-ner serve --cached-only`:** ไม่โหลดโมเดลเลย — ทดสอบแล้วว่า server ขึ้นทันทีและตอบสัญญายาวสุดได้ (`loaded: []`)
+2. **`contract-ner serve --cached-only`:** ไม่โหลดโมเดลเลย — ทดสอบแล้วว่า server ขึ้นทันทีและตอบสัญญายาวสุดได้ (`loaded: []`); ข้อความที่ paste เข้ามาหรือ confidence floor อื่นที่ไม่ใช่ 0.6 จะถูกปฏิเสธ (503) แทนที่จะแอบโหลดโมเดล
 3. **วิดีโอ + screenshot:** `scripts/record_demo.py` ใช้ Playwright เปิดหน้าเว็บแบบ headless เดินตามสคริปต์ 9 ขั้นพร้อมคำบรรยายในภาพ → `demo/recording/demo_walkthrough.{webm,mp4}` และ `screenshots/01…09.png` (1440×900, ธีมสว่าง) อัดใหม่ได้ทุกเมื่อที่แก้หน้าเว็บ
 
 ---
@@ -136,3 +136,4 @@ contract-ner serve --preload roberta crf thai      # แล้วเปิด ht
 1. Demo HTTP API, curated demo contracts with stored records
 2. Demo web page: extraction with click-to-source, model comparison, evaluation charts
 3. Walkthrough recorder, presentation script, work log and README section
+4. Cached-only mode never loads a model

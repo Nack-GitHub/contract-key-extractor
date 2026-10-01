@@ -299,7 +299,10 @@ def create_app(root: str | Path = ".", samples_dir: str | Path | None = None, re
         # the cached record was made at the default floor; any other floor needs the live model
         cache_fits = cached is not None and abs(min_confidence - 0.6) < 1e-9
         record, source, seconds, note = None, "live", None, None
-        if cached_only and cache_fits:
+        if cached_only:
+            if not cache_fits:
+                raise HTTPException(503, "the server runs with --cached-only: only the demo contracts, "
+                                         "at the default confidence floor 0.6, can be answered")
             record, source, seconds = cached["record"], "cache", cached.get("seconds")
         else:
             try:

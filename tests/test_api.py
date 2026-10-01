@@ -100,6 +100,10 @@ def test_unavailable_model_falls_back_to_the_stored_record(client):
 def test_cached_only_never_loads_a_model(project):
     client = TestClient(create_app(root=project, cached_only=True))
     assert client.post("/api/extract", json={"model": "roberta", "sample_id": "short"}).json()["source"] == "cache"
+    # pasted text or another floor would need a model: refused rather than loaded
+    assert client.post("/api/extract", json={"model": "regex", "text": CONTRACT}).status_code == 503
+    r = client.post("/api/extract", json={"model": "roberta", "sample_id": "short", "min_confidence": 0.3})
+    assert r.status_code == 503
     assert client.get("/api/health").json()["loaded"] == []
 
 

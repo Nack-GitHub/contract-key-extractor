@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contract Key Extractor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='1' width='12' height='14' rx='2' fill='%232a78d6'/><rect x='5' y='5' width='6' height='1.6' fill='white'/><rect x='5' y='8' width='6' height='1.6' fill='white'/><rect x='5' y='11' width='4' height='1.6' fill='white'/></svg>">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Contract Key-Information Extractor<small>NER on CUAD · RoBERTa + span validation + normalisation</small></h1>
+    <nav role="tablist" aria-label="Views">
+      <button role="tab" id="tab-extract" aria-controls="panel-extract" aria-selected="true">Extract</button>
+      <button role="tab" id="tab-compare" aria-controls="panel-compare" aria-selected="false">Compare models</button>
+      <button role="tab" id="tab-eval" aria-controls="panel-eval" aria-selected="false">Evaluation</button>
+    </nav>
+    <div class="header-right">
+      <span id="server-status" class="pill">connecting…</span>
+      <button class="icon-btn" id="notes-toggle" title="Presenter notes (N)" aria-pressed="false">Notes</button>
+      <button class="icon-btn" id="theme-toggle" title="Light / dark">◐</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= Extract ================= -->
+    <section role="tabpanel" id="panel-extract" aria-labelledby="tab-extract" class="active">
+      <div class="toolbar">
+        <label>Contract <select id="sample-select"></select></label>
+        <button class="btn" id="paste-btn">Paste text…</button>
+        <label class="btn" for="file-input" style="margin:0">Upload .txt<input id="file-input" type="file" accept=".txt,text/plain" hidden></label>
+        <label>Model <select id="model-select"></select></label>
+        <label title="Spans whose mean label probability is below this are dropped (0.6 was chosen on the validation split)">
+          Confidence ≥ <input id="conf" type="range" min="0.3" max="0.95" step="0.05" value="0.6"><b id="conf-val">0.60</b>
+        </label>
+        <button class="btn primary" id="run-btn">Extract</button>
+        <span class="spacer"></span>
+        <label title="Outline the hand-annotated gold spans and mark each table cell right or wrong"><input type="checkbox" id="gold-toggle"> Compare with gold</label>
+        <label><input type="checkbox" id="invalid-toggle"> Rejected spans</label>
+      </div>
+      <p class="notes" id="notes-extract"></p>
+      <div class="workspace">
+        <div class="doc-pane" id="doc-pane"><div class="doc" id="doc"><p class="empty">Pick a contract, paste text or upload a .txt file, then press <b>Extract</b>.</p></div></div>
+        <aside class="side">
+          <div class="card">
+            <h2>Metadata table <span class="meta" id="table-meta"></span></h2>
+            <ul class="cells" id="cells"></ul>
+          </div>
+          <div class="card">
+            <h2>Spans in the document <span class="meta" id="span-count"></span></h2>
+            <div class="legend" id="legend"></div>
+            <div class="legend-note">
+              <span><i class="sample solid"></i>confidence ≥ 0.8</span>
+              <span><i class="sample dashed"></i>below 0.8</span>
+              <span><i class="sample dotted"></i>rejected by validation</span>
+              <span><i class="sample gold-box"></i>gold span</span>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Run</h2>
+            <div class="run-meta" id="run-meta"><span>Nothing extracted yet.</span></div>
+            <div class="run-meta"><button class="btn" id="export-btn" disabled>Download JSON record</button></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= Compare ================= -->
+    <section role="tabpanel" id="panel-compare" aria-labelledby="tab-compare">
+      <div class="toolbar">
+        <label>Contract <select id="cmp-sample"></select></label>
+        <span id="cmp-models"></span>
+        <button class="btn primary" id="cmp-run">Compare</button>
+      </div>
+      <p class="notes" id="notes-compare"></p>
+      <div class="scroll">
+        <div id="cmp-out"><p class="hint">The same contract through each model. Rows where the models disagree are marked on the left; with a gold table every cell also says whether it is right.</p></div>
+      </div>
+    </section>
+
+    <!-- ================= Evaluation ================= -->
+    <section role="tabpanel" id="panel-eval" aria-labelledby="tab-eval">
+      <div class="scroll"><div class="eval-grid" id="eval"></div></div>
+    </section>
+  </main>
+
+  <dialog id="paste-dialog">
+    <form method="dialog">
+      <h3>Paste a contract</h3>
+      <textarea id="paste-text" placeholder="Plain text of an English (or, with the Thai model, Thai) contract…"></textarea>
+      <menu>
+        <button class="btn" value="cancel">Cancel</button>
+        <button class="btn primary" value="ok" id="paste-ok">Use this text</button>
+      </menu>
+    </form>
+  </dialog>
+  <div class="tooltip" id="tooltip" role="tooltip"></div>
+  <div class="loading" id="loading"><div>Running the model…</div></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>

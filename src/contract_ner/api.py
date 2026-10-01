@@ -390,7 +390,7 @@ def create_app(root: str | Path = ".", samples_dir: str | Path | None = None, re
         return {"models": rows, "iterations": list(ITERATIONS), "target": {"with_review": 0.80, "without_review": 0.90}}
 
     if WEB_DIR.is_dir():
-        @app.get("/", include_in_schema=False)
+        @app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
         def index():
             return FileResponse(WEB_DIR / "index.html")
 

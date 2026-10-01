@@ -21,3 +21,7 @@ runs/
 # misc
 .DS_Store
 *.log
+
+# demo walkthrough videos (tens of MB; regenerate with scripts/record_demo.py)
+demo/recording/*.webm
+demo/recording/*.mp4

@@ -671,6 +671,9 @@ function barChart(host, data, target) {
     svgEl("line", { x1: x(t), x2: x(t), y1: top, y2: H - 22 }, grid);
     svgEl("text", { x: x(t), y: H - 6, "text-anchor": "middle" }, grid).textContent = t.toFixed(1);
   }
+  // the target goes under the bars and their labels, so a label near 0.80 stays readable
+  svgEl("line", { x1: x(target), x2: x(target), y1: top - 4, y2: H - 22, class: "target" }, svg);
+  svgEl("text", { x: x(target) + 4, y: top + 4, class: "tick" }, svg).textContent = `target ${target.toFixed(2)}`;
   data.forEach((d, i) => {
     const y = top + i * rowH + 7;
     const h = rowH - 14;
@@ -681,8 +684,6 @@ function barChart(host, data, target) {
     hoverTip(hit, `<div class="tt-title">${esc(d.label)}</div><dl><dt>slot F1</dt><dd>${d.value.toFixed(3)}</dd><dt>vs target</dt><dd>${(d.value - target >= 0 ? "+" : "") + (d.value - target).toFixed(3)}</dd></dl>`);
   });
   svgEl("line", { x1: left, x2: left, y1: top, y2: H - 22, class: "baseline" }, svg);
-  svgEl("line", { x1: x(target), x2: x(target), y1: top - 4, y2: H - 22, class: "target" }, svg);
-  svgEl("text", { x: x(target) + 4, y: top + 4, class: "tick" }, svg).textContent = `target ${target.toFixed(2)}`;
 }
 
 function lineChart(host, its) {
@@ -711,14 +712,14 @@ function lineChart(host, its) {
   legend.className = "chart-legend";
   legend.innerHTML = series.map((s) => `<span><i class="line" style="background:${s.color}"></i>${esc(s.label)}</span>`).join("") + '<span style="color:var(--muted)">slot F1 was introduced at v6</span>';
   host.before(legend);
-  const hover = svgEl("line", { class: "hover-line", y1: top, y2: H - bottom, x1: -10, x2: -10 }, svg);
+  const hover = svgEl("line", { class: "hover-line", y1: top, y2: H - bottom, x1: 0, x2: 0, visibility: "hidden" }, svg);
   its.forEach((it, i) => {
     const w = (W - left - right) / (its.length - 1);
     const hit = svgEl("rect", { x: x(i) - w / 2, y: top, width: w, height: H - top - bottom, class: "hit" }, svg);
-    hit.addEventListener("mouseenter", () => { hover.setAttribute("x1", x(i)); hover.setAttribute("x2", x(i)); });
+    hit.addEventListener("mouseenter", () => { hover.setAttribute("x1", x(i)); hover.setAttribute("x2", x(i)); hover.setAttribute("visibility", "visible"); });
     hoverTip(hit, `<div class="tt-title">${esc(it.name)}</div><div style="margin-top:4px;color:var(--ink-2)">${esc(it.change)}</div><dl><dt>slot F1</dt><dd>${fmt(it.slot)}</dd><dt>strict F1</dt><dd>${fmt(it.strict)}</dd></dl>`);
   });
-  svg.addEventListener("mouseleave", () => { hover.setAttribute("x1", -10); hover.setAttribute("x2", -10); });
+  svg.addEventListener("mouseleave", () => hover.setAttribute("visibility", "hidden"));
 }
 
 function groupedBars(host, legendHost, cells, models) {

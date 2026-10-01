@@ -335,6 +335,44 @@ record["summary"]        # one value per field
 record["entities"]       # every span with offsets, confidence and validity
 ```
 
+## Demo — web page and HTTP API
+
+```bash
+pip install -e ".[demo]"                   # FastAPI + uvicorn; add ",thai" for the Thai contract
+contract-ner serve                         # http://127.0.0.1:8000/   API docs: /docs
+contract-ner serve --cached-only           # no model is loaded: demo contracts answer from stored records
+```
+
+One process serves a single static page (`src/contract_ner/web/`, no build step, works offline) and
+the API behind it (`src/contract_ner/api.py`):
+
+* **Extract** — the contract with every predicted span highlighted by label (dashed below 0.8
+  confidence, dotted when span validation rejected it) next to the metadata table; clicking a cell
+  scrolls to the span it came from. On a curated contract, *Compare with gold* outlines the gold
+  spans and marks each cell right / wrong / missed / *not in gold*, with the same keys as the slot
+  evaluation. Paste or upload a `.txt` contract, move the confidence floor, download the JSON record.
+* **Compare models** — one contract through the regex baseline, the conditional random field and
+  the fine-tuned RoBERTa (or the Thai model), the cells they disagree on marked.
+* **Evaluation** — slot F1 by model against the 0.80 target, the English model across iterations,
+  slot F1 per table cell; numbers read from `reports/`.
+
+| Endpoint | Does |
+|---|---|
+| `GET /api/models` | demo models, whether their weights are present, test-split numbers |
+| `GET /api/samples`, `GET /api/samples/{id}` | curated demo contracts (text, gold spans, talking point) |
+| `POST /api/extract` | `{model, text \| sample_id, min_confidence}` → the `assemble()` record (+ `gold_check` for a curated contract) |
+| `POST /api/extract/file` | the same for an uploaded UTF-8 `.txt` file |
+| `POST /api/compare` | `{models, text \| sample_id}` → each model's table and the cells they disagree on |
+| `GET /api/metrics` | slot-level numbers per model and the iteration history |
+
+The demo contracts in `demo/samples/` are picked by `scripts/pick_demo_docs.py` from the CUAD test
+split (all cells right · parties the baselines miss · the End_Date selection error · a governing law
+the gold lacks · the longest contract), plus the two examples and one Thai dev-gold contract; each
+keeps every model's record, so a model that fails to load on the day falls back to it
+(`"source": "cache"`). `scripts/record_demo.py` drives the page in a headless browser and writes a
+captioned walkthrough video and one screenshot per step to `demo/recording/` — the fallback when
+the live demo cannot run. The presentation script is `docs/demo_script_th.md`.
+
 ## Extending to Thai (experimental)
 
 The pipeline keeps everything language-specific behind `contract_ner.lang.LangRules`
@@ -434,6 +472,9 @@ src/contract_ner/
   baseline.py            regex-only English extractor (`--model regex`), scored by the same evaluator
   baseline_crf.py        conditional random field over hand-designed features, same interface
   cli.py                 `contract-ner` commands
+  api.py                 demo HTTP API (`contract-ner serve`)    web/                    demo page (HTML/CSS/JS)
+demo/samples/            curated demo contracts with every model's stored record
+demo/recording/          walkthrough screenshots (and the git-ignored video) from scripts/record_demo.py
 tests/                   pytest suite (Thai cases skip without the "thai" extra)
 ```
 

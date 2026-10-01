@@ -203,6 +203,20 @@ def _cmd_extract(args: argparse.Namespace) -> None:
         Path(args.out).write_text(json.dumps(rec, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def _cmd_serve(args: argparse.Namespace) -> None:
+    import importlib.util
+    if importlib.util.find_spec("fastapi") is None or importlib.util.find_spec("uvicorn") is None:
+        sys.exit('the demo server needs the demo extra: pip install -e ".[demo]"')
+    import uvicorn
+
+    from .api import create_app
+
+    app = create_app(root=args.root, samples_dir=args.samples, reports_dir=args.reports,
+                     cached_only=args.cached_only, preload=tuple(args.preload))
+    print(f"demo: http://{args.host}:{args.port}/   API docs: http://{args.host}:{args.port}/docs")
+    uvicorn.run(app, host=args.host, port=args.port, log_level="info")
+
+
 def _cmd_export_conll(args: argparse.Namespace) -> None:
     from .io import read_jsonl
     from .schema import spans_to_bio
@@ -296,6 +310,18 @@ def main(argv: list[str] | None = None) -> None:
     s.add_argument("--summary", action="store_true", help="print only the one-line-per-field summary")
     s.add_argument("--min-confidence", type=float, default=0.6, help="drop spans below this mean label probability")
     s.set_defaults(fn=_cmd_extract)
+
+    s = sub.add_parser("serve", help="start the demo web app and its HTTP API")
+    s.add_argument("--host", default="127.0.0.1")
+    s.add_argument("--port", type=int, default=8000)
+    s.add_argument("--root", default=".", help="project root holding models/, reports/ and demo/")
+    s.add_argument("--samples", default=None, help="demo contracts (default: <root>/demo/samples)")
+    s.add_argument("--reports", default=None, help="evaluation reports (default: <root>/reports)")
+    s.add_argument("--preload", nargs="*", default=["roberta"],
+                   help="models to load at start-up so the first request is fast (roberta crf regex thai)")
+    s.add_argument("--cached-only", action="store_true",
+                   help="answer demo contracts from their stored records instead of running the models")
+    s.set_defaults(fn=_cmd_serve)
 
     s = sub.add_parser("export-conll", help="dump a JSONL dataset as word/BIO CoNLL for inspection")
     s.add_argument("--data", required=True)

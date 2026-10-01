@@ -1,0 +1,238 @@
+{
+ "id": "th-gold",
+ "order": 7,
+ "title": "สัญญาภาษาไทย — มีเฉลย (dev gold)",
+ "lang": "th",
+ "source": "Thai dev gold set, th-gold-008",
+ "talking_point": "A hand-annotated Thai contract (1,355 characters) from the dev gold set. thai: 5 right.",
+ "default_model": "thai",
+ "text": "สัญญาจ้างพัฒนาระบบซอฟต์แวร์\n\nสัญญาเลขที่ SD-2568-031 ทำขึ้น ณ กรุงเทพมหานคร เมื่อวันที่ 1 ตุลาคม 2568 ระหว่าง มหาวิทยาลัยเทคโนโลยีสุรนารี โดย รองศาสตราจารย์ ดร.อนันต์ ทองระอา อธิการบดี (ต่อไปนี้เรียกว่า “ผู้ว่าจ้าง”) กับ บริษัท โค้ดคราฟท์ จำกัด โดย นางสาววรรณวิสา ชูศักดิ์ กรรมการผู้จัดการ (ต่อไปนี้เรียกว่า “ผู้รับจ้าง”)\n\nข้อ 1 ผู้รับจ้างตกลงพัฒนาระบบทะเบียนนักศึกษาออนไลน์ตามข้อกำหนดคุณลักษณะ (TOR) เลขที่ 12/2568 ให้แล้วเสร็จและส่งมอบให้ผู้ว่าจ้างภายใน 240 วันนับถัดจากวันลงนามในสัญญา\n\nข้อ 2 ค่าจ้างตามสัญญานี้เป็นเงินทั้งสิ้น 4,280,000.00 บาท (สี่ล้านสองแสนแปดหมื่นบาทถ้วน) รวมภาษีมูลค่าเพิ่มแล้ว แบ่งจ่ายเป็น 4 งวด ดังนี้\nงวดที่ 1 ร้อยละ 20 เมื่อส่งมอบเอกสารออกแบบระบบ\nงวดที่ 2 ร้อยละ 30 เมื่อส่งมอบระบบเวอร์ชันทดสอบ\nงวดที่ 3 ร้อยละ 30 เมื่อติดตั้งระบบและฝึกอบรมแล้วเสร็จ\nงวดที่ 4 ร้อยละ 20 เมื่อสิ้นสุดระยะเวลารับประกัน\nโดยผู้ว่าจ้างจะจ่ายเงินแต่ละงวดภายใน 30 วัน นับจากวันที่คณะกรรมการตรวจรับงานได้ตรวจรับงานงวดนั้นเรียบร้อยแล้ว\n\nข้อ 3 สัญญานี้มีผลตั้งแต่วันที่ 1 ตุลาคม 2568 ถึงวันที่ 28 พฤษภาคม 2569\n\nข้อ 4 หากผู้รับจ้างส่งมอบงานล่าช้า ผู้รับจ้างยินยอมให้ผู้ว่าจ้างปรับเป็นรายวันในอัตราร้อยละ 0.1 ของค่าจ้างต่อวัน นับถัดจากวันครบกำหนดจนถึงวันที่ส่งมอบงานถูกต้องครบถ้วน\n\nข้อ 5 ผู้รับจ้างต้องรับประกันความชำรุดบกพร่องของระบบเป็นเวลา 1 ปี นับจากวันที่ผู้ว่าจ้างตรวจรับงานงวดสุดท้าย\n\nข้อ 6 ข้อพิพาทที่เกิดจากสัญญานี้ ให้ยื่นฟ้องต่อศาลปกครองนครราชสีมา",
+ "entities": [
+  {
+   "start": 88,
+   "end": 101,
+   "label": "AGREEMENT_DATE",
+   "text": "1 ตุลาคม 2568"
+  },
+  {
+   "start": 110,
+   "end": 137,
+   "label": "PARTY",
+   "text": "มหาวิทยาลัยเทคโนโลยีสุรนารี"
+  },
+  {
+   "start": 221,
+   "end": 244,
+   "label": "PARTY",
+   "text": "บริษัท โค้ดคราฟท์ จำกัด"
+  },
+  {
+   "start": 530,
+   "end": 546,
+   "label": "CONTRACT_VALUE",
+   "text": "4,280,000.00 บาท"
+  },
+  {
+   "start": 857,
+   "end": 935,
+   "label": "PAYMENT_DUE",
+   "text": "ภายใน 30 วัน นับจากวันที่คณะกรรมการตรวจรับงานได้ตรวจรับงานงวดนั้นเรียบร้อยแล้ว"
+  },
+  {
+   "start": 969,
+   "end": 982,
+   "label": "START_DATE",
+   "text": "1 ตุลาคม 2568"
+  },
+  {
+   "start": 993,
+   "end": 1008,
+   "label": "END_DATE",
+   "text": "28 พฤษภาคม 2569"
+  },
+  {
+   "start": 1095,
+   "end": 1122,
+   "label": "PENALTY_RATE",
+   "text": "ร้อยละ 0.1 ของค่าจ้างต่อวัน"
+  },
+  {
+   "start": 1336,
+   "end": 1355,
+   "label": "JURISDICTION",
+   "text": "ศาลปกครองนครราชสีมา"
+  }
+ ],
+ "cached": {
+  "thai": {
+   "record": {
+    "Party_A": {
+     "text": "มหาวิทยาลัยเทคโนโลยีสุรนารี",
+     "confidence": 0.9993,
+     "mentions": 1,
+     "start": 110,
+     "end": 137
+    },
+    "Party_B": {
+     "text": "บริษัท โค้ดคราฟท์ จำกัด",
+     "confidence": 0.9998,
+     "mentions": 1,
+     "start": 221,
+     "end": 244
+    },
+    "Other_Parties": [],
+    "Agreement_Date": {
+     "text": "1 ตุลาคม 2568",
+     "start": 88,
+     "end": 101,
+     "confidence": 0.9991,
+     "normalized": "2025-10-01"
+    },
+    "Start_Date": {
+     "text": "1 ตุลาคม 2568",
+     "start": 969,
+     "end": 982,
+     "confidence": 0.9995,
+     "normalized": "2025-10-01"
+    },
+    "End_Date": {
+     "text": "28 พฤษภาคม 2569",
+     "start": 993,
+     "end": 1008,
+     "confidence": 0.9993,
+     "normalized": "2026-05-28"
+    },
+    "Contract_Value": {
+     "text": "4,280,000.00 บาท",
+     "start": 530,
+     "end": 546,
+     "confidence": 0.9986,
+     "normalized": {
+      "amount": 4280000.0,
+      "currency": "THB",
+      "per": null,
+      "display": "4,280,000 THB"
+     }
+    },
+    "Payment_Due_Date": {
+     "text": "ภายใน 30 วัน นับจากวันที่คณะกรรมการตรวจรับงานได้ตรวจรับงานงวดนั้นเรียบร้อยแล้ว",
+     "start": 857,
+     "end": 935,
+     "confidence": 0.9988,
+     "normalized": "within 30 days of acceptance of the work/goods"
+    },
+    "Penalty_Rate": {
+     "text": "ร้อยละ 0.1 ของค่าจ้างต่อวัน",
+     "start": 1095,
+     "end": 1122,
+     "confidence": 0.9995,
+     "normalized": {
+      "value": 0.1,
+      "unit": "percent",
+      "per": "day",
+      "basis": "contract price",
+      "display": "0.1% per day of contract price"
+     }
+    },
+    "Jurisdiction": {
+     "text": "ศาลปกครองนครราชสีมา",
+     "start": 1336,
+     "end": 1355,
+     "confidence": 0.9983,
+     "normalized": {
+      "kind": "court",
+      "english": "Nakhon Ratchasima Administrative Court"
+     }
+    },
+    "Governing_Law": null,
+    "entities": [
+     {
+      "text": "1 ตุลาคม 2568",
+      "start": 88,
+      "end": 101,
+      "confidence": 0.9991,
+      "label": "AGREEMENT_DATE",
+      "valid": true
+     },
+     {
+      "text": "มหาวิทยาลัยเทคโนโลยีสุรนารี",
+      "start": 110,
+      "end": 137,
+      "confidence": 0.9993,
+      "label": "PARTY",
+      "valid": true
+     },
+     {
+      "text": "บริษัท โค้ดคราฟท์ จำกัด",
+      "start": 221,
+      "end": 244,
+      "confidence": 0.9998,
+      "label": "PARTY",
+      "valid": true
+     },
+     {
+      "text": "4,280,000.00 บาท",
+      "start": 530,
+      "end": 546,
+      "confidence": 0.9986,
+      "label": "CONTRACT_VALUE",
+      "valid": true
+     },
+     {
+      "text": "ภายใน 30 วัน นับจากวันที่คณะกรรมการตรวจรับงานได้ตรวจรับงานงวดนั้นเรียบร้อยแล้ว",
+      "start": 857,
+      "end": 935,
+      "confidence": 0.9988,
+      "label": "PAYMENT_DUE",
+      "valid": true
+     },
+     {
+      "text": "1 ตุลาคม 2568",
+      "start": 969,
+      "end": 982,
+      "confidence": 0.9995,
+      "label": "START_DATE",
+      "valid": true
+     },
+     {
+      "text": "28 พฤษภาคม 2569",
+      "start": 993,
+      "end": 1008,
+      "confidence": 0.9993,
+      "label": "END_DATE",
+      "valid": true
+     },
+     {
+      "text": "ร้อยละ 0.1 ของค่าจ้างต่อวัน",
+      "start": 1095,
+      "end": 1122,
+      "confidence": 0.9995,
+      "label": "PENALTY_RATE",
+      "valid": true
+     },
+     {
+      "text": "ศาลปกครองนครราชสีมา",
+      "start": 1336,
+      "end": 1355,
+      "confidence": 0.9983,
+      "label": "JURISDICTION",
+      "valid": true
+     }
+    ],
+    "lang": "th",
+    "summary": {
+     "Party_A": "มหาวิทยาลัยเทคโนโลยีสุรนารี",
+     "Party_B": "บริษัท โค้ดคราฟท์ จำกัด",
+     "Agreement_Date": "2025-10-01",
+     "Start_Date": "2025-10-01",
+     "End_Date": "2026-05-28",
+     "Contract_Value": "4,280,000 THB",
+     "Payment_Due_Date": "within 30 days of acceptance of the work/goods",
+     "Penalty_Rate": "0.1% per day of contract price",
+     "Jurisdiction": "Nakhon Ratchasima Administrative Court"
+    }
+   },
+   "seconds": 0.05
+  }
+ }
+}

@@ -1,0 +1,169 @@
+{
+ "id": "th-example",
+ "order": 6,
+ "title": "สัญญาจ้างบริการ (ตัวอย่างสั้น)",
+ "lang": "th",
+ "source": "examples/thai_service_contract.txt",
+ "talking_point": "The Thai example contract (302 characters): same API and page, Thai model, nine cells instead of six.",
+ "default_model": "thai",
+ "text": "สัญญาฉบับนี้ทำขึ้นระหว่าง บริษัท เอบีซี จำกัด (“ผู้ว่าจ้าง”) และ บริษัท เอ็กซ์วายแซด จำกัด (“ผู้รับจ้าง”) มีผลตั้งแต่วันที่ 1 มกราคม 2569 ถึงวันที่ 31 ธันวาคม 2569 มูลค่าสัญญารวม 2,500,000 บาท กำหนดชำระทุกวันที่ 5 ของเดือน หากผิดนัดชำระคิดค่าปรับ 15% ต่อเดือน ข้อพิพาทอยู่ภายใต้เขตอำนาจศาลแพ่งกรุงเทพฯ\n",
+ "entities": [],
+ "cached": {
+  "thai": {
+   "record": {
+    "Party_A": {
+     "text": "บริษัท เอบีซี จำกัด",
+     "confidence": 0.9996,
+     "mentions": 1,
+     "start": 26,
+     "end": 45
+    },
+    "Party_B": {
+     "text": "บริษัท เอ็กซ์วายแซด จำกัด",
+     "confidence": 0.9997,
+     "mentions": 1,
+     "start": 65,
+     "end": 90
+    },
+    "Other_Parties": [],
+    "Agreement_Date": null,
+    "Start_Date": {
+     "text": "1 มกราคม 2569",
+     "start": 124,
+     "end": 137,
+     "confidence": 0.9995,
+     "normalized": "2026-01-01"
+    },
+    "End_Date": {
+     "text": "31 ธันวาคม 2569",
+     "start": 148,
+     "end": 163,
+     "confidence": 0.9993,
+     "normalized": "2026-12-31"
+    },
+    "Contract_Value": {
+     "text": "2,500,000 บาท",
+     "start": 179,
+     "end": 192,
+     "confidence": 0.9982,
+     "normalized": {
+      "amount": 2500000.0,
+      "currency": "THB",
+      "per": null,
+      "display": "2,500,000 THB"
+     }
+    },
+    "Payment_Due_Date": {
+     "text": "ทุกวันที่ 5 ของเดือน",
+     "start": 202,
+     "end": 222,
+     "confidence": 0.9993,
+     "normalized": "day 5 of each month"
+    },
+    "Penalty_Rate": {
+     "text": "15% ต่อเดือน",
+     "start": 247,
+     "end": 259,
+     "confidence": 0.9992,
+     "normalized": {
+      "value": 15.0,
+      "unit": "percent",
+      "per": "month",
+      "basis": null,
+      "display": "15% per month"
+     }
+    },
+    "Jurisdiction": {
+     "text": "ศาลแพ่งกรุงเทพฯ",
+     "start": 286,
+     "end": 301,
+     "confidence": 0.9984,
+     "normalized": {
+      "kind": "court",
+      "english": "Bangkok Civil Court"
+     }
+    },
+    "Governing_Law": null,
+    "entities": [
+     {
+      "text": "บริษัท เอบีซี จำกัด",
+      "start": 26,
+      "end": 45,
+      "confidence": 0.9996,
+      "label": "PARTY",
+      "valid": true
+     },
+     {
+      "text": "บริษัท เอ็กซ์วายแซด จำกัด",
+      "start": 65,
+      "end": 90,
+      "confidence": 0.9997,
+      "label": "PARTY",
+      "valid": true
+     },
+     {
+      "text": "1 มกราคม 2569",
+      "start": 124,
+      "end": 137,
+      "confidence": 0.9995,
+      "label": "START_DATE",
+      "valid": true
+     },
+     {
+      "text": "31 ธันวาคม 2569",
+      "start": 148,
+      "end": 163,
+      "confidence": 0.9993,
+      "label": "END_DATE",
+      "valid": true
+     },
+     {
+      "text": "2,500,000 บาท",
+      "start": 179,
+      "end": 192,
+      "confidence": 0.9982,
+      "label": "CONTRACT_VALUE",
+      "valid": true
+     },
+     {
+      "text": "ทุกวันที่ 5 ของเดือน",
+      "start": 202,
+      "end": 222,
+      "confidence": 0.9993,
+      "label": "PAYMENT_DUE",
+      "valid": true
+     },
+     {
+      "text": "15% ต่อเดือน",
+      "start": 247,
+      "end": 259,
+      "confidence": 0.9992,
+      "label": "PENALTY_RATE",
+      "valid": true
+     },
+     {
+      "text": "ศาลแพ่งกรุงเทพฯ",
+      "start": 286,
+      "end": 301,
+      "confidence": 0.9984,
+      "label": "JURISDICTION",
+      "valid": true
+     }
+    ],
+    "lang": "th",
+    "summary": {
+     "Party_A": "บริษัท เอบีซี จำกัด",
+     "Party_B": "บริษัท เอ็กซ์วายแซด จำกัด",
+     "Agreement_Date": null,
+     "Start_Date": "2026-01-01",
+     "End_Date": "2026-12-31",
+     "Contract_Value": "2,500,000 THB",
+     "Payment_Due_Date": "day 5 of each month",
+     "Penalty_Rate": "15% per month",
+     "Jurisdiction": "Bangkok Civil Court"
+    }
+   },
+   "seconds": 0.88
+  }
+ }
+}

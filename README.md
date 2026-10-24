@@ -124,7 +124,7 @@ normalisation and selection: a second, equally correct governing-law clause (`Th
 of New York govern this Agreement.` was a false positive when the gold clause was the longer one
 four sections later), a clause in capitals, a party name trimmed by one token, `three (3) years`
 versus `a period of 3 years`. Jurisdiction goes 0.76 → 0.96 on the same predictions. The remaining
-slot errors are model errors or gold gaps: of the nine slots predicted where CUAD has no gold, five
+slot errors are model errors or gold gaps: of the thirteen slots the shipped model predicts where CUAD has no gold (checked by hand), six
 name a real value the annotation missed (two governing-law clauses — Nevada and the PRC — and three
 term clauses), so the CUAD-gold number is a floor.
 
@@ -507,9 +507,11 @@ tests/                   pytest suite (Thai cases skip without the "thai" extra)
   `configs/english_cuad_merged.yaml`. Numeric agreement dates (`7/7/98`, `24 OCT 2011`) remain the
   main `Agreement_Date` misses — CUAD has almost none in training, and augmentation alone taught
   the tagger to fire on page-footer dates instead.
-* **Gold gaps** — five of the nine slots predicted where CUAD has no gold name a real value
-  (governing-law clauses for Nevada and the PRC, three term clauses); re-checking the 47 test
-  contracts by hand would raise the ceiling.
+* **Gold gaps** — of the thirteen slots the shipped model predicts where CUAD has no gold, six name a
+  real value (governing-law clauses for Nevada and the PRC, three term clauses, one agreement date),
+  one is borderline, and six are model errors (notice or cure periods picked as `End_Date`, an
+  exclusivity expiry, a file-footer date, a wrong `Start_Date`); re-checking the 47 test contracts
+  by hand would raise the ceiling.
 * **Plain text in, no normalisation** — real contracts arrive as PDF / scans; OCR errors will lower
   the scores (spans are matched exactly, no fuzzy alias matching).
 * **Synthetic Thai training data** — see [Extending to Thai](#extending-to-thai-experimental).

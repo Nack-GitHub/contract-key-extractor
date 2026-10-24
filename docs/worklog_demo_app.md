@@ -104,7 +104,7 @@ contract-ner serve --preload roberta crf thai      # แล้วเปิด ht
 
 ## 4. สิ่งที่เจอระหว่างทำ (findings)
 
-1. **ตัวเลข "5 จาก 9 gold gaps" เป็นของโมเดล v7 ไม่ใช่ final** — โมเดล final มี **13 ช่อง** ที่ทายมีค่าแต่ gold ว่าง (`slot_errors` ใน `reports/english-cuad-roberta-label-aware-augmented__test.json`) และยังไม่มีใครตรวจด้วยมือ ใน `docs/project_overview_th.md` สไลด์ 14 กับ README §Limitations ยังอ้าง 5/9 — ถ้าจะพูดในสไลด์ ควรระบุว่าเป็นของ v7 หรือตรวจ 13 ช่องนี้ใหม่ (งานไม่เกินชั่วโมง ส่วนใหญ่เป็น End_Date clause) ผมเลยเลี่ยงตัวเลขนี้ในคำบรรยายวิดีโอ
+1. **ตัวเลข "5 จาก 9 gold gaps" เป็นของโมเดล v7 ไม่ใช่ final** — โมเดล final มี **13 ช่อง** ที่ทายมีค่าแต่ gold ว่าง (`slot_errors` ใน `reports/english-cuad-roberta-label-aware-augmented__test.json`) **ตรวจด้วยมือครบแล้ว:** 6 เป็นค่าจริงที่ CUAD ไม่ได้ annotate (governing law Nevada, PRC; term clause ของ cuad-f626254532 และ cuad-88e0b0967a; วันที่ทำสัญญา 10 ต.ค. 2000 ของ cuad-813d31230d; วันสิ้นสุด sale term ของ cuad-45c11d4938), 1 ก้ำกึ่ง (cuad-b66c2a803f: ข้อ terminate ตามเหตุการณ์ ไม่ใช่ระยะสัญญา), 6 เป็น model error (cuad-56493096e6 และ cuad-16d034440c หยิบระยะ notice/cure เป็น End_Date; cuad-388a02c2f4 หยิบวันหมด exclusivity; cuad-89e80bfb41 หยิบวันที่ `07/07/97` จาก footer ชื่อไฟล์เป็น Agreement/Start; cuad-813d31230d Start_Date ควรเป็น 6 ต.ค. 2000 ตาม "effective on 06 October 2000") แก้ overview สไลด์ 14, README และ demo_script ให้ใช้ตัวเลข 6/13 แล้ว
 2. **Boilerplate รั่วเข้าเซต parties:** `_BOILERPLATE_RE` ใน `postprocess.py` จับ *"each a Party and together the Parties"* ได้ แต่ **ไม่จับ** `a "Party" and together the "Parties"` (เจอในสัญญา cuad-long — ทำให้ Parties ของฉบับนั้นนับผิด) แก้ได้ด้วยการเพิ่ม `together the` ใน regex แต่**ผมไม่ได้แก้** เพราะจะเปลี่ยนตัวเลขของทุก report ต้อง re-score ใหม่ทั้งหมด — ควรทำเป็นงานแยก
 3. **เศษจาก signature block ถูกนับเป็นคู่สัญญา** (เช่น `CORPORATION ORIENTAL FINANCIAL GROUP` ในสัญญา cuad-end-date) — เป็นเหตุผลหนึ่งที่ช่อง Parties ผิดทั้งที่ Party A/B ถูก หน้าเว็บจึงแสดงบรรทัด "also tagged as a party" และกล่อง "Other names tagged as parties" ให้เห็นตรง ๆ
 4. **ความเร็ว** (M2, MPS, โมเดลโหลดแล้ว): โหลด RoBERTa 1.3 วินาที · สัญญา 8–18k ตัวอักษร 0.2–0.4 วินาที · 33k ตัวอักษร 1.1 วินาที · 338k ตัวอักษร 7.5 วินาที · CRF ≤ 1.9 วินาที · regex ~0 — เดโมสดไม่ต้องมี queue หรือ async
@@ -124,7 +124,7 @@ contract-ner serve --preload roberta crf thai      # แล้วเปิด ht
 ## 6. สิ่งที่ยังไม่ได้ทำ / แนะนำต่อ
 
 - [ ] ซ้อมเดโมจริงตาม `docs/demo_script_th.md` จับเวลา (ผมไม่ได้ซ้อมพูด)
-- [ ] ตรวจ 13 ช่อง gold-gap ของโมเดล final ด้วยมือ ถ้าจะใช้ตัวเลขนี้ในสไลด์ (finding 1)
+- [x] ตรวจ 13 ช่อง gold-gap ของโมเดล final ด้วยมือแล้ว (ดู finding 1)
 - [ ] แก้ boilerplate regex + re-score ทุก report เป็นงานแยก (finding 2)
 - [ ] ถ้าต้องการวิดีโอที่มีเสียงพากย์: ใช้ `demo_walkthrough.mp4` เป็นฐาน หรือปรับ `--pause` ให้ช้าลงแล้วอัดใหม่
 - [ ] Merge `demo-app` เข้า `main` เมื่อพอใจ (ผมไม่ได้ merge และไม่ได้ push)
